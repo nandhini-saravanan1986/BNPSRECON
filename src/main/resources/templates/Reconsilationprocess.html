@@ -1,0 +1,437 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Stylesheets -->
+<link rel="stylesheet"
+	href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+<link rel="stylesheet"
+	href="/webjars/font-awesome/5.9.0/css/all.min.css"
+	th:href="@{/webjars/font-awesome/5.9.0/css/all.min.css}">
+<link rel="stylesheet"
+	href="/webjars/datatables/1.10.19/css/jquery.dataTables.min.css"
+	th:href="@{/webjars/datatables/1.10.19/css/jquery.dataTables.min.css}">
+<link rel="stylesheet"
+	href="/webjars/datatables/1.10.19/css/dataTables.bootstrap4.min.css"
+	th:href="@{/webjars/datatables/1.10.19/css/dataTables.bootstrap4.min.css}">
+
+<style>
+body {
+	background-color: #f8f9fa;
+	margin-left: 250px;
+	margin-top: 75px;
+	width: 85%;
+}
+
+.card-header-custom {
+	background-color: #7593b3;
+	color: white;
+}
+
+.recon-button, .btn-recon {
+	border: none;
+	border-radius: 0.5rem;
+	padding: 0.5rem 1.2rem;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	letter-spacing: .1em;
+	background-color: #36454F;
+	color: white;
+	transition: background-color .3s ease-in-out;
+}
+
+.recon-button:hover, .btn-recon:hover {
+	background-color: #FFD580;
+}
+
+th {
+	white-space: nowrap;
+}
+
+th:nth-child(4) {
+	width: 220px;
+}
+</style>
+
+<script>
+function showTable(tableId) {
+    const sections = ['matchedTableWrapper', 'unmatchedSource', 'unmatchedDestination', 'ttumTransac'];
+    sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('d-none');
+    });	
+
+    const target = document.getElementById(tableId);
+    if (target) {
+        target.classList.remove('d-none');
+
+        // Adjust columns after becoming visible
+        setTimeout(() => {
+            switch (tableId) {
+                case 'matchedTableWrapper': matchedTable.columns.adjust().draw(); break;
+                case 'unmatchedSource': unmatchedSourceTable.columns.adjust().draw(); break;
+                case 'unmatchedDestination': unmatchedDestinationTable.columns.adjust().draw(); break;
+                case 'ttumTransac': ttumTransacTable.columns.adjust().draw(); break;
+            }
+        }, 200); // Small delay ensures rendering is complete
+    }
+}
+
+function custdates(input) {
+    var ACCT_OPN_DATE = $('#datechanger').val();
+   
+    location.href = 'Reconsilationdatas?Fromdate=' + ACCT_OPN_DATE;
+}
+
+function manualcheck(a) {
+    var report_date = a.getAttribute("data-report_date");
+    
+    fetch('./CallmanualReconprocedurerun?report_date=' + report_date, {
+        method: 'POST'
+    })
+    .then(response => {
+        if (!response.ok) {
+            // Handle non-2xx HTTP status codes as error
+            return response.text().then(errorMsg => {
+                throw new Error(errorMsg || 'Something went wrong');
+            });
+        }
+        return response.text(); // or response.json() if your API returns JSON
+    })
+    .then(result => {
+        // Success response
+        alert("✅ Done! All pending data has been successfully reconciled.");
+    })
+    .catch(error => {
+        // Failure response
+        alert("❌ Error: ");
+    });
+}
+
+
+function goHome() {
+	location.href = 'Dashboard'
+}
+
+function goBack() {
+	history.back();
+}
+
+
+
+
+</script>
+
+<title>BRS</title>
+</head>
+
+<body>
+	<div th:insert="XBRLHeaderMenu :: header"></div>
+
+	<div class="card shadow-sm">
+		<div
+			class="card-header card-header-custom d-flex justify-content-between align-items-center flex-wrap">
+			<h5 class="mb-0" style="font-family: verdana; letter-spacing: .1em">AANI Payment Reconciliation
+				Dashboard</h5>
+
+			<div id="displayvalueses"
+				class="d-flex align-items-center mt-2 mt-md-0">
+				<label class="mb-0 font-weight-bold mr-2" style="font-size: 1.1rem;">Statement
+					Date:</label>
+				<div class="input-group input-group-sm" style="width: 160px;">
+					<div class="input-group-prepend">
+						<span class="input-group-text bg-light"><i
+							class="fas fa-calendar-alt text-info"></i></span>
+					</div>
+					<input type="date"
+						th:value="${#dates.format(datavalue, 'yyyy-MM-dd')}"
+						id="datechanger" onchange="custdates(this)"
+						class="form-control border-info" />
+				</div>
+			</div>
+
+			<button type="button" class="btn btn-sm text-white recon-button"
+				onclick="manualcheck(this)" th:attr="data-report_date=${#dates.format(datavalue, 'dd-MM-yyyy')}">
+				<i class="fas fa-handshake mr-1"></i> Manual Reconcile
+			</button>
+			
+			
+		</div>
+
+		<div class="card-body">
+			<!-- Buttons -->
+			<div class="mb-3 d-flex flex-wrap">
+				<button type="button" class="btn btn-recon mr-2 mb-2"
+					onclick="showTable('matchedTableWrapper')">Matched Records</button>
+				<button type="button" class="btn btn-recon mr-2 mb-2"
+					onclick="showTable('unmatchedSource')">Unmatched CBS Records</button>
+				<button type="button" class="btn btn-recon mr-2 mb-2"
+					onclick="showTable('unmatchedDestination')">Unmatched AANI Records</button>
+				<button type="button" class="btn btn-recon mr-2 mb-2"
+					onclick="showTable('ttumTransac')">TTUM Transaction</button> 
+			</div>
+			<div class="mb-3 d-flex flex-wrap">
+				<button type="button" class="btn btn-recon mr-2 mb-2"
+					style="background-color: #FFD580; color: black;">
+					<span th:text="${'CBS Match Debit Count: ' + totalDebitentries}"></span>
+				</button>
+				<button type="button" class="btn btn-recon mr-2 mb-2"
+					style="background-color: #FFD580; color: black;">
+					<span th:text="${'CBS Match Debit Amount: ' + totalDebitamount}"></span>
+				</button>
+				
+				<button type="button" class="btn btn-recon mr-2 mb-2"
+					style="background-color: #FFD580; color: black;">
+					<span th:text="${'CBS Match Credit Count: ' + totalCreditentries}"></span>
+				</button>
+				
+				<button type="button" class="btn btn-recon mr-2 mb-2"
+					style="background-color: #FFD580; color: black;">
+					<span th:text="${'CBS Match Credit Amount: ' + totalCreditamount}"></span>
+				</button>
+			</div>
+			<!-- Tables -->
+			<div class="table-responsive" id="matchedTableWrapper">			
+				<table id="matchedTable"
+					class="table table-bordered table-striped table-hover"
+					style="font-family: calibri;font-size: large;">
+					<thead class="thead-dark">
+						<tr>
+							<th>Transaction ID</th>
+							<th>Transaction Date</th>
+							<th>Tran Type</th>
+							<th>GL Posting Date</th>
+							<th>Value Date</th>
+							<th>Amount</th>
+							<th>Currency</th>
+							<th>Particular</th>
+							<th>Remarks</th>
+							<th>Account Identifier</th>
+							<th>Clearing Reference</th>
+							<th>Clearing Amount</th>
+							<th>Clearing Type</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr 
+							th:each="trancommondata : ${listvaluesdatas}" class="userlist">
+							<td th:text="${trancommondata.tran_id}"></td>
+							<td
+								th:text="${#dates.format(trancommondata.tran_date,'dd-MM-yyyy')}"></td>
+							<td th:text="${trancommondata.part_tran_type}"></td>
+							<td
+								th:text="${#dates.format(trancommondata.gl_date,'dd-MM-yyyy')}"></td>
+							<td
+								th:text="${#dates.format(trancommondata.value_date,'dd-MM-yyyy')}"></td>
+							<td th:text="${trancommondata.tran_amt}"></td>
+							<td th:text="${trancommondata.tran_crncy_code}"></td>
+							<td th:text="${trancommondata.tran_particular}"></td>
+							<td th:text="${trancommondata.tran_rmks}"></td>
+							<td th:text="${trancommondata.stmt_account_identifier}"></td>
+							<td
+								th:text="${trancommondata.ntry_refs_clearing_system_reference}"></td>
+							<td th:text="${trancommondata.ntry_transaction_amount}"></td>
+							<td
+								th:text="${trancommondata.ntry_txdtls_credit_debit_indicator}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="table-responsive d-none" id="unmatchedSource">
+				<table id="unmatchedSourceTable"
+					class="table table-bordered table-striped table-hover"
+					style="font-family: calibri;font-size: large;">
+					<thead class="thead-dark">
+						<tr>
+							<th>Transaction Id</th>
+							<th>Transaction Date</th>
+							<th>Tran Type</th>
+							<th>General Ledger Date</th>
+							<th>Transaction Value Date</th>
+							<th>Transaction Amount</th>
+							<th>Transaction Currency</th>
+							<th>Tran Particular</th>
+							<th>Tran Remarks</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr 
+							th:each="transourcedata : ${listcoredatas1}" class="userlist">
+							<td th:text="${transourcedata.tran_id}"></td>
+							<td
+								th:text="${#dates.format(transourcedata.tran_date,'dd-MM-yyyy')}"></td>
+							<td th:text="${transourcedata.part_tran_type}"></td>
+							<td
+								th:text="${#dates.format(transourcedata.gl_date,'dd-MM-yyyy')}"></td>
+							<td
+								th:text="${#dates.format(transourcedata.value_date,'dd-MM-yyyy')}"></td>
+							<td th:text="${transourcedata.tran_amt}"></td>
+							<td th:text="${transourcedata.tran_crncy_code}"></td>
+							<td th:text="${transourcedata.tran_particular}"></td>
+							<td th:text="${transourcedata.tran_rmks}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="table-responsive d-none" id="unmatchedDestination">
+				<table id="unmatchedDestinationTable"
+					class="table table-bordered table-striped table-hover"
+					style="font-family: calibri;font-size: large;">
+					<thead class="thead-dark">
+						<tr>
+							<th>Identifier Code</th>
+							<th>Statement Creation Date</th>
+							<th>Account Identifier</th>
+							<th>Clearing Reference</th>
+							<th>Transaction Amount</th>
+							<th>Transaction Indicator</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr 
+							th:each="trandestidata : ${listvaluesdatas1}" class="userlist">
+							<td th:text="${trandestidata.grphdr_bank_identifier_code}"></td>
+							<td
+								th:text="${#dates.format(trandestidata.stmt_creation_date_time,'dd-MM-yyyy')}"></td>
+							<td th:text="${trandestidata.stmt_account_identifier}"></td>
+							<td
+								th:text="${trandestidata.ntry_refs_clearing_system_reference}"></td>
+							<td th:text="${trandestidata.ntry_txdtls_amount_currency}"></td>
+							<td
+								th:text="${trandestidata.ntry_txdtls_credit_debit_indicator}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="table-responsive d-none" id="ttumTransac">
+				<table id="ttumTransacTable"
+					class="table table-bordered table-striped table-hover"
+					style="font-family: calibri;font-size: large;">
+					<thead class="thead-dark">
+						<tr>
+							<th>Transaction ID</th>
+							<th>Transaction Date</th>
+							<th>Tran Type</th>
+							<th>GL Posting Date</th>
+							<th>Value Date</th>
+							<th>Amount</th>
+							<th>Currency</th>
+							<th>Particular</th>
+							<th>Remarks</th>
+							<th>Account Identifier</th>
+							<th>Clearing Reference</th>
+							<th>Clearing Amount</th>
+							<th>Clearing Type</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr 
+							th:each="ttumtransaction : ${ttumtransacdatas}" class="userlist">
+							<td th:text="${ttumtransaction.tran_id}"></td>
+							<td
+								th:text="${#dates.format(ttumtransaction.tran_date,'dd-MM-yyyy')}"></td>
+							<td th:text="${ttumtransaction.part_tran_type}"></td>
+							<td
+								th:text="${#dates.format(ttumtransaction.gl_date,'dd-MM-yyyy')}"></td>
+							<td
+								th:text="${#dates.format(ttumtransaction.value_date,'dd-MM-yyyy')}"></td>
+							<td th:text="${ttumtransaction.tran_amt}"></td>
+							<td th:text="${ttumtransaction.tran_crncy_code}"></td>
+							<td th:text="${ttumtransaction.tran_particular}"></td>
+							<td th:text="${ttumtransaction.tran_rmks}"></td>
+							<td th:text="${ttumtransaction.stmt_account_identifier}"></td>
+							<td
+								th:text="${ttumtransaction.ntry_refs_clearing_system_reference}"></td>
+							<td th:text="${ttumtransaction.ntry_transaction_amount}"></td>
+							<td
+								th:text="${ttumtransaction.ntry_txdtls_credit_debit_indicator}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+
+		<div class="card-footer text-center bg-light mt-3">
+			<button type="button" class="btn btn-sm btn-primary mx-2 px-4"
+				onclick="goHome();">
+				<i class="fas fa-home mr-1"></i> Home
+			</button>
+			<button type="button" class="btn btn-sm btn-secondary mx-2 px-4"
+				onclick="goBack();">
+				<i class="fas fa-arrow-left mr-1"></i> Back
+			</button>
+		</div>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="/webjars/jquery/3.4.1/jquery.min.js"
+		th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+	<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"
+		th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+	<script src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/jquery.dataTables.min.js}"></script>
+	<script
+		src="/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js}"></script>
+
+	<script>
+let matchedTable, unmatchedSourceTable, unmatchedDestinationTable, ttumTransacTable;
+
+$(document).ready(function () {
+    matchedTable = $('#matchedTable').DataTable({
+        scrollY: 400,
+        paging: true,
+        autoWidth: false,
+        ordering: false,
+        searching: true,
+        scrollX: true,
+        pageLength: 100,
+        lengthChange: false
+    });
+
+    unmatchedSourceTable = $('#unmatchedSourceTable').DataTable({
+        scrollY: 400,
+        paging: true,
+        autoWidth: false,
+        ordering: false,
+        searching: true,
+        scrollX: true,
+        pageLength: 100,
+        lengthChange: false
+    });
+
+    unmatchedDestinationTable = $('#unmatchedDestinationTable').DataTable({
+        scrollY: 400,
+        paging: true,
+        autoWidth: false,
+        ordering: false,
+        searching: true,
+        scrollX: true,
+        pageLength: 100,
+        lengthChange: false
+    });
+
+    ttumTransacTable = $('#ttumTransacTable').DataTable({
+        scrollY: 400,
+        paging: true,
+        autoWidth: false,
+        ordering: false,
+        searching: true,
+        scrollX: true,
+        pageLength: 100,
+        lengthChange: false
+    });
+});
+
+</script>
+</body>
+</html>

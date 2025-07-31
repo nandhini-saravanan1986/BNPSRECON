@@ -1,0 +1,404 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+		th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/font-awesome/5.9.0/css/all.min.css"
+		th:href="@{/webjars/font-awesome/5.9.0/css/all.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"
+		th:href="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.css}">
+	<link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+	<link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon">
+
+
+	<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"
+		th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+	<script src="/webjars/popper.js/1.14.7/umd/popper.min.js"
+		th:src="@{/webjars/popper.js/1.14.7/umd/popper.min.js}"></script>
+	<script src="/webjars/jquery/3.4.1/jquery.min.js" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+	<script src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"
+		th:src="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.js}"></script>
+	<script src="/webjars/jquery-form/4.2.2/jquery.form.min.js"
+		th:src="@{/webjars/jquery-form/4.2.2/jquery.form.min.js}"></script>
+	<script src="/webjars/jquery-validation/1.19.0/jquery.validate.min.js"
+		th:src="@{/webjars/jquery-validation/1.19.0/jquery.validate.min.js}"></script>
+
+
+
+	<style>
+		.row1 {
+			padding: 7px;
+		}
+
+		.error {
+			color: red;
+			padding-left: 10px;
+		}
+	</style>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var reportlist = /*[[${reportlist}]]*/null;
+		console.log(reportlist);
+		var frequency;
+
+		$(function () {
+
+			$("#reportTimediv").hide();
+
+			$.validator.addMethod("valueNotEquals", function (value, element, arg) {
+				return arg !== value;
+			}, "Please Select");
+
+			$("#reportform").validate({
+				rules: {
+					reportid: {valueNotEquals: "Select"},
+					function: {valueNotEquals: "Select"},
+					reportingTime: {valueNotEquals: "Select"}
+				},
+				messages: {
+					reportid: {valueNotEquals: "Please Select a Report Id"},
+					function: {valueNotEquals: "Please Select a function"},
+					reportingTime: {valueNotEquals: "Please Select Reporting Time"},
+					asondate: "Please Select Report Date",
+					fromdate: "Plese Select From Date",
+					todate: "Plesae Select To Date",
+					currency: "Plesae Select Reporting currency"
+				},
+				submitHandler: function (form) {
+					var fun = "view";
+					var selectedIndex = $("#reportlist option:selected").index();
+					var report = reportlist[selectedIndex - 1];
+
+					if (fun == "view") {
+
+						$("#reportform").attr('action', "MISReports/" + report.report_id + "?dtltype=report");
+						var reportid = $('#reportlist :selected').text();
+						var asondate = $('#asonDate').val();
+						var fromdate = $('#dt1').val();
+						var todate = $('#dt2').val();
+						var reportingTime = $('#reportingTime :selected').text();
+
+						var Callurl;
+
+						if (reportid == "FIM0500") {
+
+							Callurl = './Reports/' + reportid + '/Precheck?asondate='
+								+ asondate + '&fromdate=' + fromdate + '&todate=' + todate + '&reportingTime=' + reportingTime;
+
+						} else {
+
+							Callurl = './MISReports/' + reportid + '/Precheck?asondate='
+								+ asondate + '&fromdate=' + fromdate + '&todate=' + todate;
+						};
+
+						$.ajax({
+							type: 'get',
+							url: Callurl,
+							success: function (data) {
+
+								if (data == 'success') {
+									form.submit();
+								} else {
+									$("#alertmsg").text(data);
+									$("#alert").modal("toggle");
+								}
+
+							}
+						});
+					} else if (fun == "nil") {
+
+						var reportid = $('#reportlist :selected').text();
+						var asondate = $('#asonDate').val();
+						var fromdate = $('#dt1').val();
+						var todate = $('#dt2').val();
+						var reportingTime = $('#reportingTime :selected').text();
+
+						Callurl = './Reports/' + reportid + '/nilReport?asondate='
+							+ asondate + '&fromdate=' + fromdate + '&todate=' + todate + '&reportingTime=' + reportingTime;
+
+
+						$.ajax({
+							type: 'get',
+							url: Callurl,
+							success: function (data) {
+
+								$("#alertmsg").text(data);
+								$("#alert").modal("toggle");
+
+							}
+						});
+
+					}
+
+					else {
+						$("#reportform").attr('action',
+							"Reports/" + report.reportid + "/verify");
+						var reportid = $('#reportlist :selected').text();
+						var asondate = $('#asonDate').val();
+						var fromdate = $('#dt1').val();
+						var todate = $('#dt2').val();
+						var reportingTime = $('#reportingTime :selected').text();
+
+						var Callurl;
+
+						if (reportid == "FIM0500") {
+
+							Callurl = './Reports/' + reportid + '/Precheck?asondate='
+								+ asondate + '&fromdate=' + fromdate + '&todate=' + todate + '&reportingTime=' + reportingTime;
+
+						} else {
+
+							Callurl = './Reports/' + reportid + '/Precheck?asondate='
+								+ asondate + '&fromdate=' + fromdate + '&todate=' + todate;
+						};
+
+						$.ajax({
+							type: 'get',
+							url: Callurl,
+							success: function (data) {
+
+								if (data != 'Records Pending for Verification For the Report') {
+									$("#alertmsg").text("No data Available for Verification");
+									$("#alert").modal("toggle");
+
+								} else {
+
+									form.submit();
+
+								}
+
+							}
+						});
+
+
+
+					}
+				}
+			});
+
+			$("#asonDate").datepicker(
+				{
+					changeMonth: true,
+					changeYear: true,
+					dateFormat: "dd-mm-yy",
+					maxDate: new Date(),
+					onClose: function () {
+						var asondate = $(this).datepicker('getDate');
+
+						if (asondate) {
+
+							if (frequency == "Monthly") {
+
+								asondate = new Date(asondate.getFullYear(), asondate.getMonth() + 1, 0);
+								$(this).datepicker("setDate", asondate);
+								$('#dt2').datepicker("setDate", asondate);
+								asondate.setDate(1);
+								$('#dt1').datepicker("setDate", asondate);
+
+							} else if (frequency == "Daily") {
+
+								$("#dt2").datepicker("setDate", asondate);
+								$('#dt1').datepicker("setDate", asondate);
+
+							} else if (frequency == "Fortnightly") {
+
+								$("#dt2").datepicker('setDate', asondate);
+								asondate.setDate(asondate.getDate() - 13);
+								$('#dt1').datepicker("setDate", asondate);
+
+							} else if (frequency == "Half Yearly") {
+
+								asondate.setMonth((Math.trunc(asondate.getMonth() / 6) * 6) + 5);
+								asondate = new Date(asondate.getFullYear(), asondate.getMonth() + 1, 0);
+								$(this).datepicker('setDate', asondate);
+								$("#dt2").datepicker('setDate', asondate);
+
+								asondate.setDate(1);
+								asondate.setMonth(Math.trunc(asondate.getMonth() / 6) * 6);
+								$("#dt1").datepicker('setDate', asondate);
+
+							} else if (frequency == "Yearly") {
+
+								asondate.setDate(31);
+								asondate.setMonth(11);
+								$('#dt2').datepicker("setDate", asondate);
+								$(this).datepicker('setDate', asondate);
+
+								asondate.setDate(1);
+								asondate.setMonth(0);
+								$("#dt1").datepicker("setDate", asondate);
+
+
+							} else if (frequency == "Quarterly") {
+
+
+								asondate.setMonth((Math.trunc(asondate.getMonth() / 3) * 3) + 2);
+								asondate = new Date(asondate.getFullYear(), asondate.getMonth() + 1, 0);
+								$(this).datepicker('setDate', asondate);
+								$("#dt2").datepicker('setDate', asondate);
+
+								asondate.setDate(1);
+								asondate.setMonth(Math.trunc(asondate.getMonth() / 3) * 3);
+
+								$("#dt1").datepicker('setDate', asondate);
+
+
+							} else if (frequency == "Weekly") {
+
+								$("#dt2").datepicker('setDate', asondate);
+								asondate.setDate(asondate.getDate() - 7);
+								$('#dt1').datepicker("setDate", asondate);
+
+
+							};
+
+						}
+					}
+
+				});
+			$("#dt1").datepicker({
+				changeMonth: true,
+				changeYear: true,
+				maxDate: new Date(),
+				dateFormat: "dd-mm-yy"
+			});
+			$("#dt2").datepicker({
+				changeMonth: true,
+				changeYear: true,
+				maxDate: new Date(),
+				dateFormat: "dd-mm-yy"
+			});
+		});
+
+		function showReportName() {
+			var fun = $('#function :selected').val();
+			var selectedIndex = $("#reportlist option:selected").index();
+
+			var report = reportlist[selectedIndex - 1];
+
+			var reportId = report.report_id;
+
+
+			frequency = report.report_frequency;
+
+			$("#repname").text(report.report_name);
+			$("#reportTimediv").hide();
+
+			if (reportId == 'FIM0500') {
+
+				$("#reportTimediv").show();
+				$("#reportingTime").addAttr("required");
+			}
+
+		};
+
+
+
+		/*]]>*/
+	</script>
+</head>
+<title>XBRL</title>
+
+<body>
+	<div th:insert="XBRLHeaderMenu :: header"></div>
+	<i class="fa fa-question-circle" aria-hidden="true" onclick="docEmb('Report')" id="ques"></i>
+	<div class="container content">
+		<div class="row">
+			<div class="col-sm-12">
+				<form class="form-horizontal" method="post" name="CriteriaForm" id="reportform">
+					<div class="card">
+						<div class="card-header">
+							<h4>MIS Reports</h4>
+						</div>
+						<div class="card-body">
+							<div class="form-group">
+
+								<!-- <div class="row row1">
+									<label class="col-sm-3 control-label">Function</label> <select
+										name="function" id="function" class="col-sm-3 form-control"
+										required>
+										<option value="view" th:selected="${session.PERMISSIONS}!='W'">View Report</option>
+									</select> <span
+										style="color: red; font-size: 10px; display: none; padding-left: 125px;"
+										id="fun" class="error">Enter function Name</span>
+								</div> -->
+								<div class="row row1">
+									<label class="col-sm-3 control-label">Select Report</label> <select
+										th:object="${reportlist}" name="reportid" id="reportlist"
+										onchange="showReportName();" class="col-sm-3 form-control" required>
+										<option value="Select">Select</option>
+										<option th:each="report : ${reportlist}" th:value="${report.report_id}"
+											th:text="${report.report_id}"></option>
+									</select> <span class="col-sm-6" id="repname"></span>
+
+								</div>
+
+								<div class="row row1">
+									<label class="col-sm-3 control-label">As On date</label> <input type="text"
+										name="asondate" id="asonDate" value="" class="col-sm-3 form-control"
+										placeholder="dd-mm-yyyy" required /> <span
+										style="color: red; font-size: 10px; display: none;" id="asondt"
+										class="error">Select as on date</span>
+								</div>
+								<div class="row row1">
+									<label class="col-sm-3 control-label">From date<span
+											style="color: red; font-size: 10px;" class="mant">*</span></label> <input
+										type="text" name="fromdate" id="dt1" value="" class="col-sm-3 form-control"
+										placeholder="dd-mm-yyyy" required />
+								</div>
+								<div class="row row1">
+									<label class="col-sm-3 control-label">To date<span
+											style="color: red; font-size: 10px;" class="mant">*</span></label> <input
+										type="text" name="todate" id="dt2" value="" class="col-sm-3 form-control"
+										placeholder="dd-mm-yyyy" required />
+								</div>
+								<div class="row row1" id="reportTimediv">
+									<label class="col-sm-3 control-label">Reporting Time</label> <select
+										name="reportingTime" id="reportingTime" class="col-sm-3 form-control">
+										<option value="Select">Select</option>
+										<option value="AM" th:selected="${session.PERMISSIONS}!='W'">Morning</option>
+										<option th:if="${session.PERMISSIONS}=='W'" value="PM">Afternoon</option>
+									</select>
+								</div>
+								<div class="row row1">
+									<label class="col-sm-3 control-label">Report Currency<span
+											style="color: red; font-size: 10px;" class="mants"></span></label> <select
+										name="currency" id="rptcurrency" class="col-sm-3 form-control" required>
+										<option value="MUR">MUR</option>
+										<option value="USD">USD</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="card-footer text-center">
+							<button type="submit" class="btn btn-primary">Go</button>
+							<button type="reset" class="btn btn-xs btn-primary" id="btnClear">Clear</button>
+
+
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!--------------------------------------------------------------- Modal for alert messages-------------------------------->
+	<div class="modal fade" id="alert">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-body" style="text-align: center">
+					<p id="alertmsg"></p>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--------------------------------------------------------------- Modal for alert messages-------------------------------->
+
+
+
+</body>
+</body>
+
+</html>

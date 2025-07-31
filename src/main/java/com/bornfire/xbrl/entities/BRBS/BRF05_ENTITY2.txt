@@ -1,0 +1,308 @@
+package com.bornfire.xbrl.entities.BRBS;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
+@Entity
+@Table(name="BRF5B_SUMMARYTABLE")
+@IdClass(BRF05IDCLASS.class)
+public class BRF05_ENTITY2 {
+	private String	investment_types;
+	private String	security_identifier;
+	private BigDecimal	units_held;
+	private String	country;
+	private String	ccy;
+	private BigDecimal	amount;
+	private BigDecimal	aed_equivalent;
+	private BigDecimal	rating;
+	private String	rating_type;
+	private BigDecimal	market_value;
+	private String	counterparty_type;
+	private String	security_identifier_validation;
+	private String	country_validation;
+	private String	rating_validation;
+	private String	counterparty_type_validation;
+	private String	row_valid;
+	private String	row_label;
+	@Id
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	private Date	report_date;
+	private String	report_addl_criteria_1;
+	private String	nominal;
+	private Date	report_submit_date;
+	private Date	report_from_date;
+	private Date	report_to_date;
+	private String	report_code;
+	private String	entity_flg;
+	private String	modify_flg;
+	private String	del_flg;
+	private String	entry_user;
+	private String	modify_user;
+	private String	verify_user;
+	private Date	entry_time;
+	private Date	modify_time;
+	private Date	verify_time;
+	@Id
+	private BigDecimal	srl_no;
+	public String getInvestment_types() {
+		return investment_types;
+	}
+	public void setInvestment_types(String investment_types) {
+		this.investment_types = investment_types;
+	}
+	public String getSecurity_identifier() {
+		return security_identifier;
+	}
+	public void setSecurity_identifier(String security_identifier) {
+		this.security_identifier = security_identifier;
+	}
+	public BigDecimal getUnits_held() {
+		return units_held;
+	}
+	public void setUnits_held(BigDecimal units_held) {
+		this.units_held = units_held;
+	}
+	public String getCountry() {
+		return country;
+	}
+	public void setCountry(String country) {
+		this.country = country;
+	}
+	public String getCcy() {
+		return ccy;
+	}
+	public void setCcy(String ccy) {
+		this.ccy = ccy;
+	}
+	public BigDecimal getAmount() {
+		return amount;
+	}
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
+	public BigDecimal getAed_equivalent() {
+		return aed_equivalent;
+	}
+	public void setAed_equivalent(BigDecimal aed_equivalent) {
+		this.aed_equivalent = aed_equivalent;
+	}
+	public BigDecimal getRating() {
+		return rating;
+	}
+	public void setRating(BigDecimal rating) {
+		this.rating = rating;
+	}
+	public String getRating_type() {
+		return rating_type;
+	}
+	public void setRating_type(String rating_type) {
+		this.rating_type = rating_type;
+	}
+	public BigDecimal getMarket_value() {
+		return market_value;
+	}
+	public void setMarket_value(BigDecimal market_value) {
+		this.market_value = market_value;
+	}
+	public String getCounterparty_type() {
+		return counterparty_type;
+	}
+	public void setCounterparty_type(String counterparty_type) {
+		this.counterparty_type = counterparty_type;
+	}
+	public String getSecurity_identifier_validation() {
+		return security_identifier_validation;
+	}
+	public void setSecurity_identifier_validation(String security_identifier_validation) {
+		this.security_identifier_validation = security_identifier_validation;
+	}
+	public String getCountry_validation() {
+		return country_validation;
+	}
+	public void setCountry_validation(String country_validation) {
+		this.country_validation = country_validation;
+	}
+	public String getRating_validation() {
+		return rating_validation;
+	}
+	public void setRating_validation(String rating_validation) {
+		this.rating_validation = rating_validation;
+	}
+	public String getCounterparty_type_validation() {
+		return counterparty_type_validation;
+	}
+	public void setCounterparty_type_validation(String counterparty_type_validation) {
+		this.counterparty_type_validation = counterparty_type_validation;
+	}
+	public String getRow_valid() {
+		return row_valid;
+	}
+	public void setRow_valid(String row_valid) {
+		this.row_valid = row_valid;
+	}
+	public String getRow_label() {
+		return row_label;
+	}
+	public void setRow_label(String row_label) {
+		this.row_label = row_label;
+	}
+	public Date getReport_date() {
+		return report_date;
+	}
+	public void setReport_date(Date report_date) {
+		this.report_date = report_date;
+	}
+	public String getReport_addl_criteria_1() {
+		return report_addl_criteria_1;
+	}
+	public void setReport_addl_criteria_1(String report_addl_criteria_1) {
+		this.report_addl_criteria_1 = report_addl_criteria_1;
+	}
+	public String getNominal() {
+		return nominal;
+	}
+	public void setNominal(String nominal) {
+		this.nominal = nominal;
+	}
+	public Date getReport_submit_date() {
+		return report_submit_date;
+	}
+	public void setReport_submit_date(Date report_submit_date) {
+		this.report_submit_date = report_submit_date;
+	}
+	public Date getReport_from_date() {
+		return report_from_date;
+	}
+	public void setReport_from_date(Date report_from_date) {
+		this.report_from_date = report_from_date;
+	}
+	public Date getReport_to_date() {
+		return report_to_date;
+	}
+	public void setReport_to_date(Date report_to_date) {
+		this.report_to_date = report_to_date;
+	}
+	public String getReport_code() {
+		return report_code;
+	}
+	public void setReport_code(String report_code) {
+		this.report_code = report_code;
+	}
+	public String getEntity_flg() {
+		return entity_flg;
+	}
+	public void setEntity_flg(String entity_flg) {
+		this.entity_flg = entity_flg;
+	}
+	public String getModify_flg() {
+		return modify_flg;
+	}
+	public void setModify_flg(String modify_flg) {
+		this.modify_flg = modify_flg;
+	}
+	public String getDel_flg() {
+		return del_flg;
+	}
+	public void setDel_flg(String del_flg) {
+		this.del_flg = del_flg;
+	}
+	public String getEntry_user() {
+		return entry_user;
+	}
+	public void setEntry_user(String entry_user) {
+		this.entry_user = entry_user;
+	}
+	public String getModify_user() {
+		return modify_user;
+	}
+	public void setModify_user(String modify_user) {
+		this.modify_user = modify_user;
+	}
+	public String getVerify_user() {
+		return verify_user;
+	}
+	public void setVerify_user(String verify_user) {
+		this.verify_user = verify_user;
+	}
+	public Date getEntry_time() {
+		return entry_time;
+	}
+	public void setEntry_time(Date entry_time) {
+		this.entry_time = entry_time;
+	}
+	public Date getModify_time() {
+		return modify_time;
+	}
+	public void setModify_time(Date modify_time) {
+		this.modify_time = modify_time;
+	}
+	public Date getVerify_time() {
+		return verify_time;
+	}
+	public void setVerify_time(Date verify_time) {
+		this.verify_time = verify_time;
+	}
+	public BigDecimal getSrl_no() {
+		return srl_no;
+	}
+	public void setSrl_no(BigDecimal srl_no) {
+		this.srl_no = srl_no;
+	}
+	public BRF05_ENTITY2(String investment_types, String security_identifier, BigDecimal units_held, String country,
+			String ccy, BigDecimal amount, BigDecimal aed_equivalent, BigDecimal rating, String rating_type,
+			BigDecimal market_value, String counterparty_type, String security_identifier_validation,
+			String country_validation, String rating_validation, String counterparty_type_validation, String row_valid,
+			String row_label, Date report_date, String report_addl_criteria_1, String nominal, Date report_submit_date,
+			Date report_from_date, Date report_to_date, String report_code, String entity_flg, String modify_flg,
+			String del_flg, String entry_user, String modify_user, String verify_user, Date entry_time,
+			Date modify_time, Date verify_time, BigDecimal srl_no) {
+		super();
+		this.investment_types = investment_types;
+		this.security_identifier = security_identifier;
+		this.units_held = units_held;
+		this.country = country;
+		this.ccy = ccy;
+		this.amount = amount;
+		this.aed_equivalent = aed_equivalent;
+		this.rating = rating;
+		this.rating_type = rating_type;
+		this.market_value = market_value;
+		this.counterparty_type = counterparty_type;
+		this.security_identifier_validation = security_identifier_validation;
+		this.country_validation = country_validation;
+		this.rating_validation = rating_validation;
+		this.counterparty_type_validation = counterparty_type_validation;
+		this.row_valid = row_valid;
+		this.row_label = row_label;
+		this.report_date = report_date;
+		this.report_addl_criteria_1 = report_addl_criteria_1;
+		this.nominal = nominal;
+		this.report_submit_date = report_submit_date;
+		this.report_from_date = report_from_date;
+		this.report_to_date = report_to_date;
+		this.report_code = report_code;
+		this.entity_flg = entity_flg;
+		this.modify_flg = modify_flg;
+		this.del_flg = del_flg;
+		this.entry_user = entry_user;
+		this.modify_user = modify_user;
+		this.verify_user = verify_user;
+		this.entry_time = entry_time;
+		this.modify_time = modify_time;
+		this.verify_time = verify_time;
+		this.srl_no = srl_no;
+	}
+	public BRF05_ENTITY2() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+}

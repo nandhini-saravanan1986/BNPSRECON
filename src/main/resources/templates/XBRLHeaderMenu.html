@@ -1,0 +1,709 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:fragment="header">
+
+<head>
+
+
+	<script src="/js/maxcdn.js" th:src="@{/js/maxcdn.js}"></script>
+	<link rel="stylesheet" type="text/css" href="/css/loader.css" th:href="@{/css/loader2.css}">
+	<link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+	<link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon">
+	<script src="/webjars/jquery-form/4.2.2/jquery.form.min.js"
+		th:src="@{/webjars/jquery-form/4.2.2/jquery.form.min.js}"></script>
+
+	<script src="/webjars/jquery-validation/1.19.0/jquery.validate.min.js"
+		th:src="@{/webjars/jquery-validation/1.19.0/jquery.validate.min.js}"></script>
+
+	<style>
+		.header1 {
+			background-color: #83b5ec;
+		}
+
+		html:before {
+			content: " ";
+			z-index: 2147483647;
+			pointer-events: none;
+			position: fixed;
+			left: 0;
+			top: 0;
+			width: 100vw;
+			height: 100vh;
+			background-color: rgba(0, 0, 0, 0);
+		}
+
+		.dropdown-menu>li {
+			margin-left: 10px;
+		}
+
+		.error {
+			color: red;
+			padding-left: 10px;
+		}
+
+		#menu {
+			/* background-color: #2b506f; */
+			background-color: #7593b3;
+			/*  display: none;  */
+			position: absolute;
+			z-index: 1;
+			width: 240px;
+			top: 70px;
+			left: -1px;
+			position: fixed;
+			overflow-y: auto;
+			height: 100%;
+		}
+
+		#menu>ul>li>a {
+			display: block;
+			background-color: #2b506f;
+			color: #f1eaea;
+			font-size: 16px;
+			border-bottom-style: outset;
+			font-family: verdana;
+		}
+
+		#menu>ul>li>a:hover,
+		.submenu1>ul>li>a:hover {
+			background-color: #7593b3;
+			color: #f1eaea;
+		}
+
+		#userdtl,
+		#dropico {
+			float: right;
+		}
+
+		.submenu1>ul>li>a {
+			display: block;
+			background-color: #2b506f;
+			color: #f1eaea;
+			font-size: 16px;
+			font-family: verdana;
+		}
+
+		#headerdiv {
+			top: 50%;
+			left: 50%;
+			width: 62px;
+			height: 50px;
+			color: white;
+			position: absolute;
+			text-align: center;
+			margin: -30px 0 0 -31px;
+		}
+
+		/* #headerimg {
+	top: 50%;
+	left: 40%;
+	width: 62px;
+	height: 50px;
+	color: white;
+	position: relative;
+	text-align: center;
+	margin: -25px 0 0 -31px;
+} */
+		#showmenu,
+		#userdtl {
+			font-weight: 700;
+			font-size: larger;
+			/* color: white; */
+		}
+
+		nav {
+			/* background-color: #4d8cb9; */
+			background-color: #f3f4f473;
+		}
+
+		#pagetitle {
+			top: 114%;
+			left: 50%;
+			height: 50px;
+			color: #e80909;
+			position: absolute;
+			text-align: center;
+			margin: -25px 0 0 -31px;
+		}
+
+		#logoutmenu {
+			display: none;
+			position: absolute;
+			z-index: 1031;
+			width: 200px;
+			background-color: #dee2e6;
+			box-shadow: 3px 1px 11px 1px #888888;
+			border-radius: 5px;
+			background-color: #dee2e6;
+			right: 0px;
+			top: 70px;
+			border: 2px solid #4d8cb9;
+			position: fixed;
+		}
+
+		#ques {
+			margin-top: -54px;
+			float: right;
+			padding: 65px;
+		}
+
+		.logout {
+			color: #2e7bd0;
+		}
+
+		.container {
+			margin-top: 91px;
+		}
+
+		html {
+			zoom: 0.75;
+		}
+
+		label {
+			text-align: left;
+		}
+
+		.nav-tabs .nav-item.show .nav-link,
+		.nav-tabs .nav-link.active {
+			color: #fff;
+			background-color: #0062cc;
+			border-color: #fff;
+		}
+
+		.nav-tabs .nav-link {
+			color: #fff;
+			background-color: #e77400;
+			/* For inactive tabs */
+			border-color: #fff;
+		}
+
+
+		.modal-backdrop {
+			width: 200vw;
+			height: 200vh;
+		}
+	</style>
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		$(function () {
+
+			var menu = /*[[${menu}]]*/ null;
+
+			var changepassword = /*[[${changepassword}]]*/null;
+
+			var checkpassExpiry = /*[[${checkpassExpiry}]]*/null;
+
+			var checkAcctExpiry = /*[[${checkAcctExpiry}]]*/null;
+
+
+			$("#" + menu).css("background-color", "#8199ce");
+			$("#" + menu).parent().show();
+
+			if (changepassword == 'N') {
+
+				//$("#changepassword").modal("toggle");
+			}
+			;
+
+			if (parseInt(checkpassExpiry) <= 3) {
+
+				$("#menualertmsg").text(
+					"Your password will be expired in " + checkpassExpiry
+					+ " days. Please change Password.");
+				$('#menualert').modal("toggle");
+			}
+
+			/* if (parseInt(checkAcctExpiry) <= 3) {
+
+				$("#menualertmsg").text(
+					"Your Account will be expired in " + checkAcctExpiry
+					+ " days. Please contact Administrator");
+				$('#menualert').modal("toggle");
+
+			} */
+
+			$("#chngPass").on("click", function () {
+
+				$("#changepassword").modal("toggle");
+
+			});
+
+			function showlogout() {
+
+
+				var options = {};
+
+				if ($("#logoutmenu").css("display") == "none") {
+					$("#logoutmenu:hidden").show("Drop");
+				} else {
+					$("#logoutmenu:visible").hide("Drop");
+				}
+
+			}
+
+			function runEffect() {
+
+				var options = {};
+
+				if ($("#menu").css("display") == "none") {
+					$("#menu:hidden").show("slide");
+				} else {
+					$("#menu:visible").hide("slide");
+				}
+
+			}
+			$("#userdtl").on("click", function () {
+				showlogout();
+			});
+
+			$("#showmenu").on("click", function () {
+				runEffect();
+			});
+
+			/*  $(".content, .header2").click(function(e) {
+				$("#menu:visible").hide("slide");
+			}); */
+
+
+			$("#logoutbtn").on("click", function () {
+
+				url = /*[[@{/logoutUpdate}]]*/ null;
+
+				$.ajax({
+					type: "post",
+					cache: false,
+					url: url,
+					success: function (data) {
+
+						location.href =/*[[@{/logout}]]*/ null;
+					}
+				});
+
+
+
+			});
+
+
+		});
+
+
+		function changepassword() {
+
+			//Validating password fields
+			$.validator.addMethod(
+				"regex",
+				function (value, element, regexp) {
+					var re = new RegExp(regexp);
+					return this.optional(element) || re.test(value);
+				},
+				"Password required atleast one Uppercase, Lowercase, Numeric and special character"
+			);
+
+
+			$("#passform").validate({
+				rules: {
+					newpass: {
+						required: true,
+						minlength: 14,
+						maxlength: 114,
+						regex: "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})"
+					},
+					oldpass: {
+						required: true,
+						minlength: 14,
+						maxlength: 14,
+						regex: "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})"
+					}
+				},
+				messages: {}
+
+			});
+
+			if ($("#passform").valid()) {
+
+				var oldpass = $("#oldpass").val();
+				var newpass = $("#newpass").val();
+
+				var url =  /*[[@{/changePassword}]]*/ null;
+				var passdata = {
+					oldpass: oldpass,
+					newpass: newpass
+				}
+
+				$.ajax({
+					type: "post",
+					cache: false,
+					url: url,
+					data: passdata, // multiple data sent using ajax
+					success: function (data) {
+
+						$("#menualertmsg").text(data);
+						$('#menualert').modal("toggle");
+						if (data == 'Password Changed Successfully') {
+							$("#changepassword").modal("hide");
+						}
+					}
+				});
+
+			}
+
+		};
+
+		function contentLoad(a) {
+			/* var options = {};
+	
+			$("#menu:visible").hide("slide", options, 250, function() {
+				location.href = "/XBRL/" + a.id;
+			})  */
+
+
+			location.href = "/BRBS/" + a.id;
+		}
+		function docEmb(page) {
+
+			url = /*[[@{/document/XBRL.pdf}]]*/
+
+		var pageNum = 0;
+			if (page == "UserProfile") {
+				pageNum = 1;
+			}
+			if (page == "Report") {
+				pageNum = 2;
+			}
+			window.open(url + "#page=" + pageNum, "_blank",
+				"width=600, height=500");
+		}
+
+		/*<![CDATA[*/
+	</script>
+
+	<script>
+		// Function to update the time
+		function updateTime() {
+			var currentTime = new Date();
+			var hours = currentTime.getHours();
+			var minutes = currentTime.getMinutes();
+			var seconds = currentTime.getSeconds();
+			// Format the time to ensure two digits for minutes and seconds
+			hours = hours < 10 ? '0' + hours : hours;
+			minutes = minutes < 10 ? '0' + minutes : minutes;
+			seconds = seconds < 10 ? '0' + seconds : seconds;
+
+			// Set the time in the #current-time div
+			var timeString = hours + ':' + minutes + ':' + seconds;
+			document.getElementById('current-time').textContent = timeString;
+		}
+
+		// Call updateTime every second to keep the clock up to date
+		setInterval(updateTime, 1000);
+
+		// Call it once when the page loads to display the initial time
+		updateTime();
+	</script>
+
+</head>
+
+<body>
+	<input type="hidden" id="activemenu" th:value="${menu}" />
+	<input type="hidden" id="activemenu" th:value="${session.DOMAINID}" />
+
+
+	<nav class="navbar fixed-top navbar-expand-md"
+		style="background-color: white; box-shadow: 6px 6px 12px #888888; height: 70px;">
+		<div class="container-fluid d-flex justify-content-between align-items-center">
+
+			<!-- Left Side: Logos -->
+			<div class="d-flex align-items-center">
+				<!-- <img th:src="@{/images/client_Logo_bkp.png}" alt="Client Logo"
+					style="height: 65px; margin-right: 15px;"> -->
+				<img th:src="@{/images/Bornfire_header_BCDRS.png}" alt="Bornfire Logo"
+					style="height: 55px;margin-left: 800px;">
+			</div>
+
+			<!-- Right Side: User Info, Time, Logout -->
+			<div class="d-flex align-items-center">
+				<i class="fas fa-user-tie text-black mr-2" style="font-size: 1.2rem;" onclick="showlogout(this)"></i>
+				<span class="text-black font-weight-bold mr-3" style="font-family: Calibri;"
+					th:text="${session.USERNAME}">MANIVANNAN
+					BASKAR</span>
+
+				<div id="current-time" class="text-black mr-3"
+					style="font-family: Verdana; font-weight: bold; font-size: 14px;"></div>
+				<form th:action="@{/logout}" method="post">
+					<button type="submit"
+						class="btn btn-sm btn-outline-dark rounded-pill px-3 d-flex align-items-center" id="logoutbtn"
+						style="font-weight: 500;">
+						<i class="fas fa-sign-out-alt mr-2"></i> Logout
+					</button>
+				</form>
+
+			</div>
+		</div>
+	</nav>
+
+
+	<div id="menu" style="box-shadow: 6px 6px 12px #888888; z-index: 1031">
+		<ul class="nav flex-column">
+
+			<!-- <li class="nav-item"
+				th:if="${session.ROLEID == 'GEN' or session.ROLEID == 'RECONADM' or session.ROLEID == 'ADM' or   session.ROLEID == 'RBR_BRANCH'
+				 or session.ROLEID == 'RBR' or session.ROLEID == 'BRC' or
+			  session.ROLEID == 'IT' or session.ROLEID == 'HR' or session.ROLEID == 'OP' or session.ROLEID == 'AC' or session.ROLEID == 'DCD_BRANCH' or session.ROLEID == 'DCD_ADMIN'
+		  or session.ROLEID == 'DCD_BRANCH_MANAGER'}">
+				<a class="nav-link" id="Dashboard" href="#"
+				onclick="contentLoad(this)">DashBoard</a>
+			</li> -->
+			<li class="nav-item">
+				<a class="nav-link" id="Dashboard" href="#" onclick="contentLoad(this)">
+					<i class="fa fa-home mr-2" aria-hidden="true"></i>DashBoard</a>
+			</li>
+
+
+			<li class="nav-item"
+				th:if="${session.ROLEID == 'IT' or session.ROLEID == 'HR' or session.ROLEID == 'OP' or session.ROLEID == 'AC'}">
+				<a class="nav-link" id="ManualAudittrailvalue" href="#" onclick="contentLoad(this)">Audit Services</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" data-toggle="collapse" href="#adminsubmenu">
+					<i class="fa fa-user-shield mr-2"></i>Admin<i id="dropico" class="fa fa-caret-down"
+						aria-hidden="true"></i></a>
+
+				<div id="adminsubmenu" class="collapse submenu1 ">
+					<ul class="nav flex-column">
+						<li class="nav-item"
+							th:if="${session.ROLEID == 'Superadmin' or session.ROLEID == 'RBR_ADMIN' or session.ROLEID == 'DCD_ADMIN'}">
+							<a class="nav-link" id="UserProfile" style="padding-left: 30px;" href="#"
+								onclick="contentLoad(this)">User
+								Profile </a>
+						</li>
+
+
+						<li class="nav-item"><a class="nav-link" id="AccessandRoles" style="padding-left: 30px;"
+								href="#" onclick="contentLoad(this)" th:if="${session.ROLEID == 'Superadmin'}">Access
+								and
+								Roles</a></li>
+						<li class="nav-item">
+							<a class="nav-link" id="Audittrailvalue" style="padding-left: 30px;" href="#"
+								onclick="contentLoad(this)" th:if="${session.ROLEID == 'Superadmin'}">Audit
+								Service</a>
+						</li>
+						<li><a class="nav-link" id="auditlogs" style="padding-left: 30px;" href="#"
+								onclick="contentLoad(this)" th:if="${session.ROLEID == 'Superadmin'}">Audit
+								Logs</a></li>
+					</ul>
+				</div>
+			</li>
+
+			<li class="nav-item" th:if="${session.ROLEID == 'Superadmin' }"><a class="nav-link" data-toggle="collapse"
+					href="#auditmenu">
+					<i class="fa fa-clipboard-list mr-2"></i>Audit
+					Inquiries<i id="dropico" class="fa fa-caret-down" aria-hidden="true"></i>
+				</a>
+
+				<div id="auditmenu" class="collapse submenu1 ">
+					<ul class="nav flex-column">
+						<li class="nav-item"><a class="nav-link" id="User_Audit" href="#" style="padding-left: 30px;"
+								onclick="contentLoad(this)">User
+								Level Audit</a></li>
+						<li class="nav-item"><a class="nav-link" id="Audits" href="#" style="padding-left: 30px;"
+								onclick="contentLoad(this)">Service Level
+								Audit </a></li>
+					</ul>
+				</div>
+			</li>
+
+			<!--<li class="nav-item" th:if="${session.ROLEID == 'ADM'}"><a
+				class="nav-link" id="Consolidated" style="padding-left: 15px;"
+				href="#" onclick="contentLoad(this)">Report Generation</a></li>-->
+			<!-- 
+th:if="${session.ROLEID == 'ADM' or session.ROLEID == 'RBR'  or session.ROLEID == 'RBR_BRANCH'}" -->
+
+			<li class="nav-item"
+				th:if="${session.ROLEID == 'RBR_ADMIN'  or session.ROLEID == 'RBR_BRANCH' or session.ROLEID == 'Superadmin' }">
+				<a class="nav-link" data-toggle="collapse" href="#rbrmenu">
+					<i class="fa fa-file-contract mr-2"></i>RBR
+					Reports<i id="dropico" class="fa fa-caret-down" aria-hidden="true"></i>
+				</a>
+
+				<div id="rbrmenu" class="collapse submenu1 ">
+					<ul class="nav flex-column">
+						<li class="nav-item"><a class="nav-link" id="RBR_1" href="#" style="padding-left: 30px;"
+								onclick="contentLoad(this)">RBR
+								CCSYS 1</a></li>
+						<li class="nav-item"><a class="nav-link" id="RBR_Master" href="#" style="padding-left: 30px;"
+								onclick="contentLoad(this)">RBR
+								Summary</a></li>
+						<li class="nav-item"><a class="nav-link" style="padding-left: 30px;" data-toggle="collapse"
+								href="#rbrsubmenu">Master RBR <i id="dropico" class="fa fa-caret-down"
+									aria-hidden="true"></i>
+
+
+
+							</a>
+							<div id="rbrsubmenu" class="collapse submenu1">
+								<ul class="nav flex-column">
+
+									<li class="nav-item"><a class="nav-link" id="Customerdata"
+											style="padding-left: 50px;" href="#"
+											onclick="contentLoad(this)">Customer</a></li>
+
+									<li class="nav-item"><a class="nav-link" id="Partnerdata"
+											style="padding-left: 50px;" href="#" onclick="contentLoad(this)">Partner And
+											Shareholder</a></li>
+									<li class="nav-item"><a class="nav-link" id="Securitydata"
+											style="padding-left: 50px;" href="#" onclick="contentLoad(this)">Security
+											Data</a></li>
+									<li class="nav-item"><a class="nav-link" id="Facilitydata"
+											style="padding-left: 50px;" href="#" onclick="contentLoad(this)">Facility
+											Data</a></li>
+									<li class="nav-item"><a class="nav-link" id="Provisiondata"
+											style="padding-left: 50px;" href="#" onclick="contentLoad(this)">Provision
+											Data</a></li>
+									<li class="nav-item"><a class="nav-link" id="Overalldata"
+											style="padding-left: 50px;" href="#" onclick="contentLoad(this)">Overall
+											Data</a></li>
+
+									<!-- <li class="nav-item"><a class="nav-link"
+										id="Investmentdata" style="padding-left: 50px;" href="#"
+
+									<li class="nav-item"><a class="nav-link" id="Investmentdata"
+										style="padding-left: 50px;" href="#"
+
+										onclick="contentLoad(this)">Investment Data</a></li>
+									<li class="nav-item"><a class="nav-link" id="Legaldata"
+										style="padding-left: 50px;" href="#"
+										onclick="contentLoad(this)">Legal Data</a></li> -->
+								</ul>
+							</div>
+						</li>
+
+						<li class="nav-item"><a class="nav-link" id="RBR_Final" href="#" style="padding-left: 30px;"
+								onclick="contentLoad(this)">Final
+								RBR</a></li>
+					</ul>
+				</div>
+			</li>
+
+
+
+
+			<li class="nav-item"
+				th:if="${session.ROLEID == 'DCD_BRANCH' or session.ROLEID == 'DCD_ADMIN' or session.ROLEID == 'Superadmin'}">
+				<a class="nav-link" data-toggle="collapse" href="#dataqualityDCC">
+					<i class="fa fa-shield-alt mr-2"></i>
+					Data Integrity & Risk Assessment <i id="dropico" class="fa fa-caret-down" aria-hidden="true"></i>
+				</a> <!-- Main Application: Data Quality & ECDD/CDD -->
+				<div id="dataqualityDCC" class="collapse submenu1">
+					<ul class="nav flex-column">
+						<!-- Sub-Application: Due Diligence -->
+						<li class="nav-item"><a class="nav-link" style="padding-left: 30px;" data-toggle="collapse"
+								href="#dueDiligence"> ECDD Review Queue <i id="dropico" class="fa fa-caret-down"
+									aria-hidden="true"></i>
+							</a> <!-- Sub-Sub-Application: KYC -->
+							<div id="dueDiligence" class="collapse submenu1">
+								<ul class="nav flex-column">
+									<li class="nav-item"><a class="nav-link" id="kyc" href="#"
+											style="padding-left: 60px;" onclick="contentLoad(this)">
+											ECDD Profiles </a></li>
+								</ul>
+							</div>
+						</li>
+
+					</ul>
+				</div>
+			</li>
+
+
+
+
+			<li class="nav-item" th:if="${session.ROLEID == 'BRC' or session.ROLEID == 'Superadmin' }"><a
+					class="nav-link" data-toggle="collapse" href="#reconciliationmenu"><i class="fa fa-check-double"
+						mr-2></i>
+					Reconciliation <i id="dropico" class="fa fa-caret-down" aria-hidden="true"></i>
+				</a>
+
+				<div id="reconciliationmenu" class="collapse submenu1">
+					<ul class="nav flex-column" style="height: 600px;">
+
+						<li class="nav-item"><a class="nav-link" id="Tmtfiletransaction" href="#"
+								style="padding-left: 20px;" onclick="contentLoad(this)"> TTUM Transaction </a></li>
+						<li class="nav-item"><a class="nav-link" id="Reconsilationdatas" href="#"
+								onclick="contentLoad(this)">
+								Reconciliation Process</a></li>
+						<li class="nav-item"><a class="nav-link" id="Reconsilationdupli" href="#"
+								style="padding-left: 20px;" onclick="contentLoad(this)">Duplicate Records </a></li>
+
+					</ul>
+
+				</div>
+			</li>
+
+	</div>
+
+
+	<!--------------------------------------------------------- Logout menu------------------------------------------------ -->
+	<div id="logoutmenu">
+		<form th:action="@{/logout}" method="post">
+			<ul class="nav flex-column">
+				<li class="nav-item"><input type="button" id="chngPass" class="btn btn-default logout"
+						value="Change Password" /></li>
+				<li class="nav-item"><i class="fa fa-sign-out" aria-hidden="true"></i><input type="button"
+						id="logoutbtn" class="btn btn-default logout" value="Sign Out" /></li>
+			</ul>
+		</form>
+	</div>
+	<!--------------------------------------------------------- Logout menu------------------------------------------------ -->
+	<!--------------------------------------------------------- Password change modal------------------------------------------------ -->
+	<div class="modal fade" id="changepassword">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Change Password</h4>
+				</div>
+				<div class="modal-body" style="text-align: center">
+					<form th:object=${singledetail} id="passform" method="post">
+						<div class="form-group">
+							<div class="row">
+								<label class="col-sm-4" for="acctNum">Old Password :</label> <input
+									class="form-control col-sm-5" type="password" id="oldpass" name="oldpass"
+									required />
+							</div>
+							<div class="row">
+								<label class="col-sm-4" for="acctName">New Password :</label> <input
+									class="form-control col-sm-5" type="password" id="newpass" name="newpass"
+									required />
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" onclick="changepassword();">Submit</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--------------------------------------------------------- Password change modal------------------------------------------------ -->
+	<!--------------------------------------------------------------- Modal for alert messages-------------------------------->
+	<div class="modal fade" id="menualert">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="menu-title-header">
+					<div class="modal-title" id="exampleModalLabel"
+						style="text-align: center; color: white; background-color: orange;">BANK
+						OF BARODA</div>
+				</div>
+				<div class="modal-body" style="text-align: center">
+					<p id="menualertmsg"></p>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--------------------------------------------------------------- Modal for alert messages-------------------------------->
+	<div id="loader" style="display: none;">
+		<div class="loading">Loading&#8230;</div>
+	</div>
+</body>
+
+</html>

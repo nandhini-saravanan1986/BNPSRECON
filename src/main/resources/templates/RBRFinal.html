@@ -1,0 +1,1249 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<!-- 
+CREATED BY	: SURIYA.K  
+CREATED ON	: 08-07-2024
+PURPOSE		: RBR->CUSTOMER,PARTNER,FACILITY,SECURITY,PROVISION,OVERALL,LEGAL CASES AND INVESTMENTS
+ -->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+		th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/font-awesome/5.9.0/css/all.min.css"
+		th:href="@{/webjars/font-awesome/5.9.0/css/all.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"
+		th:href="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/datatables/1.10.19/css/jquery.dataTables.min.css"
+		th:href="@{/webjars/datatables/1.10.19/css/jquery.dataTables.min.css}">
+	<link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+	<link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon">
+
+	<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"
+		th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+	<script src="/webjars/popper.js/1.14.7/umd/popper.min.js"
+		th:src="@{/webjars/popper.js/1.14.7/umd/popper.min.js}"></script>
+	<script src="/webjars/jquery/3.4.1/jquery.min.js" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+	<script src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"
+		th:src="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.js}"></script>
+
+	<script src="/webjars/jquery-form/4.2.2/jquery.form.min.js"
+		th:src="@{/webjars/jquery-form/4.2.2/jquery.form.min.js}"></script>
+
+	<script src="/webjars/jquery-validation/1.19.0/jquery.validate.min.js"
+		th:src="@{/webjars/jquery-validation/1.19.0/jquery.validate.min.js}"></script>
+
+	<script src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/jquery.dataTables.min.js}"></script>
+	<script src="/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js}"></script>
+
+	<style>
+		.tablinks {
+			background-color: #E77400;
+			/*#e0a061  */
+			color: #000;
+			border-radius: 2px;
+		}
+
+		/* Highlighted tab style */
+		.tablinks.active {
+			background-color: #007bff;
+			/* Change this to your desired highlight color */
+			color: #fff;
+			border-radius: 2px;
+			/* Change this to the text color for highlighted tabs */
+		}
+
+		.container-manager {
+			width: 79%;
+			padding-right: 43px;
+			padding-left: 15px;
+			margin-right: auto;
+			margin-left: 18.3%;
+			margin-top: 80px;
+		}
+
+		.dropbtn {
+			background-color: #04AA6D;
+			color: white;
+			padding: 16px;
+			font-size: 16px;
+			border: none;
+		}
+
+		.dropdown {
+			position: relative;
+			display: inline-block;
+		}
+
+		.dropdown-content {
+			display: none;
+			position: absolute;
+			background-color: #f1f1f1;
+			min-width: 160px;
+			box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+			z-index: 1;
+		}
+
+		.dropdown-content a {
+			color: black;
+			padding: 12px 16px;
+			text-decoration: none;
+			display: block;
+		}
+
+		.dropdown-content a:hover {
+			background-color: #ddd;
+		}
+
+		.dropdown:hover .dropdown-content {
+			display: block;
+		}
+
+		.dropdown:hover .dropbtn {
+			background-color: orange;
+		}
+
+		.btns {
+			float: right;
+			margin: 5px;
+		}
+
+		.col-sm-5 {
+			padding-bottom: 15px;
+		}
+
+		.list-body {
+			padding: 0px;
+		}
+
+		.error {
+			color: red;
+			padding-left: 10px;
+		}
+
+		.formline {
+			padding-bottom: 15px;
+		}
+
+		.btn-primary {
+			background: orange;
+			border: 1px solid #FF4742;
+			border-radius: 6px;
+			box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+			box-sizing: border-box;
+			color: #FFFFFF;
+			cursor: pointer;
+			display: inline-block;
+			font-family: nunito, roboto, proxima-nova, "proxima nova", sans-serif;
+			font-size: 16px;
+			font-weight: 800;
+			line-height: 16px;
+			min-height: 40px;
+			outline: 0;
+			padding: 12px 14px;
+			text-align: center;
+			text-rendering: geometricprecision;
+			text-transform: none;
+			user-select: none;
+			-webkit-user-select: none;
+			touch-action: manipulation;
+			vertical-align: middle;
+		}
+
+		.btn-primary:hover,
+		.btn-primary:active {
+			background-color: initial;
+			background-position: 0 0;
+			color: #FF4742;
+		}
+
+		.btn-primary:active {
+			opacity: .5;
+		}
+
+		#finusertb {
+			width: 460px;
+		}
+
+		.dataTables_wrapper .dataTables_paginate .paginate_button {
+			padding: 0px;
+		}
+
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+
+		.scrollable-table-container {
+			max-height: 400px;
+			/* Adjust the height as needed */
+			overflow-y: auto;
+			overflow-x: auto;
+		}
+
+		.table th,
+		.table td {
+			white-space: nowrap;
+			/* Prevent text from wrapping */
+		}
+
+		/* Firefox */
+		input[type=number] {
+			-moz-appearance: textfield;
+		}
+	</style>
+
+
+
+
+	<script>
+		function openTab(evt, tabName) {
+			let currentTab = 'tab1';
+
+			tablinks = document.getElementsByClassName("tablinks");
+			for (i = 0; i < tablinks.length; i++) {
+				tablinks[i].classList.remove("active");
+			}
+
+			// Add the "active" class to the clicked tab
+			evt.currentTarget.classList.add("active");
+
+			// Check if the previous tab has been completed before allowing navigation
+			if (currentTab == 'tab1' || confirm("Complete the previous tab before moving on.")) {
+
+
+				// Hide all tabs
+				hideAllTabs();
+
+
+				// Show the selected tab
+				document.getElementById(tabName).style.display = 'block';
+
+				// Update the currentTab variable
+				currentTab = tabName;
+			} else {
+				// Prevent navigation if the previous tab is not completed
+				evt.preventDefault();
+			}
+		}
+
+		function hideAllTabs() {
+			// Hide all tab content
+			const tabContents = document.getElementsByClassName('tabcontent');
+			for (let i = 0; i < tabContents.length; i++) {
+				tabContents[i].style.display = 'none';
+			}
+		}
+
+		// Initially, display the first tab
+		hideAllTabs();
+		document.getElementById('tab1').style.display = 'block';
+
+	</script>
+
+	<script>
+
+
+		function home() {
+			location.href = 'Dashboard';
+		}
+		function back() {
+			window.history.back();
+		}
+		/* view screen */
+
+	</script>
+	<script>
+
+		function exceldownload(operationType) {
+		//    alert("Downloading Excel...");
+
+		    var activeTab = document.querySelector('.tablinks.active').id;
+		    var tabName = activeTab.replace('smooth', '');
+
+		 //   alert("Operation Type: " + operationType);
+
+		    
+		    
+		    if(operationType=='DEL'){
+		    	if(!confirm("This is a one-time download. Once downloaded, the data will be moved to Archival. Do you want to continue?")){
+		    		return;
+		    	}
+		    }
+
+		    $('#downloadProcessingModal').modal('show');
+		    $.ajax({
+		        url: './RBRReportDownload',
+		        type: 'GET',
+		        data: {
+		            filetype: 'xlsx',
+		            tabName: tabName,
+		            operationData: operationType
+		        },
+		        xhrFields: {
+		            responseType: 'blob'
+		        },
+		        success: function(data) {
+		            $('#downloadProcessingModal').modal('hide');
+
+		            var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+		            var url = window.URL.createObjectURL(blob);
+		            var a = document.createElement('a');
+		            a.href = url;
+
+		            var fileName;
+		            switch (tabName) {
+		                case "1": fileName = 'Customer.xlsx'; break;
+		                case "2": fileName = 'Partner and Shareholder Data.xlsx'; break;
+		                case "3": fileName = 'Facility Data.xlsx'; break;
+		                case "4": fileName = 'Security Data.xlsx'; break;
+		                case "5": fileName = 'Provision Data.xlsx'; break;
+		                case "6": fileName = 'Overall Data.xlsx'; break;
+		                case "7": fileName = 'Legal Cases.xlsx'; break;
+		                case "8": fileName = 'Investments.xlsx'; break;
+		                default: fileName = 'DownloadedFile.xlsx'; break;
+		            }
+
+		            a.download = fileName;
+		            a.style.display = 'none';
+		            document.body.appendChild(a);
+		            a.click();
+		            document.body.removeChild(a);
+		            window.URL.revokeObjectURL(url);
+
+		            // Custom message based on operation type
+		            var operationMessage = "";
+		            switch (operationType) {
+		                case "ADD": operationMessage = " (Added Data)"; break;
+		                case "UPD": operationMessage = " (Updated Data)"; break;
+		                case "DEL": operationMessage = " (Deleted Data)"; break;
+		                default: operationMessage = " (Overall Download)";
+		            }
+
+		            $('#customAlertBody').text('File "' + fileName + '"' + operationMessage + ' has been downloaded successfully.');
+		            $('#customAlertModal').modal('show');
+		        },
+		        error: function(xhr, status, error) {
+		            $('#downloadProcessingModal').modal('hide');
+		            alert("Error downloading file: " + error);
+		        }
+		    });
+		}
+
+
+
+
+
+
+	</script>
+
+</head>
+<title>XBRL</title>
+
+<body>
+	<div th:insert="XBRLHeaderMenu :: header"></div>
+
+	<div class="container content">
+
+		<div th:if="${formmode}=='list'">
+
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="card" style="width: 1500px; margin-left: -80px;">
+						<div class="card-header">
+							<div class="float-left">
+								<h4>Final RBR</h4>
+							</div>
+							<div class="btn-group nav-buttons float-right">
+								<button type="button" class="btn btn-primary" onclick="exceldownload('')">Download
+									Excel</button>
+								<button type="button" class="btn btn-primary" onclick="exceldownload('ADD')">Download
+									Add Excel</button>
+								<button type="button" class="btn btn-primary" onclick="exceldownload('UPD')">Download
+									Upd Excel</button>
+								<button type="button" class="btn btn-primary" onclick="exceldownload('DEL')">Download
+									Del Excel</button>
+							</div>
+
+						</div>
+
+
+						<div class="card-body">
+							<div class="tab" style="padding: 4px 4px; margin-left: -40px; position: relative;">
+								<!-- 	Tab buttons -->
+								<button class="tablinks active" id="smooth1"
+									style="width: 170px; height: 40px; font-size: 14px; border-radius: 2px; font-weight: bold; margin-left: 30px;"
+									onclick="openTab(event, 'tab1')">CUSTOMER</button>
+								<button class="tablinks" id="smooth2"
+									style="width: 170px; font-size: 14px; height: 40px; border-radius: 2px; font-weight: bold;"
+									onclick="openTab(event, 'tab2')">PARTNER</button>
+								<button class="tablinks" id="smooth3"
+									style="width: 170px; font-size: 14px; height: 40px; border-radius: 2px; font-weight: bold;"
+									onclick="openTab(event, 'tab3')">FACILITY</button>
+								<button class="tablinks" id="smooth4"
+									style="width: 170px; font-size: 14px; height: 40px; border-radius: 2px; font-weight: bold;"
+									onclick="openTab(event, 'tab4')">SECURITY</button>
+								<button class="tablinks" id="smooth5"
+									style="width: 170px; font-size: 14px; height: 40px; border-radius: 2px; font-weight: bold;"
+									onclick="openTab(event, 'tab5')">PROVISION</button>
+
+								<button class="tablinks" id="smooth6"
+									style="width: 170px; font-size: 14px; height: 40px; border-radius: 2px; font-weight: bold;"
+									onclick="openTab(event, 'tab6')">OVERALL</button>
+								<!-- <button class="tablinks" id="smooth7"
+									style="width: 170px; font-size: 14px; height: 40px; border-radius: 2px; font-weight: bold;"
+									onclick="openTab(event, 'tab7')">LEGAL CASES</button>
+								<button class="tablinks" id="smooth8"
+									style="width: 170px; font-size: 14px; height: 40px; border-radius: 2px; font-weight: bold;"
+									onclick="openTab(event, 'tab8')">INVESTSMENTS</button> -->
+
+								<!-- Download Message -->
+								<span id="downloadMessage"></span>
+
+								<!-- Download Processing Modal -->
+								<div class="modal fade" id="downloadProcessingModal" tabindex="-1" role="dialog"
+									aria-labelledby="downloadProcessingModalLabel" aria-hidden="true">
+									<div class="modal-dialog modal-dialog-centered d-flex align-items-center"
+										role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="downloadProcessingModalLabel">Download
+													Processing...</h5>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- Download Message -->
+								<div class="modal fade" id="customAlertModal" tabindex="-1" role="dialog"
+									aria-labelledby="customAlertModalLabel" aria-hidden="true">
+									<div class="modal-dialog modal-dialog-centered" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="customAlertModalLabel">Successfully</h5>
+											</div>
+											<div class="modal-body" id="customAlertBody"></div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-primary"
+													data-dismiss="modal">OK</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div id="tab1" class="tabcontent" style="margin-left: -1%; margin-top: 2%">
+								<div class="scrollable-table-container">
+									<table id="arabicccc"
+										class="table  table-bordered table-hover table-condensed table-sm" style="">
+										<thead class="thead-light">
+											<tr>
+
+												<th style="text-align: center;">Operation</th>
+												<th style="text-align: center;">Bank Code</th>
+												<th style="width: 120px; text-align: center;">CIN</th>
+												<th style="text-align: center;">CSNO</th>
+												<th style="text-align: center;">CIF No</th>
+												<th style="text-align: center;">Remarks</th>
+												<th style="text-align: center;">CAName</th>
+												<th style="text-align: center;">CEName</th>
+												<th style="text-align: center;">Type Code</th>
+												<th style="text-align: center;">Sub_Bor_Type</th>
+												<th style="text-align: center;">Cus_Res</th>
+												<th style="text-align: center;">Borrower_subsidiary</th>
+												<th style="text-align: center;">Group_UP</th>
+												<th style="text-align: center;">Group_IP</th>
+												<th style="text-align: center;">LEI</th>
+												<th style="text-align: center;">LEI Number</th>
+												<th style="text-align: center;">Cus_Dom</th>
+												<th style="text-align: center;">Eco_Sec</th>
+												<th style="text-align: center;">Est_Date</th>
+												<th style="text-align: center;">Emi_Est</th>
+												<th style="text-align: center;">Lic_Id</th>
+												<th style="text-align: center;">Exp_Lic</th>
+												<th style="text-align: center;">Emi_Lic</th>
+												<th style="text-align: center;">Telephone</th>
+												<th style="text-align: center;">DOB</th>
+												<th style="text-align: center;">EID</th>
+												<th style="text-align: center;">Exp_Emi_ID</th>
+												<th style="text-align: center;">Passport</th>
+												<th style="text-align: center;">Exp_Passport</th>
+												<th style="text-align: center;">Capital / Annual income</th>
+												<th style="text-align: center;">Turnover / Operating
+													income</th>
+												<th style="text-align: center;">Auditor</th>
+												<th style="text-align: center;">Employer</th>
+												<th style="text-align: center;">Date of audited FS</th>
+												<th style="text-align: center;">No. of Employees</th>
+												<th style="text-align: center;">Gender</th>
+												<th style="text-align: center;">Reserve Line 1</th>
+												<th style="text-align: center;">Reserve Line 2</th>
+												<th style="text-align: center;">Reserve Line 3</th>
+												<th style="text-align: center;">Reserve Line 4</th>
+
+												<th style="text-align: center;">Reserve Line 5</th>
+											</tr>
+										</thead>
+										<tbody>
+
+											<tr th:each="listcusto : ${listcustomer}" style="cursor: pointer;">
+
+												<td th:text="${listcusto?.operation}">456</td>
+
+												<td style="text-align: right;" th:text="${listcusto?.bank_code}">456
+												</td>
+												<td style="text-align: right;" th:text="${listcusto?.cin}">456</td>
+												<td style="text-align: right;" th:text="${listcusto?.csno}">456</td>
+												<td th:text="${listcusto?.cif_no}"></td>
+												<td th:text="${listcusto?.remarks}"></td>
+												<td id="arabic_change" style="text-align: right;"></td>
+												<td th:text="${listcusto?.cename}" id="arabic"></td>
+												<td th:text="${listcusto?.type_code}"></td>
+												<td th:text="${listcusto?.sub_bor_type}"></td>
+												<td th:text="${listcusto?.cus_res}"></td>
+												<td th:text="${listcusto?.borrower_subsidiary}"></td>
+												<td th:text="${listcusto?.group_up}"></td>
+												<td th:text="${listcusto?.group_ip}"></td>
+												<td th:text="${listcusto?.lei}"></td>
+												<td th:text="${listcusto?.lei_number}"></td>
+												<td th:text="${listcusto?.cus_dom}"></td>
+												<td th:text="${listcusto?.eco_sec}"></td>
+												<td th:text="${#dates.format(listcusto?.est_date, 'dd-MM-yyyy')}"></td>
+												<td th:text="${listcusto?.emi_est}"></td>
+												<td th:text="${listcusto?.lic_id}"></td>
+												<td th:text="${#dates.format(listcusto?.exp_lic, 'dd-MM-yyyy')}"></td>
+												<td th:text="${listcusto?.emi_lic}"></td>
+												<td th:text="${listcusto?.telephone}"></td>
+												<td th:text="${#dates.format(listcusto?.dob, 'dd-MM-yyyy')}"></td>
+												<td th:text="${listcusto?.eid}"></td>
+												<td th:text="${listcusto?.exp_emi_id}"></td>
+												<td th:text="${listcusto?.passport}"></td>
+												<td th:text="${listcusto?.exp_passport}"></td>
+												<td th:text="${listcusto?.capital_annual_income}"></td>
+												<td th:text="${listcusto?.turnover_operating_income}"></td>
+												<td th:text="${listcusto?.auditor}"></td>
+												<td th:text="${listcusto?.employer}"></td>
+												<td
+													th:text="${#dates.format(listcusto?.date_of_audited_fs, 'dd-MM-yyyy')}">
+												</td>
+												<td th:text="${listcusto?.no_of_employees}"></td>
+												<td th:text="${listcusto?.gender}"></td>
+												<td th:text="${listcusto?.reserve_line_1}"></td>
+												<td th:text="${listcusto?.reserve_line_2}"></td>
+												<td th:text="${listcusto?.reserve_line_3}"></td>
+												<td th:text="${listcusto?.reserve_line_4}"></td>
+												<td th:text="${listcusto?.reserve_line_5}"></td>
+
+											</tr>
+										</tbody>
+									</table>
+
+								</div>
+							</div>
+							<!-- PARTNER  TAb-2 -->
+							<div id="tab2" class="tabcontent" style="display: none; margin-left: -1%; margin-top: 2%">
+								<div class="scrollable-table-container">
+									<table class="table  table-bordered table-hover table-condensed table-sm" style="">
+										<thead class="thead-light">
+											<tr>
+
+												<th style="text-align: center;">Operation</th>
+												<th style="text-align: center;">Bank Code</th>
+												<th style="width: 120px; text-align: center;">CIN</th>
+												<th style="text-align: center;">CSNO</th>
+												<th style="text-align: center;">Part_Shar_Rec_Id</th>
+												<th style="text-align: center;">Part_Shar_Type</th>
+												<th style="text-align: center;">P_S_AName</th>
+												<th style="text-align: center;">P_S_EName</th>
+												<th style="text-align: center;">Partner / shareholder
+													CIN</th>
+												<th style="text-align: center;">P_S_Res</th>
+												<th style="text-align: center;">Shareholding or
+													partnership percentage</th>
+												<th style="text-align: center;">Net worth P_S</th>
+												<th style="text-align: center;">Legal status of P_S</th>
+												<th style="text-align: center;">P_S_Emi_ID</th>
+												<th style="text-align: center;">P_S_Exp_Emi_ID</th>
+												<th style="text-align: center;">P_S_Passport_No</th>
+												<th style="text-align: center;">P_S_Exp_Passport</th>
+												<th style="text-align: center;">P_S_Nat_code</th>
+												<th style="text-align: center;">P_S Trade license
+													Number</th>
+												<th style="text-align: center;">P_S Place of issuing
+													trade license</th>
+												<th style="text-align: center;">P_S LEI</th>
+												<th style="text-align: center;">P_S LEI Number</th>
+												<th style="text-align: center;">Gender</th>
+												<th style="text-align: center;">Reserve Line 1</th>
+												<th style="text-align: center;">Reserve Line 2</th>
+												<th style="text-align: center;">Reserve Line 3</th>
+												<th style="text-align: center;">Reserve Line 4</th>
+												<th style="text-align: center;">Reserve Line 5</th>
+											</tr>
+										</thead>
+										<tbody>
+
+											<tr th:each="list : ${listShare}" style="cursor: pointer;">
+
+
+												<td th:text="${list?.operation}">456</td>
+												<td style="text-align: right;" th:text="${list?.bankcode}">456</td>
+												<td style="text-align: right;" th:text="${list?.cin}">456</td>
+												<td style="text-align: right;" th:text="${list?.csno}">456</td>
+												<td th:text="${list?.part_shar_rec_id}"></td>
+												<td th:text="${list?.part_shar_type}"></td>
+												<td th:text="${list?.p_s_aname}" id="p_s_aname_arabic" align="right">
+												</td>
+												<td th:text="${list?.p_s_ename}" id="p_s_ename_english"></td>
+												<td th:text="${list?.p_s_cin}"></td>
+												<td th:text="${list?.p_s_res}"></td>
+												<td th:text="${list?.p_s_share_percentage}"></td>
+												<td th:text="${list?.net_worth_p_s}"></td>
+												<td th:text="${list?.p_s_legal_status}"></td>
+												<td th:text="${list?.p_s_emi_id}"></td>
+												<td th:text="${#dates.format(list?.p_s_exp_emi_id, 'dd-MM-yyyy')}"></td>
+												<td th:text="${list?.p_s_passport_no}"></td>
+												<td th:text="${#dates.format(list?.p_s_exp_passport, 'dd-MM-yyyy')}">
+												</td>
+												<td th:text="${list?.p_s_nat_code}"></td>
+												<td th:text="${list?.p_s_trade_license_no}"></td>
+												<td th:text="${list?.p_s_place_of_issuing_tl}"></td>
+												<td th:text="${list?.p_s_lei}"></td>
+												<td th:text="${list?.p_s_lei_number}"></td>
+												<td th:text="${list?.gender}"></td>
+												<td th:text="${list?.reserve_line_1}"></td>
+												<td th:text="${list?.reserve_line_2}"></td>
+												<td th:text="${list?.reserve_line_3}"></td>
+												<td th:text="${list?.reserve_line_4}"></td>
+												<td th:text="${list?.reserve_line_5}"></td>
+											</tr>
+										</tbody>
+									</table>
+
+								</div>
+							</div>
+
+							<!-- FACILITY  TAb-3 -->
+							<div id="tab3" class="tabcontent" style="display: none; margin-left: -1%; margin-top: 2%">
+								<div class="scrollable-table-container">
+									<table class="table  table-bordered table-hover table-condensed table-sm" style="">
+										<thead class="thead-light">
+											<tr>
+
+												<th style="text-align: center;">Operation</th>
+												<th style="text-align: center;">Bank Code</th>
+												<th style="width: 120px; text-align: center;">CIN</th>
+												<th style="text-align: center;">CSNO</th>
+												<th style="text-align: center;">Product</th>
+												<th style="text-align: center;">Fac_ID</th>
+												<th style="text-align: center;">Fac_Class</th>
+												<th style="text-align: center;">Limit_Funded</th>
+												<th style="text-align: center;">OS_Funded</th>
+												<th style="text-align: center;">Limit_Unfunded</th>
+												<th style="text-align: center;">Limit_total</th>
+												<th style="text-align: center;">OS_unfunded Before CCF</th>
+												<th style="text-align: center;">Legal status of P_S</th>
+												<th style="text-align: center;">OS unfunded after CCF</th>
+												<th style="text-align: center;">OS_Total</th>
+												<th style="text-align: center;">Country funds
+													Utilization</th>
+												<th style="text-align: center;">CY</th>
+												<th style="text-align: center;">Days Past Due</th>
+												<th style="text-align: center;">Past due Amt</th>
+												<th style="text-align: center;">Principal</th>
+												<th style="text-align: center;">Interest Cap</th>
+												<th style="text-align: center;">Acc. Int</th>
+												<th style="text-align: center;">Reserve Line 6</th>
+
+												<th style="text-align: center;">Bullet payments</th>
+												<th style="text-align: center;">Num. Bullet Payment</th>
+												<th style="text-align: center;">Num. bullet payment
+													received</th>
+												<th style="text-align: center;">Default date</th>
+												<th style="text-align: center;">Principal recovered
+													Default</th>
+												<th style="text-align: center;">Interest recovered
+													Default</th>
+												<th style="text-align: center;">Syndicated Loan</th>
+												<th style="text-align: center;">Bloomberg ticker,
+													syndicated loan</th>
+												<th style="text-align: center;">Num Inst def.</th>
+												<th style="text-align: center;">Amount Inst def.</th>
+												<th style="text-align: center;">Restructured</th>
+												<th style="text-align: center;">Int / pro. before
+													restructured</th>
+												<th style="text-align: center;">Int / pro. after
+													restructured</th>
+												<th style="text-align: center;">Date first restructured</th>
+												<th style="text-align: center;">Date last restructured</th>
+												<th style="text-align: center;">Num restructured</th>
+												<th style="text-align: center;">Principal restructured</th>
+												<th style="text-align: center;">Int. profit capitalized
+													into restructured facility</th>
+												<th style="text-align: center;">Add. lending after
+													restructuring</th>
+												<th style="text-align: center;">Original FL in yrs</th>
+												<th style="text-align: center;">FL after restructured</th>
+												<th style="text-align: center;">Re. maturity</th>
+												<th style="text-align: center;">Written off</th>
+												<th style="text-align: center;">Written off facility</th>
+												<th style="text-align: center;">Amount of written off
+													facility</th>
+												<th style="text-align: center;">Reserve Line 1</th>
+												<th style="text-align: center;">Reserve Line 2</th>
+												<th style="text-align: center;">Reserve Line 3</th>
+												<th style="text-align: center;">Reserve Line 4</th>
+												<th style="text-align: center;">Reserve Line 5</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="list : ${listFacility}" style="cursor: pointer;">
+
+
+												<td
+													th:text="${list != null ? (list.del_flg == 'Y' ? 'DEL' : (list.operation != null ? list.operation : 'ADD')) : 'N/A'}">
+													456</td>
+
+
+												<td style="text-align: right;" th:text="${list?.bank_code}">456</td>
+												<td style="text-align: right;" th:text="${list?.cin}">456</td>
+												<td style="text-align: right;" th:text="${list?.csno}">456</td>
+												<td th:text="${list?.product}"></td>
+												<td th:text="${list?.fac_id}"></td>
+												<td th:text="${list?.fac_class}"></td>
+												<td th:text="${list?.limit_funded}"></td>
+												<td th:text="${list?.os_funded}"></td>
+												<td th:text="${list?.limit_unfunded}"></td>
+
+												<td th:text="${list?.limit_total}"></td>
+												<td th:text="${list?.os_unfunded_before_ccf}"></td>
+												<td th:text="${list?.os_unfunded_after_ccf}"></td>
+												<td th:text="${list?.os_total}"></td>
+												<td th:text="${list?.country_funds_utilization}"></td>
+												<td th:text="${list?.cy}"></td>
+												<td th:text="${list?.days_past_due}"></td>
+												<td th:text="${list?.past_due_amt}"></td>
+												<td th:text="${list?.principal}"></td>
+												<td th:text="${list?.interest_cap}"></td>
+												<td th:text="${list?.acc_int}"></td>
+												<td th:text="${list?.reserve_line_6}"></td>
+
+												<td th:text="${list?.num_bullet_payment}"></td>
+												<td th:text="${list?.num_bullet_payment_received}"></td>
+												<td th:text="${#dates.format(list?.default_date, 'dd-MM-yyyy')}"></td>
+												<td th:text="${list?.principal_recovered_default}"></td>
+												<td th:text="${list?.interest_recovered_default}"></td>
+												<td th:text="${list?.syndicated_loan}"></td>
+												<td th:text="${list?.bloomberg_ticker_syndicated_loan}"></td>
+												<td th:text="${list?.num_inst_def}"></td>
+												<td th:text="${list?.amount_inst_def}"></td>
+												<td th:text="${list?.restructured}"></td>
+												<td th:text="${list?.int_pro_before_restructured}"></td>
+												<td th:text="${list?.int_pro_after_restructured}"></td>
+												<td
+													th:text="${#dates.format(list?.date_first_restructured, 'dd-MM-yyyy')}">
+												</td>
+												<td
+													th:text="${#dates.format(list?.date_last_restructured, 'dd-MM-yyyy')}">
+												</td>
+												<td th:text="${list?.num_restructured}"></td>
+												<td th:text="${list?.principal_restructured}"></td>
+												<td
+													th:text="${list?.int_profit_capitalized_into_restructured_facility}">
+												</td>
+												<td th:text="${list?.add_lending_after_restructuring}"></td>
+												<td th:text="${list?.original_fl_in_yrs}"></td>
+												<td th:text="${list?.fl_after_restructured}"></td>
+												<td th:text="${list?.re_maturity}"></td>
+												<td th:text="${list?.written_off}"></td>
+												<td th:text="${list?.written_off_facility}"></td>
+												<td th:text="${list?.amount_of_written_off_facility}"></td>
+												<td th:text="${list?.reserve_line_1}"></td>
+												<td th:text="${list?.reserve_line_2}"></td>
+												<td th:text="${list?.reserve_line_3}"></td>
+												<td th:text="${list?.reserve_line_4}"></td>
+												<td th:text="${list?.reserve_line_5}"></td>
+											</tr>
+										</tbody>
+									</table>
+
+								</div>
+							</div>
+
+							<!-- security  tab4 -->
+							<div id="tab4" class="tabcontent" style="display: none; margin-left: -1%; margin-top: 2%">
+								<div class="scrollable-table-container">
+									<table class="table  table-bordered table-hover table-condensed table-sm" style="">
+										<thead class="thead-light">
+											<tr>
+
+												<th style="text-align: center;">Operation</th>
+												<th style="text-align: center;">Bank Code</th>
+												<th style="width: 120px; text-align: center;">CIN</th>
+												<th style="text-align: center;">CSNO</th>
+												<th style="text-align: center;">Fac_ID</th>
+												<th style="text-align: center;">Security_Rec_Id</th>
+												<th style="text-align: center;">Security_Type</th>
+												<th style="text-align: center;">MV</th>
+												<th style="text-align: center;">ValDate</th>
+												<th style="text-align: center;">Dis_Val_Col</th>
+												<th style="text-align: center;">Exp_Date</th>
+												<th style="text-align: center;">NameA_Guarantor</th>
+												<th style="text-align: center;">NameE_Guarantor</th>
+												<th style="text-align: center;">Per_exp_secured_Guarantor</th>
+												<th style="text-align: center;">ID_Type</th>
+												<th style="text-align: center;">Reserve Line 1</th>
+												<th style="text-align: center;">Reserve Line 2</th>
+												<th style="text-align: center;">Reserve Line 3</th>
+												<th style="text-align: center;">Reserve Line 4</th>
+												<th style="text-align: center;">Reserve Line 5</th>
+											</tr>
+										</thead>
+										<tbody>
+
+											<tr th:each="list : ${listSecurity}" style="cursor: pointer;">
+
+												<td
+													th:text="${list != null ? (list.del_flg == 'Y' ? 'DEL' : (list.operation != null ? list.operation : 'ADD')) : 'N/A'}">
+													456</td>
+
+												<td style="text-align: right;" th:text="${list.bank_code}">456</td>
+												<td style="text-align: right;" th:text="${list?.cin}">456</td>
+												<td style="text-align: right;" th:text="${list?.csno}">456</td>
+												<td th:text="${list?.fac_id}"></td>
+												<td th:text="${list?.security_rec_id}"></td>
+												<td th:text="${list?.security_type}"></td>
+												<td th:text="${list?.mv}"></td>
+												<td th:text="${#dates.format(list?.valdate, 'dd-MM-yyyy')}"></td>
+												<td th:text="${list?.dis_val_col}"></td>
+												<td th:text="${#dates.format(list?.exp_date, 'dd-MM-yyyy')}"></td>
+												<td th:text="${list?.namea_guarantor}" id="arabic_sec" align="right">
+												</td>
+												<td th:text="${list?.namee_guarantor}" id="english_sec"></td>
+												<td th:text="${list?.per_exp_secured_guarantor}"></td>
+												<td th:text="${list?.id_type}"></td>
+												<td th:text="${list?.id_value}"></td>
+												<td th:text="${list?.reserve_line_1}"></td>
+												<td th:text="${list?.reserve_line_2}"></td>
+												<td th:text="${list?.reserve_line_3}"></td>
+												<td th:text="${list?.reserve_line_4}"></td>
+												<td th:text="${list?.reserve_line_5}"></td>
+											</tr>
+										</tbody>
+									</table>
+
+								</div>
+							</div>
+							<!-- PROVISION DATA  tab5 -->
+							<div id="tab5" class="tabcontent" style="display: none; margin-left: -1%; margin-top: 2%">
+								<div class="scrollable-table-container">
+									<table class="table  table-bordered table-hover table-condensed table-sm" style="">
+										<thead class="thead-light">
+											<tr>
+
+												<th style="text-align: center;">Operation</th>
+												<th style="text-align: center;">Bank Code</th>
+												<th style="width: 120px; text-align: center;">CIN</th>
+												<th style="text-align: center;">CSNO</th>
+												<th style="text-align: center;">Fac_ID</th>
+												<th style="text-align: center;">Sus_Intr</th>
+												<th style="text-align: center;">Provisions</th>
+												<th style="text-align: center;">IFRS 9 stage</th>
+												<th style="text-align: center;">IFRS 9 stage fINAL</th>
+												<th style="text-align: center;">1 year ECL</th>
+												<th style="text-align: center;">Life ECL</th>
+												<th style="text-align: center;">Final ECL after
+													override</th>
+												<th style="text-align: center;">1 yr PD</th>
+												<th style="text-align: center;">1 yr Point in Time PD</th>
+												<th style="text-align: center;">Life time PD</th>
+												<th style="text-align: center;">LGD</th>
+												<th style="text-align: center;">Reserve Line 1</th>
+												<th style="text-align: center;">Reserve Line 2</th>
+												<th style="text-align: center;">Reserve Line 3</th>
+												<th style="text-align: center;">Reserve Line 4</th>
+												<th style="text-align: center;">Reserve Line 5</th>
+											</tr>
+										</thead>
+										<tbody>
+
+											<tr th:each="list : ${listProvision}" style="cursor: pointer;">
+
+
+												<td
+													th:text="${list != null ? (list.del_flg == 'Y' ? 'DEL' : (list.operation != null ? list.operation : 'ADD')) : 'N/A'}">
+													456</td>
+												<td style="text-align: right;" th:text="${list?.bank_code}">456</td>
+												<td style="text-align: right;" th:text="${list?.cin}">456</td>
+												<td th:text="${list?.csno}">456</td>
+												<td th:text="${list?.fac_id}"></td>
+												<td th:text="${list?.sus_intr}"></td>
+												<td th:text="${list?.provisions}"></td>
+												<td th:text="${list?.ifrs_9_stage}"></td>
+												<td th:text="${list?.ifrs_9_stage_final}"></td>
+												<td th:text="${list?.one_year_ecl}"></td>
+												<td th:text="${list?.life_ecl}"></td>
+												<td th:text="${list?.final_ecl_after_override}"></td>
+												<td th:text="${list?.one_year_pd}"></td>
+												<td th:text="${list?.one_year_pit_pd}"></td>
+												<td th:text="${list?.lifetime_pd}"></td>
+												<td th:text="${list?.lgd}"></td>
+												<td th:text="${list?.reserve_line_1}"></td>
+												<td th:text="${list?.reserve_line_2}"></td>
+												<td th:text="${list?.reserve_line_3}"></td>
+												<td th:text="${list?.reserve_line_4}"></td>
+												<td th:text="${list?.reserve_line_5}"></td>
+
+											</tr>
+										</tbody>
+									</table>
+
+								</div>
+							</div>
+							<!-- overall tab6 -->
+							<div id="tab6" class="tabcontent" style="margin-left: -1%; margin-top: 2%; display: none">
+								<div class="scrollable-table-container">
+									<table class="table  table-bordered table-hover table-condensed table-sm" style="">
+										<thead class="thead-light">
+											<tr>
+
+												<th style="text-align: center;">Operation</th>
+												<th style="text-align: center;">Bank Code</th>
+												<th style="width: 120px; text-align: center;">CIN</th>
+												<th style="text-align: center;">CSNO</th>
+												<th style="text-align: center;">App_Limit_Funded</th>
+												<th style="text-align: center;">App_ Limit_Unfunded</th>
+												<th style="text-align: center;">OS Funded</th>
+												<th style="text-align: center;">OS unfunded before CCF</th>
+												<th style="text-align: center;">OS unfunded after CCF</th>
+												<th style="text-align: center;">Total Outstanding
+													(Fun_UnFun after CC)</th>
+												<th style="text-align: center;">Val_ Sec</th>
+												<th style="text-align: center;">Dis_Val_Sec</th>
+												<th style="text-align: center;">RWA</th>
+												<th style="text-align: center;">Remarks</th>
+												<th style="text-align: center;">Reserve Line 1</th>
+												<th style="text-align: center;">Reserve Line 2</th>
+												<th style="text-align: center;">Reserve Line 3</th>
+												<th style="text-align: center;">Reserve Line 4</th>
+												<th style="text-align: center;">Reserve Line 5</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="list : ${listoverall}" class="userlist"
+												style="cursor: pointer;">
+
+												<td
+													th:text="${list != null ? (list.del_flg == 'Y' ? 'DEL' : (list.operation != null ? list.operation : 'ADD')) : 'N/A'}">
+													456</td>
+												<td style="text-align: right;" th:text="${list.bank_code}">456</td>
+												<td style="text-align: right;" th:text="${list?.cin}">456</td>
+												<td style="text-align: right;" th:text="${list?.csno}">456</td>
+												<td th:text="${list?.os_funded}"></td>
+												<td th:text="${list?.app_limit_funded}"></td>
+												<td th:text="${list?.app_limit_unfunded}"></td>
+												<td th:text="${list.os_unfunded_before_ccf}"></td>
+												<td th:text="${list?.os_unfunded_after_ccf}"></td>
+												<td th:text="${list?.total_outstanding_fun_unfun_after_cc}"></td>
+												<td th:text="${list?.val_sec}"></td>
+												<td th:text="${list?.dis_val_sec}"></td>
+												<td th:text="${list?.rwa}"></td>
+												<td th:text="${list?.remarks}"></td>
+												<td th:text="${list?.reserve_line_1}"></td>
+												<td th:text="${list?.reserve_line_2}"></td>
+												<td th:text="${list?.reserve_line_3}"></td>
+												<td th:text="${list?.reserve_line_4}"></td>
+												<td th:text="${list?.reserve_line_5}"></td>
+											</tr>
+
+
+
+										</tbody>
+									</table>
+
+								</div>
+							</div>
+
+							<!--tab7 legal cases  -->
+							<div id="tab7" class="tabcontent" style="margin-left: -1%; margin-top: 2%; display: none">
+								<div class="scrollable-table-container">
+									<table class="table  table-bordered table-hover table-condensed table-sm" style="">
+										<thead class="thead-light">
+											<tr>
+
+												<th style="text-align: center;">Operation</th>
+												<th style="text-align: center;">Bank Code</th>
+												<th style="width: 120px; text-align: center;">CIN</th>
+												<th style="text-align: center;">CSNO</th>
+												<th style="text-align: center;">Legal_Case_Rec_Id</th>
+												<th style="text-align: center;">Legal case status</th>
+												<th style="text-align: center;">Date Legal case</th>
+												<th style="text-align: center;">Date Final judgement</th>
+												<th style="text-align: center;">Borrower Status</th>
+												<th style="text-align: center;">Skipped Date</th>
+												<th style="text-align: center;">Country Skipped To</th>
+												<th style="text-align: center;">Related reference in
+													CCSYS for the person related to Case record</th>
+												<th style="text-align: center;">Reserve Line 1</th>
+												<th style="text-align: center;">Reserve Line 2</th>
+												<th style="text-align: center;">Reserve Line 3</th>
+												<th style="text-align: center;">Reserve Line 4</th>
+												<th style="text-align: center;">Reserve Line 5</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="list : ${listlegalcases}" class="userlist"
+												style="cursor: pointer;">
+
+												<td
+													th:text="${list != null ? (list.del_flg == 'Y' ? 'DEL' : (list.operation != null ? list.operation : 'ADD')) : 'N/A'}">
+													456</td>
+
+
+												<td style="text-align: right;" th:text="${list?.bank_code}">456</td>
+												<td style="text-align: right;" th:text="${list?.cin}">456</td>
+												<td style="text-align: right;" th:text="${list?.csno}">456</td>
+												<td style="text-align: right;" th:text="${list?.legal_case_rec_id}">456
+												</td>
+												<td th:text="${list?.legal_case_status}"></td>
+												<td th:text="${#dates.format(list?.date_legal_case, 'dd-MM-yyyy')}">
+												</td>
+												<td
+													th:text="${#dates.format(list?.date_final_judgement, 'dd-MM-yyyy')}">
+												</td>
+												<td th:text="${list?.borrower_status}"></td>
+												<td th:text="${#dates.format(list?.skipped_date, 'dd-MM-yyyy')}"></td>
+												<td th:text="${list?.country_skipped_to}"></td>
+												<td th:text="${list?.related_reference_ccsys}"></td>
+												<td th:text="${list?.reserve_line_1}"></td>
+												<td th:text="${list?.reserve_line_2}"></td>
+												<td th:text="${list?.reserve_line_3}"></td>
+												<td th:text="${list?.reserve_line_4}"></td>
+												<td th:text="${list?.reserve_line_5}"></td>
+
+											</tr>
+
+
+
+										</tbody>
+									</table>
+
+								</div>
+							</div>
+							<!-- tab8 INVERSTMENTS -->
+							<div id="tab8" class="tabcontent" style="margin-left: -1%; margin-top: 2%; display: none">
+								<div class="scrollable-table-container">
+									<table class="table  table-bordered table-hover table-condensed table-sm" style="">
+										<thead class="thead-light">
+											<tr>
+
+												<th style="text-align: center;">Operation</th>
+												<th style="text-align: center;">Bank Code</th>
+												<th style="width: 120px; text-align: center;">CIN</th>
+												<th style="text-align: center;">CSNO</th>
+												<th style="text-align: center;">Investment_Rec_Id</th>
+												<th style="text-align: center;">Investment Type (by
+													bank withborrower)</th>
+												<th style="text-align: center;">Outstanding Investment
+													Amount</th>
+												<th style="text-align: center;">Identification Number
+													of Investment(ISIN, FIGI, BBGID)</th>
+												<th style="text-align: center;">Reserve Line 1</th>
+												<th style="text-align: center;">Reserve Line 2</th>
+												<th style="text-align: center;">Reserve Line 3</th>
+												<th style="text-align: center;">Reserve Line 4</th>
+												<th style="text-align: center;">Reserve Line 5</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="list :${listInverstmentscases}" class="userlist"
+												style="cursor: pointer;">
+
+												<td
+													th:text="${list != null ? (list.del_flg == 'Y' ? 'DEL' : (list.operation != null ? list.operation : 'ADD')) : 'N/A'}">
+													456</td>
+
+												<td style="text-align: right;" th:text="${list?.bank_code}">456</td>
+												<td style="text-align: right;" th:text="${list?.cin}">456</td>
+												<td style="text-align: right;" th:text="${list?.csno}">456</td>
+												<td th:text="${list?.investment_rec_id}"></td>
+												<td th:text="${list?.investment_type}"></td>
+												<td th:text="${list?.outstanding_investment_amount}"></td>
+												<td th:text="${list?.identification_number}"></td>
+												<td th:text="${list?.reserve_line_1}"></td>
+												<td th:text="${list?.reserve_line_2}"></td>
+												<td th:text="${list?.reserve_line_3}"></td>
+												<td th:text="${list?.reserve_line_4}"></td>
+												<td th:text="${list?.reserve_line_5}"></td>
+											</tr>
+										</tbody>
+									</table>
+
+								</div>
+							</div>
+
+
+							<div class="card-footer text-center " style="margin-top: 300px">
+								<button type="button" class="btn btn-primary" id="btnHome" style="width: 120px"
+									onclick="home();">Home</button>
+								<button type="button" class="btn btn-primary" id="btnBack" style="width: 120px"
+									onclick="back();">Back</button>
+
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+
+
+	</div>
+
+
+</body>
+
+<script type="text/javascript">
+
+	function transliterateToArabic(input) {
+		// Example mapping (you can expand this with more characters as needed)
+		var transliterationMap = {
+			'a': 'ا',
+			'b': 'ب',
+			'c': 'ج',
+			'd': 'د',
+			'e': 'ه',
+			'f': 'ف',
+			'g': 'ج',
+			'h': 'ه',
+			'i': 'ي',
+			'j': 'ج',
+			'k': 'ك',
+			'l': 'ل',
+			'm': 'م',
+			'n': 'ن',
+			'o': 'و',
+			'p': 'ب',
+			'q': 'ق',
+			'r': 'ر',
+			's': 'س',
+			't': 'ت',
+			'u': 'و',
+			'v': 'ف',
+			'w': 'و',
+			'x': 'كس',
+			'y': 'ي',
+			'z': 'ز'
+		};
+
+		var output = '';
+		for (var i = 0; i < input.length; i++) {
+			var char = input[i].toLowerCase();
+			if (transliterationMap[char]) {
+				output += transliterationMap[char];
+			} else {
+				output += ''; // Replace non-transliterated characters with blank
+			}
+		}
+		return output;
+	}
+
+	function transliterateToArabicSec(input) {
+		// Example mapping (you can expand this with more characters as needed)
+		var transliterationMap = {
+			'a': 'ا',
+			'b': 'ب',
+			'c': 'ج',
+			'd': 'د',
+			'e': 'ه',
+			'f': 'ف',
+			'g': 'ج',
+			'h': 'ه',
+			'i': 'ي',
+			'j': 'ج',
+			'k': 'ك',
+			'l': 'ل',
+			'm': 'م',
+			'n': 'ن',
+			'o': 'و',
+			'p': 'ب',
+			'q': 'ق',
+			'r': 'ر',
+			's': 'س',
+			't': 'ت',
+			'u': 'و',
+			'v': 'ف',
+			'w': 'و',
+			'x': 'كس',
+			'y': 'ي',
+			'z': 'ز'
+		};
+
+		var output = '';
+		for (var i = 0; i < input.length; i++) {
+			var char = input[i].toLowerCase();
+			if (transliterationMap[char]) {
+				output += transliterationMap[char];
+			} else {
+				output += ''; // Replace non-transliterated characters with blank
+			}
+		}
+		return output;
+	}
+
+	function transliterateElements(tdElementsSelector, tdElements1Selector, transliterationFunction) {
+		var tdElements = document.querySelectorAll(tdElementsSelector);
+		var tdElements1 = document.querySelectorAll(tdElements1Selector);
+
+		if (tdElements.length !== tdElements1.length) {
+			console.error("Mismatch in number of elements to transliterate and target elements for " + tdElementsSelector);
+			return;
+		}
+
+		for (var i = 0; i < tdElements.length; i++) {
+			var unicodeValue = tdElements[i].textContent.trim();
+			var arabicCharacter = transliterationFunction(unicodeValue);
+			tdElements1[i].textContent = arabicCharacter;
+		}
+	}
+	function setupTransliteration(inputId, outputId, transliterationFunction) {
+		var s = document.getElementById(namee_guarantor_Sec);
+		console.log(s);
+		const nameInput = document.getElementById(inputId);
+		const arabicNameInput = document.getElementById(outputId);
+
+		if (nameInput && arabicNameInput) {
+			console.log(`Setting up transliteration for ${inputId} to ${outputId}`);
+			nameInput.addEventListener('input', function () {
+				const cename = nameInput.value;
+				const arabicName = transliterationFunction(cename);
+				arabicNameInput.value = arabicName;
+				console.log(`${outputId} updated to:`, arabicName);
+			});
+		} else {
+			console.error(`Elements not found: ${inputId}, ${outputId}`);
+		}
+	}
+
+	window.onload = function () {
+		// For security tab
+		transliterateElements('td[id="english_sec"]', 'td[id="arabic_sec"]', transliterateToArabic);
+		// For partner tab
+		transliterateElements('td[id="p_s_ename_english"]', 'td[id="p_s_aname_arabic"]', transliterateToArabic);
+		// For customer tab
+		transliterateElements('td[id="arabic"]', 'td[id="arabic_change"]', transliterateToArabic);
+		// Setup input field transliteration
+		setupTransliteration('namee_guarantor_Sec', 'namea_guarantor_Sec', transliterateToArabicSec);
+		setupTransliteration('p_s_ename_Par', 'p_s_aname_Par', transliterateToArabicSec);
+		setupTransliteration('cename_Cust', 'caname_Cust', transliterateToArabicSec);
+	};
+</script>
+
+
+</html>

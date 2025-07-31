@@ -1,0 +1,22 @@
+
+--- Start THE TRIGGER
+BEGIN
+    DBMS_SCHEDULER.create_job (
+        job_name        => 'BRECON_MAPPING_AUTO_JOB',  -- Name of the job
+        job_type        => 'PLSQL_BLOCK',              -- Job type (PLSQL block)
+        job_action      => 'BEGIN BRECON_MAPPING_AUTO_PROCEDURE; END;',  -- Procedure to execute
+        start_date      => SYSTIMESTAMP,               -- Start date for the first execution
+        repeat_interval => 'FREQ=DAILY; BYHOUR=0; BYMINUTE=0; BYSECOND=0;', -- Repeat daily at midnight
+        enabled         => TRUE                        -- Enable the job immediately
+    );
+END;
+/
+
+-- STOP THE  TRIGGER
+BEGIN
+    DBMS_SCHEDULER.drop_job('BRECON_MAPPING_AUTO_JOB');
+END;
+/
+
+-- CHECK STATUS OF TRIGGER
+SELECT * FROM DBA_SCHEDULER_JOBS WHERE JOB_NAME = 'BRECON_MAPPING_AUTO_JOB';

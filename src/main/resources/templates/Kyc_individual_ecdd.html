@@ -1,0 +1,2579 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+		th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/font-awesome/5.9.0/css/all.min.css"
+		th:href="@{/webjars/font-awesome/5.9.0/css/all.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"
+		th:href="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/datatables/1.10.19/css/jquery.dataTables.min.css"
+		th:href="@{/webjars/datatables/1.10.19/css/jquery.dataTables.min.css}">
+	<link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+	<link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon">
+
+	<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"
+		th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+	<script src="/webjars/popper.js/1.14.7/umd/popper.min.js"
+		th:src="@{/webjars/popper.js/1.14.7/umd/popper.min.js}"></script>
+	<script src="/webjars/jquery/3.4.1/jquery.min.js" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+	<script src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"
+		th:src="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.js}"></script>
+
+	<script src="/webjars/jquery-form/4.2.2/jquery.form.min.js"
+		th:src="@{/webjars/jquery-form/4.2.2/jquery.form.min.js}"></script>
+
+	<script src="/webjars/jquery-validation/1.19.0/jquery.validate.min.js"
+		th:src="@{/webjars/jquery-validation/1.19.0/jquery.validate.min.js}"></script>
+
+	<script src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/jquery.dataTables.min.js}"></script>
+	<script src="/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js}"></script>
+</head>
+
+<style>
+	/* Buttons */
+	.btn-outline-primary2 {
+		font-size: 16px;
+		transition: all 0.3s ease-in-out;
+	}
+
+	.headderbutton {
+		font-weight: bold;
+		font-size: large;
+		color: #007bff;
+	}
+
+	/* Dropdown View Item Hidden */
+	.dropdown-item[title="View"] {
+		display: none;
+	}
+
+	/* Radio Buttons */
+	input[type="radio"] {
+		vertical-align: middle;
+		margin-top: 0;
+		position: relative;
+		top: -2px;
+	}
+
+	/* Labels */
+	label {
+		vertical-align: middle;
+		display: inline-block;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		max-width: 120%;
+		line-height: 1.5;
+	}
+
+	/* Checkboxes */
+	.custom-checkbox {
+		width: 13px;
+		height: 13px;
+		margin: 0;
+		cursor: pointer;
+	}
+
+	/* Number Inputs */
+	input[type="number"]::-webkit-outer-spin-button,
+	input[type="number"]::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	input[type="number"] {
+		-moz-appearance: textfield;
+	}
+
+	/* Truncated Labels */
+	.label-truncate {
+		display: inline-block;
+		max-width: 100px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		vertical-align: middle;
+	}
+
+	/* Container for manager view */
+	.container-manager {
+		width: 85%;
+		margin-left: 11%;
+		margin-top: 100px;
+		padding-bottom: 40px;
+		font-size: 16px;
+	}
+
+	/* Character Counter */
+	.char-counter {
+		font-size: 0.8em;
+		color: #6c757d;
+		text-align: right;
+		display: block;
+		height: 1em;
+	}
+
+	/* Footer Confirmation */
+	.footer-confirmation {
+		margin-bottom: 15px;
+		padding: 10px;
+		border-top: 1px solid #dee2e6;
+		font-style: italic;
+		color: #555;
+	}
+</style>
+
+
+<script type="text/javascript">
+	function modify(element) {
+		const srlno = element.getAttribute("data-resource");
+	//	$('#loader1').modal("show");
+		requestAnimationFrame(() => {
+			window.location.href = `/BRBS/kyc/individual?&srlno=${encodeURIComponent(srlno)}&formmode=modify`;
+		});
+	}
+	function goHome() {
+		window.location.href = '/BRBS/';
+	}
+	function goBack() {
+		window.history.back();
+	}
+
+	function refreshPage() {
+		window.location.reload();
+	}
+	function corporatehome() {
+		const srlno = document.getElementById("srlno").value;
+		var url = "/BRBS/kyc/individual?srlno=" + encodeURIComponent(srlno) + "&formmode=modify";
+		window.location.href = url;
+	}
+	function verifyrecord(a) {
+		const srlno = a.getAttribute("data-srlno");
+		const Reviewdate = document.getElementById('review_date').value;
+		const Reviewdesig = document.getElementById('reviewed_by_designation').value;
+		const Branchname = document.getElementById('branch_name').value;
+		const Approvaldate = document.getElementById('approval_date').value;
+		const entrydatefin = document.getElementById('entry_date').value;
+		const entrybyfin = document.getElementById('entered_by').value;
+		const docuploaddate = document.getElementById('doc_uploaded_date').value;
+		const docuploadby = document.getElementById('doc_uploaded_by').value;
+		alert(entrydatefin)
+	//	$('#loader1').modal('show');
+	if ((Reviewdate && Reviewdesig && Branchname && Approvaldate && entrydatefin && entrybyfin && docuploaddate && docuploadby)) {
+		
+		$.ajax({
+			url: '/BRBS/kyc/individual/verify',
+			type: 'POST',
+			data: {
+				formmode: 'verified',
+				custid: srlno
+			}
+		})
+			.done(function (response) {
+				$("#alertmsg_success").text("Verified successfully!");
+				$("#alert_success").modal("show");
+				$('#alert_success').find('.btn-primary').attr("onclick", "location.reload();");
+			})
+			.fail(function (error) {
+				$("#alertmsg_failure").text("Verification failed! " + (error.responseText || "Please try again."));
+				$("#alert_failure").modal("show");
+			})
+			.always(function () {
+	//			$('#loader1').modal('hide');
+			});
+			}else{
+				alert("Oops! Some reviewer or upload information is still missing. Please double-check and complete all fields.");
+			}
+	}
+	async function Downloadfn(element) {
+		const srlno = element.getAttribute("data-resource");
+		const customer_id = element.getAttribute("data-resource");
+
+		if (!srlno) {
+			alert("Invalid customer service reference.");
+			return;
+		}
+
+//		$('#loader1').modal('show');
+
+		try {
+			const response = await fetch(`/BRBS/kyc/individual/downloadfn?srlno=${encodeURIComponent(srlno)}`);
+
+			if (!response.ok) {
+				throw new Error(`Server responded with status: ${response.status}`);
+			}
+
+			const blob = await response.blob();
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.download = `${customer_id}.pdf`;
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+			$("#alertmsg_success").text("Download successful!");
+			$("#alert_success").modal("show");
+			$('#alert_success').find('.btn-primary').attr("onclick", "location.reload();");
+
+		} catch (error) {
+			console.error("Download failed:", error);
+			$("#alertmsg_failure").text("Download failed! Please try again.");
+			$("#alert_failure").modal("show");
+
+		} finally {
+	//		$('#loader1').modal('hide');
+		}
+	}
+
+
+	/** Handles the main "Submit" button click. */
+
+</script>
+<script type="text/javascript">
+
+	// Handles the main "Submit" button click.
+
+	async function modifysubmit() {
+		const form = document.getElementById('kycForm');
+
+		// Check for the confirmation checkbox still happens
+		const confirmationCheckbox = document.getElementById('confirm_screening_cb');
+		if (confirmationCheckbox && !confirmationCheckbox.checked) {
+			alert('Please confirm that you have done screening of all account holders by checking the box.');
+			confirmationCheckbox.focus();
+			return;
+		}
+
+		// --- The validation block that was here has been removed. ---
+
+//		$('#loader1').modal('show');
+		// Temporarily enable all fields to gather their data for submission.
+		const allDisabledElements = Array.from(form.querySelectorAll('input:disabled, select:disabled, textarea:disabled'));
+		allDisabledElements.forEach(el => el.disabled = false);
+
+		try {
+			const formData = new FormData(form);
+			formData.set("auth_flg", "Y");
+
+			form.querySelectorAll('.format-as-number').forEach(input => {
+				if (formData.has(input.name)) {
+					const unformattedValue = String(formData.get(input.name)).replace(/,/g, '');
+					formData.set(input.name, unformattedValue);
+				}
+			});
+
+			const response = await fetch(form.action, {
+				method: 'POST',
+				body: formData
+			});
+
+			if (!response.ok) {
+				const errorText = await response.text();
+				throw new Error(errorText || `Server responded with status: ${response.status}`);
+			}
+
+			// SUCCESS: Show the success modal and set the button to go back.
+			$('#alertmsg_success').text("All changes submitted successfully!");
+			$('#alert_success').modal('show');
+			$('#alert_success .btn-primary').attr("onclick", "goBack();");
+
+		} catch (error) {
+			// FAILURE: Show the failure modal. This is where you will now see errors from the server.
+			console.error("Submit failed:", error);
+			$('#alertmsg_failure').text(`Error: ${error.message}`);
+			$('#alert_failure').modal('show');
+		} finally {
+			// IMPORTANT: Re-disable the elements to return the form to its previous state.
+			allDisabledElements.forEach(el => el.disabled = true);
+	//		$('#loader1').modal('hide');
+		}
+	}
+
+	document.addEventListener("DOMContentLoaded", () => {
+//		$('#loader1').modal('hide');
+		window.addEventListener('pageshow', (event) => {if (event.persisted) $('#loader1').modal('hide');});
+	});
+</script>
+
+<title>BRBS</title>
+
+<body>
+	<div class="col-sm-2">
+		<div th:insert="XBRLHeaderMenu :: header"></div>
+	</div>
+
+	<div class="container-manager">
+		<div class="row" th:each="user_data: ${user_data}">
+			<div class="col-sm-11 ml-5 mt-2">
+				<div class="card" style="width: 105%;">
+					<div class="card-header d-flex justify-content-between align-items-center"
+						style="background: linear-gradient(115deg, #6495ED, white);">
+						<h3 style="font-weight: bold; font-family: 'Verdana', sans-serif; font-size: 2.0rem; color: white;"
+							class="mb-0" th:text="${formmode == 'view'} ? 'KYC-View' : 'KYC-(Individual Customers)'">
+						</h3>
+						<div class="float-right d-flex align-items-center">
+
+							<button class="btn btn-success mr-2" type="button"
+								style="min-width: 120px; font-weight: bold;"
+								th:attr="onclick=|openDownloadModal('${user_data.customer_id}')|">
+								<i class="fas fa-download mr-2"></i>Download Related Doc's'
+							</button>
+							<button class="btn btn-primary mr-2" type="button"
+								style="min-width: 100px; font-weight: bold;"
+								th:attr="onclick=|openUploadModal('${user_data.srlno}', '${user_data.customer_id}', 'INDIVIDUAL')|">
+								<i class="fas fa-upload mr-2"></i>Upload Related Doc's'
+							</button>
+
+							<!-- ACTION DROPDOWN (Unchanged functionality) -->
+							<div class="dropdown">
+								<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"
+									style="min-width: 100px; font-weight: bold;">Action</button>
+								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
+									style="min-width: 100px; width: auto; padding: 4px 0; font-size: 15px; margin-top: 10px;">
+									<a class="dropdown-item" title="Download" style="font-weight: bold"
+										th:attr="data-resource=${user_data.srlno}"
+										th:if="${user_data.entity_flg == 'Y' and user_data.modify_flg == 'N'}"
+										onclick="Downloadfn(this)">Download</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- VIEW MODE CONTENT -->
+					<div class="card-body" th:if="${formmode == 'view'}">
+						<table class="table table-bordered">
+							<tr>
+								<td colspan="1"><strong>Account title</strong></td>
+								<td colspan="3"><input type="text" class="form-control" th:name="ACCOUNT_TITLE"
+										th:value="${user_data.account_title}" readonly /></td>
+								<td colspan="1"><strong>ECDD Date</strong></td>
+								<td colspan="1"><input type="date" class="form-control" name="ecdd_date"
+										th:value="${user_data.ecdd_date != null ? #dates.format(user_data.ecdd_date, 'yyyy-MM-dd') : ''}"
+										readonly /></td>
+
+							</tr>
+							<tr>
+								<td colspan="1"><strong>Customer ID</strong></td>
+								<td colspan="1"><input type="text" class="form-control" th:name="CUSTOMER_ID"
+										th:value="${user_data.customer_id}" readonly /> <!-- <input type="hidden" class="form-control" th:name="srlno"
+																th:value="${user_data.srlno}"> --></td>
+								<td colspan="1"><strong>Associated Account
+										Number(s)</strong></td>
+								<td colspan="3"><input type="text" class="form-control" th:name="associated_accounts"
+										th:value="${user_data.associated_accounts}" readonly /></td>
+							</tr>
+						</table>
+
+						<table class="table table-bordered" style="width: 100%;">
+							<tr style="background-color: #fce2dc;">
+								<td colspan="16"><strong>1.OTHER ACCOUNT DETAILS</strong></td>
+							</tr>
+							<tr>
+								<td colspan="4"><label for="customer_id">Currency</label></td>
+								<td colspan="4"><input type="text" id="currency" class="form-control"
+										th:value="${user_data?.currency}" maxlength="50" readonly /></td>
+								<td colspan="4"><label for="account_type">Account
+										Opening Date</label></td>
+								<td colspan="4"><input type="date" name="account_open_date" class="form-control"
+										readonly
+										th:value="${user_data.account_open_date != null ? #dates.format(user_data.account_open_date, 'yyyy-MM-dd') : ''}">
+								</td>
+							</tr>
+							<tr>
+								<td colspan="8"><label for="name">Approval
+										obtained in case of currency other than AED</label></td>
+								<td colspan="8"><input type="text" id="name" class="form-control" maxlength="50"
+										th:value="${user_data?.currency_approval_yn}" readonly /></td>
+							</tr>
+							<tr style="background-color: #fce2dc;">
+								<td colspan="16"><strong>2. ACCOUNT HOLDERS'
+										INFORMATION</strong></td>
+							</tr>
+
+							<!-- Column Headers -->
+							<tr>
+								<td colspan="4"><strong></strong></td>
+								<td colspan="3"><strong>PRIMARY A/C HOLDER</strong></td>
+								<td colspan="3"><strong>JOINT HOLDER 1</strong></td>
+								<td colspan="3"><strong>JOINT HOLDER 2</strong></td>
+								<td colspan="3"><strong>JOINT HOLDER 3</strong></td>
+							</tr>
+
+							<!-- Data Rows -->
+							<tr>
+								<td colspan="4">Name</td>
+								<td colspan="3"><input type="text" class="form-control" name="name_primary"
+										th:value="${user_data?.primary_holder_name}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="name_joint1"
+										th:value="${user_data?.joint1_name}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="name_joint2"
+										th:value="${user_data?.joint2_name}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="name_joint3"
+										th:value="${user_data?.joint3_name}" readonly /></td>
+							</tr>
+							<tr>
+								<td colspan="4">Customer ID</td>
+								<td colspan="3"><input type="text" class="form-control" name="primary_customer_id"
+										th:value="${user_data?.primary_customer_id}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="customerId_joint1"
+										th:value="${user_data?.joint1_customer_id}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="customerId_joint2"
+										th:value="${user_data?.joint2_customer_id}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="customerId_joint3"
+										th:value="${user_data?.joint3_customer_id}" readonly /></td>
+							</tr>
+							<tr>
+								<td colspan="4">Non Resident</td>
+								<td colspan="3"><input type="text" class="form-control"
+										th:value="${user_data?.primary_non_resident_yn == 'Y' ? 'Yes' : 'No'}"
+										readonly /></td>
+								<td colspan="3"><input type="text" class="form-control"
+										th:value="${user_data?.joint1_non_resident_yn == 'Y' ? 'Yes' : 'No'}"
+										readonly /></td>
+								<td colspan="3"><input type="text" class="form-control"
+										th:value="${user_data?.joint2_non_resident_yn == 'Y' ? 'Yes' : 'No'}"
+										readonly /></td>
+								<td colspan="3"><input type="text" class="form-control"
+										th:value="${user_data?.joint3_non_resident_yn == 'Y' ? 'Yes' : 'No'}"
+										readonly /></td>
+							</tr>
+							<tr>
+								<td colspan="4">Nationality</td>
+								<td colspan="3"><input type="text" class="form-control"
+										th:value="${user_data?.primary_nationality}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control"
+										th:value="${user_data?.joint1_nationality}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control"
+										th:value="${user_data?.joint2_nationality}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control"
+										th:value="${user_data?.joint3_nationality}" readonly /></td>
+							</tr>
+							<tr>
+								<td colspan="4">Mobile Number</td>
+								<td colspan="3"><input type="text" class="form-control" name="mobile_primary"
+										th:value="${user_data?.primary_mobile_no}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="mobile_joint1"
+										th:value="${user_data?.joint1_mobile_no}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="mobile_joint2"
+										th:value="${user_data?.joint2_mobile_no}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="mobile_joint3"
+										th:value="${user_data?.joint3_mobile_no}" readonly /></td>
+							</tr>
+							<tr>
+								<td colspan="4">Email Address</td>
+								<td colspan="3"><input type="text" class="form-control" name="email_primary"
+										th:value="${user_data?.primary_email}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="email_joint1"
+										th:value="${user_data?.joint1_email}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="email_joint2"
+										th:value="${user_data?.joint2_email}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="email_joint3"
+										th:value="${user_data?.joint3_email}" readonly /></td>
+							</tr>
+							<tr>
+								<td colspan="4">Address</td>
+								<td colspan="3"><input type="text" class="form-control" name="address_primary"
+										th:value="${user_data?.primary_address}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="address_joint1"
+										th:value="${user_data?.joint1_address}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="address_joint2"
+										th:value="${user_data?.joint2_address}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="address_joint3"
+										th:value="${user_data?.joint3_address}" readonly /></td>
+							</tr>
+							<tr>
+								<td colspan="4">Latest Passport No.</td>
+								<td colspan="3"><input type="text" class="form-control" name="passport_primary"
+										th:value="${user_data?.primary_passport_no}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="passport_joint1"
+										th:value="${user_data?.joint1_passport_no}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="passport_joint2"
+										th:value="${user_data?.joint2_passport_no}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="passport_joint3"
+										th:value="${user_data?.joint3_passport_no}" readonly /></td>
+							</tr>
+							<tr>
+								<td colspan="4">Passport Exp. Date</td>
+								<td colspan="3"><input type="date" class="form-control" name="primary_passport_exp_date"
+										readonly
+										th:value="${user_data.primary_passport_exp_date != null ? #dates.format(user_data.primary_passport_exp_date, 'yyyy-MM-dd') : ''}">
+								</td>
+								<td colspan="3"><input type="date" class="form-control" name="joint1_passport_exp_date"
+										readonly
+										th:value="${user_data.joint1_passport_exp_date != null ? #dates.format(user_data.joint1_passport_exp_date, 'yyyy-MM-dd') : ''}">
+								</td>
+								<td colspan="3"><input type="date" class="form-control" name="joint2_passport_exp_date"
+										readonly
+										th:value="${user_data.joint2_passport_exp_date != null ? #dates.format(user_data.joint2_passport_exp_date, 'yyyy-MM-dd') : ''}">
+								</td>
+								<td colspan="3"><input type="date" class="form-control" name="joint3_passport_exp_date"
+										readonly
+										th:value="${user_data.joint3_passport_exp_date != null ? #dates.format(user_data.joint3_passport_exp_date, 'yyyy-MM-dd') : ''}">
+								</td>
+							</tr>
+							<tr>
+								<td colspan="4">Emirates ID No</td>
+								<td colspan="3"><input type="text" class="form-control" name="eid_primary"
+										th:value="${user_data?.primary_emirates_id_no}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="eid_joint1"
+										th:value="${user_data?.joint1_emirates_id_no}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="eid_joint2"
+										th:value="${user_data?.joint2_emirates_id_no}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control" name="eid_joint3"
+										th:value="${user_data?.joint3_emirates_id_no}" readonly /></td>
+							</tr>
+							<tr>
+								<td colspan="4">EID Expiry Date</td>
+								<td colspan="3"><input type="date" class="form-control" name="primary_emirates_exp_date"
+										readonly
+										th:value="${user_data.primary_emirates_exp_date != null ? #dates.format(user_data.primary_emirates_exp_date, 'yyyy-MM-dd') : ''}">
+								</td>
+								<td colspan="3"><input type="date" class="form-control" name="joint1_emirates_exp_date"
+										readonly
+										th:value="${user_data.joint1_emirates_exp_date != null ? #dates.format(user_data.joint1_emirates_exp_date, 'yyyy-MM-dd') : ''}">
+								</td>
+								<td colspan="3"><input type="date" class="form-control" name="joint2_emirates_exp_date"
+										readonly
+										th:value="${user_data.joint2_emirates_exp_date != null ? #dates.format(user_data.joint2_emirates_exp_date, 'yyyy-MM-dd') : ''}">
+								</td>
+								<td colspan="3"><input type="date" class="form-control" name="joint3_emirates_exp_date"
+										readonly
+										th:value="${user_data.joint3_emirates_exp_date != null ? #dates.format(user_data.joint3_emirates_exp_date, 'yyyy-MM-dd') : ''}">
+								</td>
+							</tr>
+							<tr>
+								<td colspan="4">PEP Status</td>
+								<td colspan="3"><input type="text" class="form-control"
+										th:value="${user_data?.primary_pep_yn == 'Y' ? 'Yes' : 'No'}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control"
+										th:value="${user_data?.joint1_pep_yn == 'Y' ? 'Yes' : 'No'}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control"
+										th:value="${user_data?.joint2_pep_yn == 'Y' ? 'Yes' : 'No'}" readonly /></td>
+								<td colspan="3"><input type="text" class="form-control"
+										th:value="${user_data?.joint3_pep_yn == 'Y' ? 'Yes' : 'No'}" readonly /></td>
+							</tr>
+							<tr>
+								<td colspan="4">Approval if PEP</td>
+								<td colspan="3"><input type="text" class="form-control"
+										th:value="${user_data?.primary_pep_approval == 'Y' ? 'Yes' : 'No'}" readonly />
+								</td>
+								<td colspan="3"><input type="text" class="form-control"
+										th:value="${user_data?.joint1_pep_approval == 'Y' ? 'Yes' : 'No'}" readonly />
+								</td>
+								<td colspan="3"><input type="text" class="form-control"
+										th:value="${user_data?.joint2_pep_approval == 'Y' ? 'Yes' : 'No'}" readonly />
+								</td>
+								<td colspan="3"><input type="text" class="form-control"
+										th:value="${user_data?.joint3_pep_approval == 'Y' ? 'Yes' : 'No'}" readonly />
+								</td>
+							</tr>
+
+							<!-- Section 3: Due Diligence -->
+							<tr style="background-color: #fce2dc;">
+								<td colspan="16">
+									<button type="button" id="toggleDUEDILIGENCE1"
+										style="background: none; border: none; width: 100%; padding: 0; cursor: pointer; outline: none;"
+										onmousedown="this.blur();">
+										<div
+											style="display: flex; justify-content: space-between; align-items: center; font-size: 16px; font-weight: bold;">
+											<span>3. DUE DILIGENCE / SCREENING REPORTS</span> <span
+												id="toggleDUEDILIGENCE">+</span>
+										</div>
+									</button>
+								</td>
+							</tr>
+
+							<!-- Rows to Toggle -->
+							<tbody id="DUEDILIGENCE" style="display: none;">
+								<tr>
+									<td colspan="4">Google</td>
+									<td colspan="3"><input type="text" class="form-control"
+											th:value="${user_data?.screen_google_primary == 'Y' ? 'Yes' : 'No'}"
+											readonly /></td>
+									<td colspan="3"><input type="text" class="form-control"
+											th:value="${user_data?.screen_google_joint1 == 'Y' ? 'Yes' : 'No'}"
+											readonly /></td>
+									<td colspan="3"><input type="text" class="form-control"
+											th:value="${user_data?.screen_google_joint2 == 'Y' ? 'Yes' : 'No'}"
+											readonly /></td>
+									<td colspan="3"><input type="text" class="form-control"
+											th:value="${user_data?.screen_google_joint3 == 'Y' ? 'Yes' : 'No'}"
+											readonly /></td>
+								</tr>
+								<tr>
+									<td colspan="4">Dow-Jones</td>
+									<td colspan="3"><input type="text" class="form-control"
+											th:value="${user_data?.screen_dowjones_primary == 'Y' ? 'Yes' : 'No'}"
+											readonly /></td>
+									<td colspan="3"><input type="text" class="form-control"
+											th:value="${user_data?.screen_dowjones_joint1 == 'Y' ? 'Yes' : 'No'}"
+											readonly /></td>
+									<td colspan="3"><input type="text" class="form-control"
+											th:value="${user_data?.screen_dowjones_joint2 == 'Y' ? 'Yes' : 'No'}"
+											readonly /></td>
+									<td colspan="3"><input type="text" class="form-control"
+											th:value="${user_data?.screen_dowjones_joint3 == 'Y' ? 'Yes' : 'No'}"
+											readonly /></td>
+								</tr>
+								<tr>
+									<td colspan="4">Br. Remarks (If any adverse found)</td>
+									<td colspan="12"><input type="text" class="form-control" name="branch_remarks"
+											th:value="${user_data?.branch_remarks}" readonly /></td>
+								</tr>
+							</tbody>
+
+							<!-- Section 4: Risk Assessment -->
+							<tr style="background-color: #fce2dc;">
+								<td colspan="16">
+									<button type="button" id="toggleRISK1"
+										style="background: none; border: none; width: 100%; padding: 0; cursor: pointer; outline: none;"
+										onmousedown="this.blur();">
+										<div
+											style="display: flex; justify-content: space-between; align-items: center; font-size: 16px; font-weight: bold;">
+											<span>4. RISK ASSESSMENT</span> <span id="toggleRISK">+</span>
+										</div>
+									</button>
+								</td>
+							</tr>
+
+							<!-- Rows to Toggle -->
+							<tbody id="RISK_SECTION" style="display: none;">
+								<tr>
+									<td colspan="4">KYC Valid</td>
+									<td colspan="3"><input type="text" class="form-control"
+											th:value="${user_data?.kyc_valid_yn_primary == 'Y' ? 'Yes' : 'No'}"
+											readonly /></td>
+									<td colspan="3"><input type="text" class="form-control"
+											th:value="${user_data?.kyc_valid_yn_joint1 == 'Y' ? 'Yes' : 'No'}"
+											readonly /></td>
+									<td colspan="3"><input type="text" class="form-control"
+											th:value="${user_data?.kyc_valid_yn_joint2 == 'Y' ? 'Yes' : 'No'}"
+											readonly /></td>
+									<td colspan="3"><input type="text" class="form-control"
+											th:value="${user_data?.kyc_valid_yn_joint3 == 'Y' ? 'Yes' : 'No'}"
+											readonly /></td>
+								</tr>
+								<tr>
+									<td colspan="4">Annual Income</td>
+									<td colspan="3"><input type="text" class="form-control" name="annual_income"
+											th:value="${user_data?.annual_income_primary}" readonly /></td>
+									<td colspan="3"><input type="text" class="form-control" name="kyc_valid5"
+											th:value="${user_data?.annual_income_joint1}" readonly /></td>
+									<td colspan="3"><input type="text" class="form-control" name="kyc_valid6"
+											th:value="${user_data?.annual_income_joint2}" readonly /></td>
+									<td colspan="3"><input type="text" class="form-control" name="kyc_valid7"
+											th:value="${user_data?.annual_income_joint3}" readonly /></td>
+								</tr>
+								<tr>
+									<td colspan="4">Source of Income</td>
+									<td colspan="3"><input type="text" class="form-control" name="source_of_income"
+											th:value="${user_data?.source_of_income_primary}" readonly /></td>
+									<td colspan="3"><input type="text" class="form-control" name="kyc_valid8"
+											th:value="${user_data?.source_of_income_joint1}" readonly /></td>
+									<td colspan="3"><input type="text" class="form-control" name="kyc_valid9"
+											th:value="${user_data?.source_of_income_joint2}" readonly /></td>
+									<td colspan="3"><input type="text" class="form-control" name="kyc_valid10"
+											th:value="${user_data?.source_of_income_joint3}" readonly /></td>
+								</tr>
+							</tbody>
+
+							<!-- Section 5: Transaction Monitoring -->
+							<!-- Section Header -->
+							<tr style="background-color: #fce2dc;">
+								<td colspan="16">
+									<button type="button" id="toggleTXNMONITOR1"
+										style="background: none; border: none; width: 100%; padding: 0; cursor: pointer; outline: none;"
+										onmousedown="this.blur();">
+										<div
+											style="display: flex; justify-content: space-between; align-items: center; font-size: 16px; font-weight: bold;">
+											<span>5. TRANSACTION MONITORING</span> <span id="toggleTXNMONITOR">+</span>
+										</div>
+									</button>
+								</td>
+							</tr>
+
+							<!-- Toggleable Content -->
+							<tbody id="TXN_MONITOR_SECTION" style="display: none;">
+								<tr>
+									<td colspan="16"><strong>Transaction History</strong> <small>(Details
+											of unusual or suspicious transactions over the past 12
+											months if noticed)</small></td>
+								</tr>
+								<tr>
+									<td colspan="16"><input type="text" class="form-control" name="txn_history"
+											th:value="${user_data?.unusual_txn_details}" readonly /></td>
+								</tr>
+								<tr>
+									<td colspan="16"><strong>Conduct of the account</strong>
+										<small>(Any suspicious activity or risk indicators or
+											ISTR filed during ECDD period)</small>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="16"><input type="text" class="form-control" name="account_conduct"
+											th:value="${user_data?.suspicious_activity}" readonly /></td>
+								</tr>
+								<tr>
+									<td colspan="5"><strong>High Value Transaction
+											Monitoring<br>(Above 500 thousand)
+										</strong></td>
+									<td colspan="2"><strong>No. of Transaction</strong></td>
+									<td colspan="4"><input type="text" class="form-control" name="high_txn_count"
+											th:value="${user_data?.high_value_txn_count}" readonly /></td>
+									<td colspan="2"><strong>Volume</strong></td>
+									<td colspan="3"><input type="text" class="form-control" name="high_txn_volume"
+											th:value="${user_data?.high_value_txn_volume}" readonly /></td>
+								</tr>
+								<tr>
+									<td colspan="10"><strong>Frequency and Volume of
+											transactions During The Period (% w.r.t Annual Turnover) <!-- <input
+																		type="text" class="form-control" name="high_txn_volume"
+																		th:value="${user_data?.frequency_txn_percent}" readonly /> -->
+										</strong></td>
+									<td colspan="6"><strong>No. of Transaction &
+											Turnover<!-- <input type="text" class="form-control" name="high_txn_volume"
+																		th:value="${user_data?.volume_turnover_percent}" readonly /> -->
+										</strong></td>
+								</tr>
+								<tr>
+									<td colspan="1"><strong></strong></td>
+									<td colspan="2"><strong>Cash</strong></td>
+									<td colspan="2"><strong>Cheque</strong></td>
+									<td colspan="3"><strong>Local Transfer</strong></td>
+									<td colspan="3"><strong>International Transfer</strong></td>
+									<td colspan="3"><strong>Current</strong></td>
+									<td colspan="2"><strong>Expected</strong></td>
+								</tr>
+								<tr>
+									<td colspan="1"><strong>No. of Transaction (%)</strong></td>
+									<td colspan="2"><input type="text" class="form-control" name="txn_cash"
+											th:value="${user_data?.cash_txn_count}" readonly /></td>
+									<td colspan="2"><input type="text" class="form-control" name="txn_cheque"
+											th:value="${user_data?.cheque_txn_count}" readonly /></td>
+									<td colspan="3"><input type="text" class="form-control" name="txn_local"
+											th:value="${user_data?.local_txn_count}" readonly /></td>
+									<td colspan="3"><input type="text" class="form-control" name="txn_international"
+											th:value="${user_data?.intl_txn_count}" readonly/ /></td>
+
+									<td colspan="2"><input type="text" class="form-control" name="txn_expected"
+											th:value="${user_data?.curr_txn_count}" readonly /></td>
+									<td colspan="3"><input type="text" class="form-control" name="txn_current"
+											th:value="${user_data?.expected_txn_count}" readonly /></td>
+								</tr>
+								<tr>
+									<td><strong>Volume (%)</strong></td>
+									<td colspan="2"><input type="text" class="form-control" name="vol_cash"
+											th:value="${user_data?.cash_txn_volume}" readonly /></td>
+									<td colspan="2"><input type="text" class="form-control" name="vol_cheque"
+											th:value="${user_data?.cheque_txn_volume}" readonly /></td>
+									<td colspan="3"><input type="text" class="form-control" name="vol_local"
+											th:value="${user_data?.local_txn_volume}" readonly /></td>
+									<td colspan="3"><input type="text" class="form-control" name="vol_international"
+											th:value="${user_data?.intl_txn_volume}" readonly/ /></td>
+
+									<td colspan="2"><input type="text" class="form-control" name="vol_expected"
+											th:value="${user_data?.curr_txn_volume}" readonly /></td>
+									<td colspan="3"><input type="text" class="form-control" name="vol_current"
+											th:value="${user_data?.expected_txn_volume}" readonly /></td>
+								</tr>
+								<tr>
+									<td colspan="16"><strong>Transactions in the
+											account commensurate with customer profile – Yes/No ______<input type="text"
+												class="form-control" name="profile_match_yn"
+												th:value="${user_data?.profile_match_yn}" readonly />
+										</strong><br> <strong><em>(if No, please provide
+												your justification, recommendations, and comments)</em><input
+												type="text" class="form-control" name="profile_mismatch_remarks"
+												th:value="${user_data?.profile_mismatch_remarks}" readonly /></strong>
+									</td>
+								</tr>
+							</tbody>
+
+							<!-- Section 6 Header -->
+							<!-- Section Header -->
+							<tr style="background-color: #fce2dc;">
+								<td colspan="16">
+									<button type="button" id="toggleRISKCAT1"
+										style="background: none; border: none; width: 100%; padding: 0; cursor: pointer; outline: none;"
+										onmousedown="this.blur();">
+										<div
+											style="display: flex; justify-content: space-between; align-items: center; font-size: 16px; font-weight: bold;">
+											<span>6. CUSTOMER RISK & REASON FOR RISK
+												CATEGORIZATION (AS PER CRA)</span> <span id="toggleRISKCAT">+</span>
+										</div>
+									</button>
+								</td>
+							</tr>
+
+							<!-- Toggleable Content -->
+							<tbody id="RISK_CAT_SECTION" style="display: none;">
+								<!-- System Risk Row -->
+								<tr>
+									<td colspan="8"><strong>System Risk</strong></td>
+									<td colspan="8"><strong>Reason for categorizing
+											customer as high risk</strong><br> <strong><em>(Any
+												downgrade from system-driven risk must be approved by
+												Territory Compliance Department)</em></strong></td>
+								</tr>
+
+								<!-- Risk Levels -->
+								<tr>
+									<td colspan="2"><strong>High<br>Medium<br>Low
+										</strong></td>
+									<td colspan="6"><br> <input type="text" class="form-control" name="system_risk"
+											th:value="${user_data?.system_risk}" readonly /></td>
+									<td colspan="8"><input type="text" class="form-control" name="customer_risk_reason"
+											th:value="${user_data?.customer_risk_reason}" readonly /></td>
+								</tr>
+							</tbody>
+							<tr style="background-color: #fce2dc;">
+								<td colspan="16"><strong>7.Documents Availability
+										in DMS</strong></td>
+							</tr>
+							<tr>
+								<td colspan="8"><strong>AOF and FATCA/CRS &
+										Others</strong></td>
+								<td colspan="2"><strong>Availability <br>Check
+										<br>Yes/No
+									</strong></td>
+								<td colspan="6"><strong>Remarks<i>(Details of
+											action initiated,in case of unavailability of said
+											document)</i></strong></td>
+							</tr>
+							<tr>
+								<td colspan="8"><strong>Ensured the availability
+										of Latest AOF in DMS</strong></td>
+								<td colspan="2"><input type="text" class="form-control" name="aof_available_yn"
+										th:value="${user_data?.aof_available_yn}" readonly /></td>
+								<td colspan="6"><textarea class="form-control" name="aof_remarks" rows="1"
+										th:text="${user_data?.aof_remarks}" readonly></textarea></td>
+							</tr>
+							<tr>
+								<td colspan="8"><strong>Ensured availability of
+										FATCA/CRS Declaration & KYC Docs for All the Holders in DMS</strong></td>
+								<td colspan="2"><input type="text" class="form-control" name="kyc_doc_available_yn"
+										th:value="${user_data?.kyc_doc_available_yn}" readonly /></td>
+								<td colspan="6"><textarea class="form-control" name="kyc_doc_remarks" rows="1"
+										th:text="${user_data?.kyc_doc_remarks}" readonly></textarea></td>
+							</tr>
+							<tr>
+								<td colspan="8"><strong>Ensured that Source of
+										Funds documents available in DMS</strong></td>
+								<td colspan="2"><input type="text" class="form-control"
+										name="source_of_funds_available_yn"
+										th:value="${user_data?.source_of_funds_available_yn}" readonly />
+								</td>
+								<td colspan="6"><textarea class="form-control" name="source_of_funds_remarks" rows="1"
+										th:text="${user_data?.source_of_funds_remarks}" readonly></textarea></td>
+							</tr>
+
+							<!-- OBSERVATIONS SECTION -->
+							<tr style="background-color: #fce2dc;">
+								<td colspan="16"><strong>8.OBSERVATION & OTHER
+										DUE DILIGENCE CARRIED BY THE BRANCH (Specific comments
+										required for high risk accounts) </strong></td>
+							</tr>
+							<tr>
+								<td colspan="16"><textarea class="form-control" name="branch_observations" rows="1"
+										th:text="${user_data?.branch_observations}"></textarea></td>
+							</tr>
+						</table>
+
+						<!-- === Table for Reviewer, Approver, and Head Signature (UPDATED) === -->
+						<table class="table table-bordered" cellspacing="0" cellpadding="5" width="100%">
+							<tr style="background-color: #fce2dc;">
+								<!-- The header now spans 3 columns -->
+								<th colspan="3">Branch - Reviewer, Approver & Head</th>
+							</tr>
+							<tr>
+								<!-- Column 1: Reviewer -->
+								<td style="vertical-align: top; width: 33%;">
+									<strong>Review Date</strong>
+									<input type="date" class="form-control" name="review_date" readonly
+										th:value="${user_data.review_date != null ? #dates.format(user_data.review_date, 'yyyy-MM-dd') : ''}">
+									<br>
+									<strong>Reviewed by -</strong><br>
+									(Name, EC No & Designation)
+									<input type="text" class="form-control" name="reviewed_by_name"
+										th:value="${user_data?.reviewed_by_name}" readonly />
+									<input type="text" class="form-control" name="reviewed_by_ec_no"
+										th:value="${user_data?.reviewed_by_ec_no}" readonly />
+									<input type="text" class="form-control" name="reviewed_by_designation"
+										th:value="${user_data?.reviewed_by_designation}" readonly />
+									<br>
+									<strong>Branch -</strong>
+									<input type="text" class="form-control" name="branch"
+										th:value="${user_data?.branch}" readonly />
+								</td>
+
+								<!-- Column 2: Approver -->
+								<td style="vertical-align: top; width: 33%;">
+									<strong>Approval Date</strong>
+									<input type="date" class="form-control" name="approval_date" readonly
+										th:value="${user_data.approval_date != null ? #dates.format(user_data.approval_date, 'yyyy-MM-dd') : ''}">
+									<br>
+									<strong>Approved by -</strong><br>
+									(Name, EC No & Designation)
+									<input type="text" class="form-control" name="approved_by_name"
+										th:value="${user_data?.approved_by_name}" readonly />
+									<input type="text" class="form-control" name="approved_by_ec_no"
+										th:value="${user_data?.approved_by_ec_no}" readonly />
+									<input type="text" class="form-control" name="approved_by_designation"
+										th:value="${user_data?.approved_by_designation}" readonly />
+								</td>
+
+								<!-- +++ Column 3: Branch Head/Operation Head Signature (NEW) +++ -->
+								<td style="vertical-align: top; width: 34%;">
+									<strong>Branch Head/Operation Head Signature</strong>
+									<br><br>
+									<!-- This acts as a placeholder for a signature. -->
+									<!-- For a real digital signature, a specialized library would be needed. -->
+									<div style="height: 80px; border: 1px solid #ccc; background-color: #f8f9fa;">
+										<!-- Content can be added here if needed, e.g., for a signature pad -->
+									</div>
+									<br>
+									<strong>Name:</strong>
+									<input type="text" class="form-control" name="head_signature_name" readonly />
+								</td>
+							</tr>
+						</table>
+
+						<table border="1" cellspacing="0" cellpadding="5" width="100%">
+							<tr>
+								<th></th>
+								<th>Date</th>
+								<th>Name of the Employee</th>
+							</tr>
+							<tr>
+								<td><strong>Data Entered in Finacle</strong></td>
+								<td><input type="date" class="form-control" name="entry_date"
+										th:value="${user_data.entry_date != null ? #dates.format(#dates.createNow(), 'yyyy-MM-dd') : ''}"
+										readonly></td>
+								<td><input type="text" class="form-control" name="entered_by"
+										th:value="${user_data?.entered_by}" readonly />
+								</td>
+							</tr>
+							<tr>
+								<td><strong>Document(s) Uploaded in DMS</strong></td>
+								<td><input type="date" class="form-control" name="doc_uploaded_date"
+										th:value="${user_data.doc_uploaded_date != null ? #dates.format(#dates.createNow(), 'yyyy-MM-dd') : ''}"
+										readonly></td>
+								<td><input type="text" class="form-control" name="doc_uploaded_by"
+										th:value="${user_data?.doc_uploaded_by}" readonly /></td>
+							</tr>
+						</table>
+					</div>
+
+					<!-- MODIFY MODE CONTENT -->
+					<div class="card-body" th:if="${formmode == 'modify'}">
+						<span style="color: red; font-weight: bold;" th:text="'SRL No: ' + ${user_data?.srlno}"></span>
+
+						<form method="post" id="kycForm" th:action="@{/kyc/individual}" enctype="multipart/form-data">
+							<input type="hidden" id="srlno" name="srlno" th:value="${user_data?.srlno}" />
+							<input type="hidden" name="formmode" value="submit" />
+
+							<!-- Main Account Info -->
+							<table class="table table-bordered mb-4">
+								<tr style="background-color: #fce2dc;">
+									<td colspan="4">
+										<div class="d-flex justify-content-between align-items-center">
+											<strong>Main Account Information</strong>
+											<div class="section-actions d-flex align-items-center"
+												data-target="s0_main_info">
+												<span class="save-status font-weight-bold mr-3"></span>
+												<button type="button" class="btn btn-sm btn-outline-primary modify-btn"
+													title="Modify"><i class="fas fa-edit"></i></button>
+												<div class="save-cancel-controls d-none">
+													<button type="button" class="btn btn-sm btn-success save-btn"
+														aria-label="Save Changes">✓ <i
+															class="fa fa-spinner fa-spin ml-1 d-none"></i></button>
+													<button type="button" class="btn btn-sm btn-danger cancel-btn ml-1"
+														aria-label="Cancel Changes">✗</button>
+												</div>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tbody id="s0_main_info">
+									<tr>
+										<td class="w-25"><strong>Account Title</strong></td>
+										<td><input type="text" class="form-control" name="account_title"
+												th:value="${user_data.account_title}" maxlength="200"></td>
+										<td class="w-25"><strong>ECDD Date</strong></td>
+										<td><input type="date" class="form-control" name="ecdd_date"
+												th:value="${user_data.ecdd_date != null ? #dates.format(user_data.ecdd_date, 'yyyy-MM-dd') : ''}">
+										</td>
+									</tr>
+									<tr>
+										<td><strong>Customer ID</strong></td>
+										<td><input type="text" class="form-control" name="customer_id"
+												th:value="${user_data.customer_id}" maxlength="50" readonly></td>
+										<td><strong>Associated Account Number(s)</strong></td>
+										<td>
+											<textarea class="form-control" name="associated_accounts" rows="1"
+												th:text="${user_data.associated_accounts}" maxlength="100"></textarea>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<!-- Section 1: Other Account Details -->
+							<table class="table table-bordered mb-4">
+								<tr style="background-color: #fce2dc;">
+									<td colspan="4">
+										<div class="d-flex justify-content-between align-items-center">
+											<strong>1. OTHER ACCOUNT DETAILS</strong>
+											<div class="section-actions d-flex align-items-center"
+												data-target="s1_other_details">
+												<span class="save-status font-weight-bold mr-3"></span>
+												<button type="button" class="btn btn-sm btn-outline-primary modify-btn"
+													title="Modify"><i class="fas fa-edit"></i></button>
+												<div class="save-cancel-controls d-none">
+													<button type="button" class="btn btn-sm btn-success save-btn"
+														aria-label="Save Changes">✓ <i
+															class="fa fa-spinner fa-spin ml-1 d-none"></i></button>
+													<button type="button" class="btn btn-sm btn-danger cancel-btn ml-1"
+														aria-label="Cancel Changes">✗</button>
+												</div>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tbody id="s1_other_details">
+									<tr>
+										<td><label>Currency</label></td>
+										<td><input type="text" name="currency" class="form-control"
+												th:value="${user_data?.currency}" maxlength="10" /></td>
+										<td><label>Account Opening Date</label></td>
+										<td><input type="date" name="account_open_date" class="form-control"
+												th:value="${user_data.account_open_date != null ? #dates.format(user_data.account_open_date, 'yyyy-MM-dd') : ''}" />
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2"><label>Approval obtained in case of currency other than
+												AED</label></td>
+										<td colspan="2">
+											<div class="form-check form-check-inline">
+												<input class="form-check-input" type="radio" name="currency_approval_yn"
+													id="curr_app_yes" value="Yes"
+													th:checked="${user_data?.currency_approval_yn == 'Yes'}"><label
+													class="form-check-label" for="curr_app_yes">Yes</label>
+											</div>
+											<div class="form-check form-check-inline">
+												<input class="form-check-input" type="radio" name="currency_approval_yn"
+													id="curr_app_no" value="No"
+													th:checked="${user_data?.currency_approval_yn == 'No'}"><label
+													class="form-check-label" for="curr_app_no">No</label>
+											</div>
+											<div class="form-check form-check-inline">
+												<input class="form-check-input" type="radio" name="currency_approval_yn"
+													id="curr_app_na" value="N/A"
+													th:checked="${user_data?.currency_approval_yn != 'Yes' and user_data?.currency_approval_yn != 'No'}"><label
+													class="form-check-label" for="curr_app_na">N/A</label>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<!-- Section 2: Account Holders' Information -->
+							<table class="table table-bordered mb-4">
+								<tr style="background-color: #fce2dc;">
+									<td colspan="5">
+										<div class="d-flex justify-content-between align-items-center">
+											<strong>2. ACCOUNT HOLDERS' INFORMATION</strong>
+											<div class="section-actions d-flex align-items-center"
+												data-target="s2_account_holders">
+												<span class="save-status font-weight-bold mr-3"></span>
+												<button type="button" class="btn btn-sm btn-outline-primary modify-btn"
+													title="Modify"><i class="fas fa-edit"></i></button>
+												<div class="save-cancel-controls d-none">
+													<button type="button" class="btn btn-sm btn-success save-btn"
+														aria-label="Save Changes">✓ <i
+															class="fa fa-spinner fa-spin ml-1 d-none"></i></button>
+													<button type="button" class="btn btn-sm btn-danger cancel-btn ml-1"
+														aria-label="Cancel Changes">✗</button>
+												</div>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tbody id="s2_account_holders">
+									<tr>
+										<td style="width: 20%;"></td>
+										<td><strong>PRIMARY A/C HOLDER</strong></td>
+										<td><strong>JOINT HOLDER 1</strong></td>
+										<td><strong>JOINT HOLDER 2</strong></td>
+										<td><strong>JOINT HOLDER 3</strong></td>
+									</tr>
+									<!-- Data Rows -->
+									<tr>
+										<td>Name</td>
+										<td><input type="text" class="form-control" name="primary_holder_name"
+												th:value="${user_data?.primary_holder_name}" maxlength="200" /></td>
+										<td><input type="text" class="form-control" name="joint1_name"
+												th:value="${user_data?.joint1_name}" maxlength="200" /></td>
+										<td><input type="text" class="form-control" name="joint2_name"
+												th:value="${user_data?.joint2_name}" maxlength="200" /></td>
+										<td><input type="text" class="form-control" name="joint3_name"
+												th:value="${user_data?.joint3_name}" maxlength="200" /></td>
+									</tr>
+									<tr>
+										<td>Customer ID</td>
+										<td><input type="text" class="form-control" name="primary_customer_id"
+												th:value="${user_data?.primary_customer_id}" maxlength="50" /></td>
+										<td><input type="text" class="form-control" name="joint1_customer_id"
+												th:value="${user_data?.joint1_customer_id}" maxlength="50" /></td>
+										<td><input type="text" class="form-control" name="joint2_customer_id"
+												th:value="${user_data?.joint2_customer_id}" maxlength="50" /></td>
+										<td><input type="text" class="form-control" name="joint3_customer_id"
+												th:value="${user_data?.joint3_customer_id}" maxlength="50" /></td>
+									</tr>
+									<tr>
+										<td>Non Resident</td>
+										<td>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="primary_non_resident_yn" id="pnr_y" value="Yes"
+													th:checked="${user_data?.primary_non_resident_yn == 'Yes'}"><label
+													class="form-check-label" for="pnr_y">Yes</label></div>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="primary_non_resident_yn" id="pnr_n" value="No"
+													th:checked="${user_data?.primary_non_resident_yn != 'Yes'}"><label
+													class="form-check-label" for="pnr_n">No</label></div>
+										</td>
+										<td>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="joint1_non_resident_yn" id="j1nr_y" value="Yes"
+													th:checked="${user_data?.joint1_non_resident_yn == 'Yes'}"><label
+													class="form-check-label" for="j1nr_y">Yes</label></div>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="joint1_non_resident_yn" id="j1nr_n" value="No"
+													th:checked="${user_data?.joint1_non_resident_yn != 'Yes'}"><label
+													class="form-check-label" for="j1nr_n">No</label></div>
+										</td>
+										<td>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="joint2_non_resident_yn" id="j2nr_y" value="Yes"
+													th:checked="${user_data?.joint2_non_resident_yn == 'Yes'}"><label
+													class="form-check-label" for="j2nr_y">Yes</label></div>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="joint2_non_resident_yn" id="j2nr_n" value="No"
+													th:checked="${user_data?.joint2_non_resident_yn != 'Yes'}"><label
+													class="form-check-label" for="j2nr_n">No</label></div>
+										</td>
+										<td>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="joint3_non_resident_yn" id="j3nr_y" value="Yes"
+													th:checked="${user_data?.joint3_non_resident_yn == 'Yes'}"><label
+													class="form-check-label" for="j3nr_y">Yes</label></div>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="joint3_non_resident_yn" id="j3nr_n" value="No"
+													th:checked="${user_data?.joint3_non_resident_yn != 'Yes'}"><label
+													class="form-check-label" for="j3nr_n">No</label></div>
+										</td>
+									</tr>
+									<tr>
+										<td>Nationality</td>
+										<td><input type="text" class="form-control" name="primary_nationality"
+												th:value="${user_data?.primary_nationality}" maxlength="50" /></td>
+										<td><input type="text" class="form-control" name="joint1_nationality"
+												th:value="${user_data?.joint1_nationality}" maxlength="50" /></td>
+										<td><input type="text" class="form-control" name="joint2_nationality"
+												th:value="${user_data?.joint2_nationality}" maxlength="50" /></td>
+										<td><input type="text" class="form-control" name="joint3_nationality"
+												th:value="${user_data?.joint3_nationality}" maxlength="50" /></td>
+									</tr>
+									<tr>
+										<td>Mobile Number</td>
+										<td><input type="text" class="form-control" name="primary_mobile_no"
+												th:value="${user_data?.primary_mobile_no}" maxlength="20" /></td>
+										<td><input type="text" class="form-control" name="joint1_mobile_no"
+												th:value="${user_data?.joint1_mobile_no}" maxlength="20" /></td>
+										<td><input type="text" class="form-control" name="joint2_mobile_no"
+												th:value="${user_data?.joint2_mobile_no}" maxlength="20" /></td>
+										<td><input type="text" class="form-control" name="joint3_mobile_no"
+												th:value="${user_data?.joint3_mobile_no}" maxlength="20" /></td>
+									</tr>
+									<tr>
+										<td>Email Address</td>
+										<td><input type="email" class="form-control" name="primary_email"
+												th:value="${user_data?.primary_email}" maxlength="100" /></td>
+										<td><input type="email" class="form-control" name="joint1_email"
+												th:value="${user_data?.joint1_email}" maxlength="100" /></td>
+										<td><input type="email" class="form-control" name="joint2_email"
+												th:value="${user_data?.joint2_email}" maxlength="100" /></td>
+										<td><input type="email" class="form-control" name="joint3_email"
+												th:value="${user_data?.joint3_email}" maxlength="100" /></td>
+									</tr>
+									<tr>
+										<td>Address</td>
+										<td><textarea class="form-control" rows="2" name="primary_address"
+												th:text="${user_data?.primary_address}" maxlength="500"></textarea></td>
+										<td><textarea class="form-control" rows="2" name="joint1_address"
+												th:text="${user_data?.joint1_address}" maxlength="500"></textarea></td>
+										<td><textarea class="form-control" rows="2" name="joint2_address"
+												th:text="${user_data?.joint2_address}" maxlength="500"></textarea></td>
+										<td><textarea class="form-control" rows="2" name="joint3_address"
+												th:text="${user_data?.joint3_address}" maxlength="500"></textarea></td>
+									</tr>
+									<tr>
+										<td>Latest Passport No.</td>
+										<td><input type="text" class="form-control" name="primary_passport_no"
+												th:value="${user_data?.primary_passport_no}" maxlength="50" /></td>
+										<td><input type="text" class="form-control" name="joint1_passport_no"
+												th:value="${user_data?.joint1_passport_no}" maxlength="50" /></td>
+										<td><input type="text" class="form-control" name="joint2_passport_no"
+												th:value="${user_data?.joint2_passport_no}" maxlength="50" /></td>
+										<td><input type="text" class="form-control" name="joint3_passport_no"
+												th:value="${user_data?.joint3_passport_no}" maxlength="50" /></td>
+									</tr>
+									<tr>
+										<td>Passport Exp. Date</td>
+										<td><input type="date" class="form-control" name="primary_passport_exp_date"
+												th:value="${user_data.primary_passport_exp_date != null ? #dates.format(user_data.primary_passport_exp_date, 'yyyy-MM-dd') : ''}">
+										</td>
+										<td><input type="date" class="form-control" name="joint1_passport_exp_date"
+												th:value="${user_data.joint1_passport_exp_date != null ? #dates.format(user_data.joint1_passport_exp_date, 'yyyy-MM-dd') : ''}">
+										</td>
+										<td><input type="date" class="form-control" name="joint2_passport_exp_date"
+												th:value="${user_data.joint2_passport_exp_date != null ? #dates.format(user_data.joint2_passport_exp_date, 'yyyy-MM-dd') : ''}">
+										</td>
+										<td><input type="date" class="form-control" name="joint3_passport_exp_date"
+												th:value="${user_data.joint3_passport_exp_date != null ? #dates.format(user_data.joint3_passport_exp_date, 'yyyy-MM-dd') : ''}">
+										</td>
+									</tr>
+									<tr>
+										<td>Emirates ID No</td>
+										<td><input type="text" class="form-control" name="primary_emirates_id_no"
+												th:value="${user_data?.primary_emirates_id_no}" maxlength="50" /></td>
+										<td><input type="text" class="form-control" name="joint1_emirates_id_no"
+												th:value="${user_data?.joint1_emirates_id_no}" maxlength="50" /></td>
+										<td><input type="text" class="form-control" name="joint2_emirates_id_no"
+												th:value="${user_data?.joint2_emirates_id_no}" maxlength="50" /></td>
+										<td><input type="text" class="form-control" name="joint3_emirates_id_no"
+												th:value="${user_data?.joint3_emirates_id_no}" maxlength="50" /></td>
+									</tr>
+									<tr>
+										<td>EID Expiry Date</td>
+										<td><input type="date" class="form-control" name="primary_emirates_exp_date"
+												th:value="${user_data.primary_emirates_exp_date != null ? #dates.format(user_data.primary_emirates_exp_date, 'yyyy-MM-dd') : ''}">
+										</td>
+										<td><input type="date" class="form-control" name="joint1_emirates_exp_date"
+												th:value="${user_data.joint1_emirates_exp_date != null ? #dates.format(user_data.joint1_emirates_exp_date, 'yyyy-MM-dd') : ''}">
+										</td>
+										<td><input type="date" class="form-control" name="joint2_emirates_exp_date"
+												th:value="${user_data.joint2_emirates_exp_date != null ? #dates.format(user_data.joint2_emirates_exp_date, 'yyyy-MM-dd') : ''}">
+										</td>
+										<td><input type="date" class="form-control" name="joint3_emirates_exp_date"
+												th:value="${user_data.joint3_emirates_exp_date != null ? #dates.format(user_data.joint3_emirates_exp_date, 'yyyy-MM-dd') : ''}">
+										</td>
+									</tr>
+									<tr>
+										<td>PEP Status</td>
+										<td>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="primary_pep_yn" id="ppep_y" value="Yes"
+													th:checked="${user_data?.primary_pep_yn == 'Yes'}"><label
+													class="form-check-label" for="ppep_y">Yes</label></div>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="primary_pep_yn" id="ppep_n" value="No"
+													th:checked="${user_data?.primary_pep_yn != 'Yes'}"><label
+													class="form-check-label" for="ppep_n">No</label></div>
+										</td>
+										<td>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="joint1_pep_yn" id="j1pep_y" value="Yes"
+													th:checked="${user_data?.joint1_pep_yn == 'Yes'}"><label
+													class="form-check-label" for="j1pep_y">Yes</label></div>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="joint1_pep_yn" id="j1pep_n" value="No"
+													th:checked="${user_data?.joint1_pep_yn != 'Yes'}"><label
+													class="form-check-label" for="j1pep_n">No</label></div>
+										</td>
+										<td>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="joint2_pep_yn" id="j2pep_y" value="Yes"
+													th:checked="${user_data?.joint2_pep_yn == 'Yes'}"><label
+													class="form-check-label" for="j2pep_y">Yes</label></div>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="joint2_pep_yn" id="j2pep_n" value="No"
+													th:checked="${user_data?.joint2_pep_yn != 'Yes'}"><label
+													class="form-check-label" for="j2pep_n">No</label></div>
+										</td>
+										<td>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="joint3_pep_yn" id="j3pep_y" value="Yes"
+													th:checked="${user_data?.joint3_pep_yn == 'Yes'}"><label
+													class="form-check-label" for="j3pep_y">Yes</label></div>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="joint3_pep_yn" id="j3pep_n" value="No"
+													th:checked="${user_data?.joint3_pep_yn != 'Yes'}"><label
+													class="form-check-label" for="j3pep_n">No</label></div>
+										</td>
+									</tr>
+									<tr>
+										<td>Approval if PEP</td>
+										<td>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="primary_pep_approval" id="papp_y" value="Yes"
+													th:checked="${user_data?.primary_pep_approval == 'Yes'}"><label
+													class="form-check-label" for="papp_y">Yes</label></div>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="primary_pep_approval" id="papp_n" value="No"
+													th:checked="${user_data?.primary_pep_approval != 'Yes'}"><label
+													class="form-check-label" for="papp_n">No</label></div>
+										</td>
+										<td>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="joint1_pep_approval" id="j1app_y" value="Yes"
+													th:checked="${user_data?.joint1_pep_approval == 'Yes'}"><label
+													class="form-check-label" for="j1app_y">Yes</label></div>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="joint1_pep_approval" id="j1app_n" value="No"
+													th:checked="${user_data?.joint1_pep_approval != 'Yes'}"><label
+													class="form-check-label" for="j1app_n">No</label></div>
+										</td>
+										<td>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="joint2_pep_approval" id="j2app_y" value="Yes"
+													th:checked="${user_data?.joint2_pep_approval == 'Yes'}"><label
+													class="form-check-label" for="j2app_y">Yes</label></div>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="joint2_pep_approval" id="j2app_n" value="No"
+													th:checked="${user_data?.joint2_pep_approval != 'Yes'}"><label
+													class="form-check-label" for="j2app_n">No</label></div>
+										</td>
+										<td>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="joint3_pep_approval" id="j3app_y" value="Yes"
+													th:checked="${user_data?.joint3_pep_approval == 'Yes'}"><label
+													class="form-check-label" for="j3app_y">Yes</label></div>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="joint3_pep_approval" id="j3app_n" value="No"
+													th:checked="${user_data?.joint3_pep_approval != 'Yes'}"><label
+													class="form-check-label" for="j3app_n">No</label></div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<!-- Section 3: Due Diligence (Simplified) -->
+							<table class="table table-bordered mb-4">
+								<tr style="background-color: #fce2dc;">
+									<td colspan="2">
+										<div class="d-flex justify-content-between align-items-center">
+											<a href="#s3_due_diligence_body"
+												class="btn btn-link text-dark font-weight-bold p-0 text-left w-100"
+												data-toggle="collapse" aria-expanded="false"
+												aria-controls="s3_due_diligence_body">
+												<div class="d-flex justify-content-between align-items-center">
+													<span>3. DUE DILIGENCE / SCREENING REPORTS</span>
+													<span class="collapse-icon">+</span>
+												</div>
+											</a>
+											<div class="section-actions d-flex align-items-center"
+												data-target="s3_due_diligence_body"
+												style="margin-left: 1rem; flex-shrink: 0;">
+												<span class="save-status font-weight-bold mr-3"></span>
+												<button type="button" class="btn btn-sm btn-outline-primary modify-btn"
+													title="Modify"><i class="fas fa-edit"></i></button>
+												<div class="save-cancel-controls d-none">
+													<button type="button" class="btn btn-sm btn-success save-btn"
+														aria-label="Save Changes">✓ <i
+															class="fa fa-spinner fa-spin ml-1 d-none"></i></button>
+													<button type="button" class="btn btn-sm btn-danger cancel-btn ml-1"
+														aria-label="Cancel Changes">✗</button>
+												</div>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tbody id="s3_due_diligence_body" class="collapse">
+									<tr>
+										<td style="width: 30%;">Google</td>
+										<td>
+											<div class="form-check form-check-inline">
+												<input class="form-check-input" type="radio"
+													name="screen_google_primary" id="google_y" value="Yes"
+													th:checked="${user_data?.screen_google_primary == 'Yes'}"><label
+													class="form-check-label" for="google_y">Yes</label>
+											</div>
+											<div class="form-check form-check-inline">
+												<input class="form-check-input" type="radio"
+													name="screen_google_primary" id="google_n" value="No"
+													th:checked="${user_data?.screen_google_primary != 'Yes'}"><label
+													class="form-check-label" for="google_n">No</label>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>Dow-Jones</td>
+										<td>
+											<div class="form-check form-check-inline">
+												<input class="form-check-input" type="radio"
+													name="screen_dowjones_primary" id="dj_y" value="Yes"
+													th:checked="${user_data?.screen_dowjones_primary == 'Yes'}"><label
+													class="form-check-label" for="dj_y">Yes</label>
+											</div>
+											<div class="form-check form-check-inline">
+												<input class="form-check-input" type="radio"
+													name="screen_dowjones_primary" id="dj_n" value="No"
+													th:checked="${user_data?.screen_dowjones_primary != 'Yes'}"><label
+													class="form-check-label" for="dj_n">No</label>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>Br. Remarks (If any adverse found)</td>
+										<td>
+											<!--<textarea class="form-control" rows="2" name="branch_remarks"
+												th:text="${user_data?.branch_remarks}" required
+												minlength="30"></textarea>-->
+												
+												<input list="branchRemarksList" class="form-control" name="branch_remarks"
+													       th:value="${user_data?.branch_remarks}" required
+													       placeholder="Type or select a remark" />
+
+													<datalist id="branchRemarksList">
+														<option value="Nothing adverse found">
+														<option value="False Positive – Partial Name Match, Verified Not the Same Individual">
+														<option value="Cleared – False Positive (Name Match Only)">
+													</datalist>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<!-- Section 4: Risk Assessment (Simplified) -->
+							<table class="table table-bordered mb-4">
+								<tr style="background-color: #fce2dc;">
+									<td colspan="2">
+										<div class="d-flex justify-content-between align-items-center">
+											<a href="#s4_risk_assessment_body"
+												class="btn btn-link text-dark font-weight-bold p-0 text-left w-100"
+												data-toggle="collapse" aria-expanded="false"
+												aria-controls="s4_risk_assessment_body">
+												<div class="d-flex justify-content-between align-items-center">
+													<span>4. RISK ASSESSMENT</span>
+													<span class="collapse-icon">+</span>
+												</div>
+											</a>
+											<div class="section-actions d-flex align-items-center"
+												data-target="s4_risk_assessment_body"
+												style="margin-left: 1rem; flex-shrink: 0;">
+												<span class="save-status font-weight-bold mr-3"></span>
+												<button type="button" class="btn btn-sm btn-outline-primary modify-btn"
+													title="Modify"><i class="fas fa-edit"></i></button>
+												<div class="save-cancel-controls d-none">
+													<button type="button" class="btn btn-sm btn-success save-btn"
+														aria-label="Save Changes">✓ <i
+															class="fa fa-spinner fa-spin ml-1 d-none"></i></button>
+													<button type="button" class="btn btn-sm btn-danger cancel-btn ml-1"
+														aria-label="Cancel Changes">✗</button>
+												</div>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tbody id="s4_risk_assessment_body" class="collapse">
+									<tr>
+										<td style="width: 30%;">KYC Valid</td>
+										<td>
+											<div class="form-check form-check-inline">
+												<input class="form-check-input" type="radio" name="kyc_valid_yn_primary"
+													id="kyc_y" value="Yes"
+													th:checked="${user_data?.kyc_valid_yn_primary == 'Yes'}"><label
+													class="form-check-label" for="kyc_y">Yes</label>
+											</div>
+											<div class="form-check form-check-inline">
+												<input class="form-check-input" type="radio" name="kyc_valid_yn_primary"
+													id="kyc_n" value="No"
+													th:checked="${user_data?.kyc_valid_yn_primary != 'Yes'}"><label
+													class="form-check-label" for="kyc_n">No</label>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>Annual Income</td>
+										<td><input type="text" class="form-control text-right format-as-number"
+												name="annual_income_primary"
+												th:value="${user_data?.annual_income_primary}" /></td>
+									</tr>
+									<tr>
+										<td>Source of Income</td>
+										<td><input type="text" class="form-control" name="source_of_income_primary"
+												th:value="${user_data?.source_of_income_primary}" maxlength="200" />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<!-- Section 5: Transaction Monitoring -->
+							<table class="table table-bordered mb-4">
+								<tr style="background-color: #fce2dc;">
+									<td colspan="7">
+										<div class="d-flex justify-content-between align-items-center">
+											<a href="#s5_txn_monitoring_body"
+												class="btn btn-link text-dark font-weight-bold p-0 text-left w-100"
+												data-toggle="collapse" aria-expanded="false"
+												aria-controls="s5_txn_monitoring_body">
+												<div class="d-flex justify-content-between align-items-center">
+													<span>5. TRANSACTION MONITORING</span>
+													<span class="collapse-icon">+</span>
+												</div>
+											</a>
+											<div class="section-actions d-flex align-items-center"
+												data-target="s5_txn_monitoring_body"
+												style="margin-left: 1rem; flex-shrink: 0;">
+												<span class="save-status font-weight-bold mr-3"></span>
+												<button type="button" class="btn btn-sm btn-outline-primary modify-btn"
+													title="Modify"><i class="fas fa-edit"></i></button>
+												<div class="save-cancel-controls d-none">
+													<button type="button" class="btn btn-sm btn-success save-btn"
+														aria-label="Save Changes">✓ <i
+															class="fa fa-spinner fa-spin ml-1 d-none"></i></button>
+													<button type="button" class="btn btn-sm btn-danger cancel-btn ml-1"
+														aria-label="Cancel Changes">✗</button>
+												</div>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tbody id="s5_txn_monitoring_body" class="collapse">
+									<tr>
+										<td colspan="7"><strong>Transaction History</strong> <small>(Details of unusual
+												or suspicious transactions over the past 12 months if noticed)</small>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="7"><textarea class="form-control" name="unusual_txn_details"
+												rows="2" th:text="${user_data?.unusual_txn_details}"
+												maxlength="100"></textarea>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="7"><strong>Conduct of the account</strong> <small>(Any suspicious
+												activity or risk indicators or ISTR filed during ECDD period)</small>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="7"><textarea class="form-control" name="suspicious_activity"
+												rows="2" th:text="${user_data?.suspicious_activity}"
+												maxlength="100"></textarea>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="3"><strong>High Value Transaction Monitoring (Above 500
+												thousand)</strong></td>
+										<td colspan="2">No. of Transaction: <input type="text"
+												class="form-control text-right format-as-number"
+												name="high_value_txn_count"
+												th:value="${user_data?.high_value_txn_count}" /></td>
+										<td colspan="2">Volume: <input type="text"
+												class="form-control text-right format-as-number"
+												name="high_value_txn_volume"
+												th:value="${user_data?.high_value_txn_volume}" /></td>
+									</tr>
+									<tr class="text-center">
+										<td colspan="7"><strong>Frequency and Volume of transactions During The Period
+												(% w.r.t Annual Turnover)</strong></td>
+									</tr>
+									<tr class="text-center">
+										<td></td>
+										<td><strong>Cash</strong></td>
+										<td><strong>Cheque</strong></td>
+										<td><strong>Local Transfer</strong></td>
+										<td><strong>International Transfer</strong></td>
+										<td><strong>Current</strong></td>
+										<td><strong>Expected</strong></td>
+									</tr>
+									<tr>
+										<td><strong>No. of Transaction (%)</strong></td>
+										<td><input type="text" class="form-control text-right format-as-number"
+												name="cash_txn_count" th:value="${user_data?.cash_txn_count}" /></td>
+										<td><input type="text" class="form-control text-right format-as-number"
+												name="cheque_txn_count" th:value="${user_data?.cheque_txn_count}" />
+										</td>
+										<td><input type="text" class="form-control text-right format-as-number"
+												name="local_txn_count" th:value="${user_data?.local_txn_count}" /></td>
+										<td><input type="text" class="form-control text-right format-as-number"
+												name="intl_txn_count" th:value="${user_data?.intl_txn_count}" /></td>
+										<td><input type="text" class="form-control text-right format-as-number"
+												name="curr_txn_count" th:value="${user_data?.curr_txn_count}" /></td>
+										<td><input type="text" class="form-control text-right format-as-number"
+												name="expected_txn_count" th:value="${user_data?.expected_txn_count}" />
+										</td>
+									</tr>
+									<tr>
+										<td><strong>Volume (%)</strong></td>
+										<td><input type="text" class="form-control text-right format-as-number"
+												name="cash_txn_volume" th:value="${user_data?.cash_txn_volume}" /></td>
+										<td><input type="text" class="form-control text-right format-as-number"
+												name="cheque_txn_volume" th:value="${user_data?.cheque_txn_volume}" />
+										</td>
+										<td><input type="text" class="form-control text-right format-as-number"
+												name="local_txn_volume" th:value="${user_data?.local_txn_volume}" />
+										</td>
+										<td><input type="text" class="form-control text-right format-as-number"
+												name="intl_txn_volume" th:value="${user_data?.intl_txn_volume}" /></td>
+										<td><input type="text" class="form-control text-right format-as-number"
+												name="curr_txn_volume" th:value="${user_data?.curr_txn_volume}" /></td>
+										<td><input type="text" class="form-control text-right format-as-number"
+												name="expected_txn_volume"
+												th:value="${user_data?.expected_txn_volume}" /></td>
+									</tr>
+									<tr>
+										<td colspan="7">
+											<strong>Transactions in the account commensurate with customer profile
+												–</strong>
+											<div class="form-check form-check-inline ml-2">
+												<input class="form-check-input" type="radio" name="profile_match_yn"
+													id="pm_y" value="Yes"
+													th:checked="${user_data?.profile_match_yn == 'Yes'}"><label
+													class="form-check-label" for="pm_y">Yes</label>
+											</div>
+											<div class="form-check form-check-inline">
+												<input class="form-check-input" type="radio" name="profile_match_yn"
+													id="pm_n" value="No"
+													th:checked="${user_data?.profile_match_yn == 'No'}"><label
+													class="form-check-label" for="pm_n">No</label>
+											</div>
+											<br />
+											<em>(if No, please provide your justification, recommendations, and
+												comments)</em>
+											<textarea class="form-control" name="profile_mismatch_remarks" rows="2"
+												th:text="${user_data?.profile_mismatch_remarks}" required
+												></textarea>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<!-- Section 6: Customer Risk -->
+							<table class="table table-bordered mb-4">
+								<tr style="background-color: #fce2dc;">
+									<td colspan="2">
+										<div class="d-flex justify-content-between align-items-center">
+											<strong>6. CUSTOMER RISK & REASON FOR RISK CATEGORIZATION</strong>
+											<div class="section-actions d-flex align-items-center"
+												data-target="s6_customer_risk">
+												<span class="save-status font-weight-bold mr-3"></span>
+												<button type="button" class="btn btn-sm btn-outline-primary modify-btn"
+													title="Modify"><i class="fas fa-edit"></i></button>
+												<div class="save-cancel-controls d-none">
+													<button type="button" class="btn btn-sm btn-success save-btn"
+														aria-label="Save Changes">✓ <i
+															class="fa fa-spinner fa-spin ml-1 d-none"></i></button>
+													<button type="button" class="btn btn-sm btn-danger cancel-btn ml-1"
+														aria-label="Cancel Changes">✗</button>
+												</div>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tbody id="s6_customer_risk">
+									<tr>
+										<td>
+											<strong>System Risk</strong><br />
+											<select class="form-control" name="system_risk">
+												<option value="High" th:selected="${user_data?.system_risk == 'High'}">
+													High</option>
+												<option value="Medium"
+													th:selected="${user_data?.system_risk == 'Medium'}">Medium</option>
+												<option value="Low" th:selected="${user_data?.system_risk == 'Low'}">Low
+												</option>
+											</select>
+										</td>
+										<td>
+											<strong>Reason for categorizing customer as high risk</strong><br />
+											<small>(Any downgrade from system-driven risk must be approved by Territory
+												Compliance Department)</small>
+											<textarea class="form-control" name="customer_risk_reason" rows="2"
+												th:text="${user_data?.customer_risk_reason}" maxlength="100"></textarea>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<!-- Section 7: Documents Availability -->
+							<table class="table table-bordered mb-4">
+								<tr style="background-color: #fce2dc;">
+									<td colspan="3">
+										<div class="d-flex justify-content-between align-items-center">
+											<strong>7. DOCUMENTS AVAILABILITY IN DMS</strong>
+											<div class="section-actions d-flex align-items-center"
+												data-target="s7_docs_availability">
+												<span class="save-status font-weight-bold mr-3"></span>
+												<button type="button" class="btn btn-sm btn-outline-primary modify-btn"
+													title="Modify"><i class="fas fa-edit"></i></button>
+												<div class="save-cancel-controls d-none">
+													<button type="button" class="btn btn-sm btn-success save-btn"
+														aria-label="Save Changes">✓ <i
+															class="fa fa-spinner fa-spin ml-1 d-none"></i></button>
+													<button type="button" class="btn btn-sm btn-danger cancel-btn ml-1"
+														aria-label="Cancel Changes">✗</button>
+												</div>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tbody id="s7_docs_availability">
+									<tr>
+										<td><strong>AOF and FATCA/CRS & Others</strong></td>
+										<td><strong>Availability Check (Y/N)</strong></td>
+										<td><strong>Remarks</strong> <small>(Details of action initiated, in case of
+												non-availability)</small></td>
+									</tr>
+									<tr>
+										<td>Ensured the availability of Latest AOF in DMS</td>
+										<td>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="aof_available_yn" id="aof_y" value="Yes"
+													th:checked="${user_data?.aof_available_yn == 'Yes'}"><label
+													class="form-check-label" for="aof_y">Yes</label></div>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="aof_available_yn" id="aof_n" value="No"
+													th:checked="${user_data?.aof_available_yn != 'Yes'}"><label
+													class="form-check-label" for="aof_n">No</label></div>
+										</td>
+										<td><textarea class="form-control" name="aof_remarks" rows="1"
+												th:text="${user_data?.aof_remarks}" required></textarea>
+										</td>
+									</tr>
+									<tr>
+										<td>Ensured availability of FATCA/CRS Declaration & KYC Docs for All the Holders
+											in DMS</td>
+										<td>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="kyc_doc_available_yn" id="kycdoc_y" value="Yes"
+													th:checked="${user_data?.kyc_doc_available_yn == 'Yes'}"><label
+													class="form-check-label" for="kycdoc_y">Yes</label></div>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="kyc_doc_available_yn" id="kycdoc_n" value="No"
+													th:checked="${user_data?.kyc_doc_available_yn != 'Yes'}"><label
+													class="form-check-label" for="kycdoc_n">No</label></div>
+										</td>
+										<td><textarea class="form-control" name="kyc_doc_remarks" rows="1"
+												th:text="${user_data?.kyc_doc_remarks}" required
+												></textarea></td>
+									</tr>
+									<tr>
+										<td>Ensured that Source of Funds documents available in DMS</td>
+										<td>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="source_of_funds_available_yn" id="sof_y"
+													value="Yes"
+													th:checked="${user_data?.source_of_funds_available_yn == 'Yes'}"><label
+													class="form-check-label" for="sof_y">Yes</label></div>
+											<div class="form-check form-check-inline"><input class="form-check-input"
+													type="radio" name="source_of_funds_available_yn" id="sof_n"
+													value="No"
+													th:checked="${user_data?.source_of_funds_available_yn != 'Yes'}"><label
+													class="form-check-label" for="sof_n">No</label></div>
+										</td>
+										<td><textarea class="form-control" name="source_of_funds_remarks" rows="1"
+												th:text="${user_data?.source_of_funds_remarks}" required
+												></textarea>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<!-- Section 8: Observation -->
+							<table class="table table-bordered mb-4">
+								<tr style="background-color: #fce2dc;">
+									<td>
+										<div class="d-flex justify-content-between align-items-center">
+											<strong>8. OBSERVATION & OTHER DUE DILIGENCE CARRIED BY THE BRANCH</strong>
+											<div class="section-actions d-flex align-items-center"
+												data-target="s8_observation">
+												<span class="save-status font-weight-bold mr-3"></span>
+												<button type="button" class="btn btn-sm btn-outline-primary modify-btn"
+													title="Modify"><i class="fas fa-edit"></i></button>
+												<div class="save-cancel-controls d-none">
+													<button type="button" class="btn btn-sm btn-success save-btn"
+														aria-label="Save Changes">✓ <i
+															class="fa fa-spinner fa-spin ml-1 d-none"></i></button>
+													<button type="button" class="btn btn-sm btn-danger cancel-btn ml-1"
+														aria-label="Cancel Changes">✗</button>
+												</div>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tbody id="s8_observation">
+									<tr>
+										<td>
+											<textarea class="form-control" name="branch_observations" rows="3"
+												th:text="${user_data?.branch_observations}" maxlength="500"></textarea>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<!-- Section 9: Branch Reviewer & Approver -->
+							<!-- === Section 9: Branch - Reviewer, Approver & Head (UPDATED) === -->
+							<table class="table table-bordered mb-4">
+								<tr style="background-color: #fce2dc;">
+									<!-- The header now spans 3 columns -->
+									<th colspan="3">
+										<div class="d-flex justify-content-between align-items-center">
+											<span>Branch - Reviewer, Approver & Head</span>
+											<div class="section-actions d-flex align-items-center"
+												data-target="s9_approver">
+												<span class="save-status font-weight-bold mr-3"></span>
+												<button type="button" class="btn btn-sm btn-outline-primary modify-btn"
+													title="Modify"><i class="fas fa-edit"></i></button>
+												<div class="save-cancel-controls d-none">
+													<button type="button" class="btn btn-sm btn-success save-btn"
+														aria-label="Save Changes">✓ <i
+															class="fa fa-spinner fa-spin ml-1 d-none"></i></button>
+													<button type="button" class="btn btn-sm btn-danger cancel-btn ml-1"
+														aria-label="Cancel Changes">✗</button>
+												</div>
+											</div>
+										</div>
+									</th>
+								</tr>
+								<tbody id="s9_approver">
+									<tr>
+										<!-- Column 1: Reviewer (Width adjusted) -->
+										<td style="vertical-align: top; width: 33%;">
+											<strong>Review Date</strong>
+											<input type="date" class="form-control" name="review_date" id="review_date"
+												th:value="${user_data.review_date != null ? #dates.format(user_data.review_date, 'yyyy-MM-dd') : ''}" />
+											<br />
+											<strong>Reviewed by - (Name, EC No & Designation<span
+													style="color: red;">*</span>)</strong>
+											<input type="text" class="form-control" name="reviewed_by_name"
+												th:value="${session.WORKCLASS == null ? session.USERNAME : user_data?.reviewed_by_name}"
+												readonly="readonly" />
+											<input type="text" class="form-control mt-1" name="reviewed_by_ec_no"
+												th:value="${session.WORKCLASS == 'M' ? session.USERID : user_data?.reviewed_by_ec_no}"
+												readonly="readonly" />
+											<input type="text" class="form-control mt-1" name="reviewed_by_designation" id="reviewed_by_designation"
+												th:value="${user_data?.reviewed_by_designation}" required
+												maxlength="100" />
+											<br />
+											<strong>Branch -</strong>
+											<input type="text" class="form-control" name="branch_name" id="branch_name"
+												th:value="${user_data?.branch_name}" maxlength="100" />
+										</td>
+
+										<!-- Column 2: Approver (Width adjusted) -->
+										<td style="vertical-align: top; width: 33%;">
+											<strong>Approval Date</strong>
+											<input type="date" class="form-control" name="approval_date" id="approval_date"
+												th:value="${user_data.approval_date != null ? #dates.format(user_data.approval_date, 'yyyy-MM-dd') : ''}">
+											<br />
+											<strong>Approved by - (Name, EC No & Designation<span
+													style="color: red;">*</span>)</strong>
+											<input type="text" class="form-control" name="approved_by_name"
+												th:value="${user_data?.approved_by_name}" readonly="readonly" />
+											<input type="text" class="form-control mt-1" name="approved_by_ec_no" 
+												th:value="${user_data?.approved_by_ec_no}" readonly="readonly" />
+											<input type="text" class="form-control mt-1" name="approved_by_designation" id="doc_uploaded_by"
+												th:value="${user_data?.approved_by_designation}" required
+												maxlength="100" />
+										</td>
+
+										<!-- +++ NEW COLUMN +++ -->
+										<td style="vertical-align: top; width: 34%;">
+											<strong>Branch Head/Operation Head Signature</strong>
+
+											<!-- This is a placeholder for a signature. For a real digital signature, a specialized library would be needed. -->
+											<div
+												style="height: 125px; border: 1px dashed #ccc; margin-top: 1rem; display: flex; align-items: center; justify-content: center; color: #aaa;">
+												(Manual Signature Area)
+											</div>
+
+											<strong class="mt-2 d-block">Name:</strong>
+											<input type="text" class="form-control" name="head_signature_name"
+												placeholder="Manual Entry after download" maxlength="100" readonly />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<!-- Section 10: Data Entry & Upload -->
+							<table class="table table-bordered">
+								<tr style="background-color: #fce2dc;">
+									<th colspan="3">
+										<div class="d-flex justify-content-between align-items-center">
+											<span>Data Entry & Upload</span>
+											<div class="section-actions d-flex align-items-center"
+												data-target="s10_finacle_upload">
+												<span class="save-status font-weight-bold mr-3"></span>
+												<button type="button" class="btn btn-sm btn-outline-primary modify-btn"
+													title="Modify"><i class="fas fa-edit"></i></button>
+												<div class="save-cancel-controls d-none">
+													<button type="button" class="btn btn-sm btn-success save-btn"
+														aria-label="Save Changes">✓ <i
+															class="fa fa-spinner fa-spin ml-1 d-none"></i></button>
+													<button type="button" class="btn btn-sm btn-danger cancel-btn ml-1"
+														aria-label="Cancel Changes">✗</button>
+												</div>
+											</div>
+										</div>
+									</th>
+								</tr>
+								<tbody id="s10_finacle_upload">
+									<tr>
+										<td><strong>Data Entered in Finacle</strong></td>
+										<td><input type="date" class="form-control" name="entry_date" id="entry_date"
+												th:value="${#dates.format(user_data.entry_date, 'yyyy-MM-dd')}" required/>
+										</td>
+										<td><input type="text" class="form-control" name="entered_by" id="entered_by"
+												th:value="${user_data?.entered_by}" maxlength="100" required/></td>
+									</tr>
+									<tr>
+										<td><strong>Document(s) Uploaded in DMS</strong></td>
+										<td><input type="date" class="form-control" name="doc_uploaded_date" id="doc_uploaded_date"
+												th:value="${#dates.format(user_data.doc_uploaded_date, 'yyyy-MM-dd')}" required/>
+										</td>
+										<td><input type="text" class="form-control" name="doc_uploaded_by" id="doc_uploaded_by"
+												th:value="${user_data?.doc_uploaded_by}" maxlength="100" required/></td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+					</div>
+
+
+					<div class="card-footer text-center">
+						<div class="footer-confirmation" th:if="${formmode == 'modify'}">
+							<input type="checkbox"
+							       id="confirm_screening_cb"
+							       name="auth_flg"
+							       value="Y"
+							       required="required"
+							       th:attr="checked=${user_data.auth_flg == 'Y'} ? 'checked' : null								   ,
+								                   disabled=${user_data.auth_flg == 'Y'} ? 'disabled' : null"
+							       style="width: 1rem; height: 1rem; vertical-align: middle;" />
+
+							<label for="confirm_screening_cb" class="ml-2"
+								style="font-weight: normal; font-style: normal;">
+								I confirm that I have done screening of All Account holders & kept on record.
+							</label>
+						</div>
+
+						<button type="button" class="btn btn-xs headderbutton" onclick="goHome();">Home</button>
+
+						<button type="button" class="btn btn-xs headderbutton"
+							 th:if="${formmode == 'modify' and user_data.modify_flg == 'N'}"
+							onclick="modifysubmit()">Submit</button>
+
+						<button type="button"
+							th:if="${(user_data.modify_flg == 'Y' and session.WORKCLASS == 'C'
+							  and session.USERID != user_data.reviewed_by_ec_no) or (user_data.modify_flg == 'Y' and 
+							  session.ROLEID == 'Superadmin')  or  (user_data.modify_flg == 'Y' and session.WORKCLASS == 'C' and 
+							  session.ROLEID == 'DCD_ADMIN')}"
+							class="btn btn-xs headderbutton" onclick="verifyrecord(this)"
+							th:attr="data-srlno=${user_data.srlno}">
+							Verify
+						</button>
+
+						<button type="reset" class="btn btn-xs headderbutton" onclick="goBack();">Back</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	</div>
+
+	<!-- All Modals (success, failure, loader) -->
+	<div class="modal fade" id="alert_success" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+			<div class="modal-content">
+				<div class="menu-title-header" style="background-color: #003366; padding: 10px;">
+					<h5 class="modal-title" id="modalLabel" style="text-align: center; color: white; margin: 0;">
+						BANK OF
+						BARODA</h5>
+				</div>
+				<div class="modal-body" style="text-align: center; background-color: #c6ccd2;">
+					<p id="alertmsg_success" style="font-size: 16px; color: black;"></p>
+					<!-- Success message -->
+					<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="corporatehome();">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Failure Modal -->
+	<div class="modal fade" id="alert_failure">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="menu-title-header" style="background-color: #003366; padding: 10px;">
+					<h5 class="modal-title" id="exampleModalLabel" style="text-align: center; color: white; margin: 0;">
+						BANK OF
+						BARODA</h5>
+				</div>
+				<div class="modal-body" style="text-align: center; background-color: #c6ccd2;">
+					<p id="alertmsg_failure" style="font-size: 16px;"></p>
+					<!-- Failure message -->
+					<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="goBack();">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--  Upload Modal  -->
+	<div class="modal fade" id="uploadModal" tabindex="-1">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+
+				<div class="menu-title-header" style="background-color: #003366; padding: 10px;">
+					<h5 class="modal-title" style="text-align: center; color: white; margin: 0;">
+						BANK OF BARODA
+					</h5>
+				</div>
+
+				<div class="modal-body">
+					<h5 class="text-center font-weight-bold mb-3">Upload Customer Documents</h5>
+
+					<form id="uploadDocForm">
+						<input type="hidden" name="srl_no" value="" />
+						<input type="hidden" name="customer_id" value="" />
+						<input type="hidden" name="customer_type" value="" />
+					</form>
+
+					<!-- File input triggers the staging logic -->
+					<div class="form-group">
+						<label for="documentFile">Select File(s) to Add:</label>
+						<input type="file" class="form-control-file" id="documentFile" onchange="addFilesToList(event)"
+							multiple>
+					</div>
+
+					<hr>
+					<h6>Selected Files for Upload:</h6>
+					<!-- The staging area for selected files -->
+					<ul id="selectedFilesList" class="list-group">
+						<li class="list-group-item text-muted">No files selected.</li>
+					</ul>
+				</div>
+
+				<div class="modal-footer justify-content-center" style="background-color: #c6ccd2;">
+					<!-- The "Cancel" button can be styled like the "Close" button -->
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-primary" onclick="handleUploadSubmit()">Submit
+						Upload</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!--  Download Documents Modal  -->
+	<div class="modal fade" id="downloadModal" tabindex="-1">
+		<div class="modal-dialog modal-dialog-centered modal-lg"> <!-- modal-lg makes it wider -->
+			<div class="modal-content">
+
+				<div class="menu-title-header" style="background-color: #003366; padding: 10px;">
+					<h5 class="modal-title" style="text-align: center; color: white; margin: 0;">
+						BANK OF BARODA
+					</h5>
+				</div>
+
+				<div class="modal-body">
+					<h5 class="text-center font-weight-bold mb-3">Download Documents</h5>
+					<p class="text-center text-muted">Showing all documents uploaded for this customer, sorted by
+						most recent.</p>
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered mt-2">
+							<thead class="thead-light">
+								<tr>
+									<th>File Name</th>
+									<th>Uploaded By</th>
+									<th>Uploaded Date</th>
+									<th class="text-center">Action</th>
+								</tr>
+							</thead>
+							<tbody id="docListTableBody">
+								<!-- JavaScript will populate this table body -->
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- Styled Footer -->
+				<div class="modal-footer justify-content-center" style="background-color: #c6ccd2;">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!--  *************************************************Loader Gif *********************************************************** -->
+	<div class="modal fade" id="loader1" data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content border-0 shadow-none bg-transparent">
+				<div class="modal-body text-center p-0">
+					<img th:src="@{/images/kycloader.gif}" id="bfirelogo"
+						style="width: 50px; height: auto; background-color: transparent;" alt="Bornfire">
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+
+<!-- SCRIPT FOR VIEW MODE    -->
+<script th:if="${formmode == 'view'}">
+	document.addEventListener("DOMContentLoaded", function () {
+		// Disable all form elements to make them read-only
+		document.querySelectorAll('#kycViewForm input, #kycViewForm select, #kycViewForm textarea').forEach(el => {
+			el.disabled = true;
+		});
+
+		// Helper function to format numbers
+		const formatNumber = (num) => (num === null || num === undefined || num === '') ? '' : new Intl.NumberFormat('en-US').format(num);
+
+		// Format all number fields
+		document.querySelectorAll('.format-as-number, input[type="number"][value]').forEach(input => {
+			if (input.value) {
+				input.value = formatNumber(input.value);
+			}
+		});
+
+		// Ensure character counters are updated on load for textareas in view mode
+		document.querySelectorAll('#kycViewForm textarea[maxlength]').forEach(textarea => {
+			const counter = textarea.nextElementSibling;
+			if (counter && counter.classList.contains('char-counter')) {
+				const maxLength = textarea.getAttribute('maxlength');
+				counter.textContent = `${textarea.value.length} / ${maxLength}`;
+			}
+		});
+	});
+</script>
+
+<!-- SCRIPT FOR MODIFY MODE (Corrected Logic) -->
+<script th:if="${formmode == 'modify'}">
+	document.addEventListener("DOMContentLoaded", function () {
+		const kycForm = document.getElementById('kycForm');
+		if (!kycForm) {
+			console.error("CRITICAL: Form with id 'kycForm' not found.");
+			return;
+		}
+
+		let originalSectionValues = {};
+		let activeSectionId = null;
+
+		// ===================================================================
+		//                          HELPER FUNCTIONS
+		// ===================================================================
+
+		const formatNumber = (num) => (num === null || num === undefined || String(num).trim() === '') ? '' : new Intl.NumberFormat('en-US').format(String(num).replace(/,/g, ''));
+		const unformatNumber = (str) => (typeof str === 'string') ? str.replace(/,/g, '') : str;
+
+		const updateCharCounter = (textarea) => {
+			const counter = textarea.nextElementSibling;
+			if (counter && counter.classList.contains('char-counter')) {
+				const maxLength = textarea.getAttribute('maxlength');
+				counter.textContent = `${textarea.value.length} / ${maxLength}`;
+			}
+		};
+
+
+		// ===================================================================
+		//                       FIELD DEPENDENCY MANAGEMENT (FINAL VERSION)
+		// ===================================================================
+
+		function updateFieldDependencies() {
+			// --- Loop through each holder type ---
+			['primary', 'joint1', 'joint2', 'joint3'].forEach(prefix => {
+				let isSectionEnabled = true;
+
+				// For joint holders, the entire section depends on their Customer ID
+				if (prefix !== 'primary') {
+					const custIdInput = document.querySelector(`[name="${prefix}_customer_id"]`);
+					if (custIdInput) {
+						isSectionEnabled = !custIdInput.disabled && custIdInput.value.trim() !== '';
+					} else {
+						isSectionEnabled = false;
+					}
+				}
+
+				// --- Define all fields for the holder ---
+				const fieldsToToggle = [
+					`${prefix}_name`, `${prefix}_nationality`, `${prefix}_mobile_no`, `${prefix}_email`,
+					`${prefix}_address`, `${prefix}_passport_no`, `${prefix}_emirates_id_no`,
+					`${prefix}_annual_income_${prefix === 'primary' ? 'primary' : prefix}`, // Handle specific name for primary
+					`${prefix}_source_of_income_${prefix === 'primary' ? 'primary' : prefix}`,
+					`${prefix}_non_resident_yn`, `${prefix}_pep_yn`,
+					`${prefix}_passport_exp_date`, `${prefix}_emirates_exp_date`,
+					`${prefix}_pep_approval` // Handle this last as a special case
+				];
+
+				fieldsToToggle.forEach(fieldName => {
+					document.querySelectorAll(`[name="${fieldName}"]`).forEach(el => {
+						if (el.name.endsWith('_pep_approval')) return; // Skip pep_approval for now
+						el.disabled = !isSectionEnabled;
+						if (!isSectionEnabled) {
+							if (el.type === 'radio' || el.type === 'checkbox') {
+								el.checked = false;
+							} else {
+								el.value = '';
+							}
+						}
+					});
+				});
+
+				// --- Handle the special case for "Approval if PEP" ---
+				const pepYesRadio = document.querySelector(`input[name="${prefix}_pep_yn"][value="Yes"]`);
+				const pepApprovalRadios = document.querySelectorAll(`input[name="${prefix}_pep_approval"]`);
+
+				// Approval is only possible if the section is enabled AND PEP status is 'Yes'
+				const allowPepApproval = isSectionEnabled && pepYesRadio && pepYesRadio.checked;
+
+				pepApprovalRadios.forEach(radio => {
+					radio.disabled = !allowPepApproval;
+					if (!allowPepApproval) {
+						radio.checked = false;
+					}
+				});
+			});
+
+			// --- Handle other form-wide dependencies ---
+			const profileNo = document.querySelector('input[name="profile_match_yn"][value="No"]');
+			const remarks = document.querySelector('[name="profile_mismatch_remarks"]');
+			if (profileNo && remarks && !profileNo.disabled) {
+				remarks.disabled = !profileNo.checked;
+				if (remarks.disabled) remarks.value = '';
+			}
+		}
+
+
+		// ===================================================================
+		//                      EVENT LISTENERS
+		// ===================================================================
+
+		// --------- MODIFY BUTTON LOGIC ----------
+		document.querySelectorAll('.modify-btn').forEach(button => {
+			button.addEventListener('click', function () {
+				const actions = this.closest('.section-actions');
+				const targetId = actions.dataset.target;
+				if (activeSectionId && activeSectionId !== targetId) {
+					alert("Please Save or Cancel the active section first.");
+					return;
+				}
+
+				activeSectionId = targetId;
+				const section = document.getElementById(targetId);
+				originalSectionValues[targetId] = {};
+
+				section.querySelectorAll('input:not([type=hidden]), select, textarea').forEach(el => {
+					if (el.name) {
+						if (el.type === 'radio') {
+							if (el.checked) {
+								originalSectionValues[targetId][el.name] = el.value;
+							}
+						} else {
+							originalSectionValues[targetId][el.name] = el.value;
+						}
+					}
+					if (!el.hasAttribute('readonly')) {
+						el.disabled = false;
+					}
+				});
+
+				actions.querySelector('.modify-btn').classList.add('d-none');
+				actions.querySelector('.save-cancel-controls').classList.remove('d-none');
+				updateFieldDependencies();
+			});
+		});
+
+
+		// --------- CANCEL BUTTON LOGIC ----------
+		document.querySelectorAll('.cancel-btn').forEach(button => {
+			button.addEventListener('click', function () {
+				const actions = this.closest('.section-actions');
+				const targetId = actions.dataset.target;
+				const section = document.getElementById(targetId);
+
+				if (originalSectionValues[targetId]) {
+					section.querySelectorAll('input:not([type=hidden]), select, textarea').forEach(el => {
+						const originalValue = originalSectionValues[targetId][el.name];
+						if (el.type === 'radio') {
+							el.checked = (originalValue === el.value);
+						} else {
+							el.value = originalValue !== undefined ? originalValue : '';
+						}
+					});
+				}
+
+				section.querySelectorAll('input:not([type=hidden]), select, textarea').forEach(el => {
+					el.disabled = true;
+				});
+
+				updateFieldDependencies();
+
+				actions.querySelector('.modify-btn').classList.remove('d-none');
+				actions.querySelector('.save-cancel-controls').classList.add('d-none');
+				activeSectionId = null;
+			});
+		});
+
+
+		// --------- SAVE BUTTON LOGIC (FINAL CORRECTED VERSION) ----------
+		document.querySelectorAll('.save-btn').forEach(button => {
+			button.addEventListener('click', async function () {
+				const actions = this.closest('.section-actions');
+				const targetSection = document.getElementById(actions.dataset.target);
+
+				// Standard Validation
+				for (const el of targetSection.querySelectorAll('input:not(:disabled), select:not(:disabled), textarea:not(:disabled)')) {
+					if (!el.checkValidity()) {
+						el.reportValidity();
+						return;
+					}
+				}
+
+				this.disabled = true;
+				const spinner = this.querySelector('i.fa-spinner');
+				if (spinner) spinner.classList.remove('d-none');
+
+				// Build FormData with ONLY the fields from the current section
+				const formData = new FormData();
+
+				formData.append('srlno', kycForm.querySelector('input[name="srlno"]').value);
+				formData.append('formmode', 'submit');
+
+				targetSection.querySelectorAll('input:not([type=hidden]), select, textarea').forEach(el => {
+					const wasDisabled = el.disabled;
+					el.disabled = false;
+
+					if (el.type === 'radio') {
+						if (el.checked) formData.append(el.name, el.value);
+					} else if (el.type === 'checkbox') {
+						if (el.checked) formData.append(el.name, el.value);
+					} else {
+						let valueToSubmit = el.classList.contains('format-as-number') ? unformatNumber(el.value) : el.value;
+						formData.append(el.name, valueToSubmit);
+					}
+					el.disabled = wasDisabled;
+				});
+
+				try {
+					const response = await fetch(kycForm.action + '?ajax=true', {
+						method: 'POST',
+						body: formData
+					});
+					if (!response.ok) {
+						throw new Error(await response.text() || 'Server error');
+					}
+
+					// Force a hard reload from the server to bypass browser cache
+					location.reload(true);
+
+				} catch (err) {
+					alert("Save Failed: " + err.message);
+					console.error(err);
+				} finally {
+					this.disabled = false;
+					if (spinner) spinner.classList.add('d-none');
+				}
+			});
+		});
+
+		// ===================================================================
+		//                       INITIAL PAGE SETUP
+		// ===================================================================
+
+		kycForm.querySelectorAll('input:not([type=hidden]), select, textarea').forEach(el => el.disabled = true);
+		kycForm.querySelectorAll('.format-as-number').forEach(input => {if (input.value) input.value = formatNumber(input.value);});
+		kycForm.querySelectorAll('textarea[maxlength]').forEach(updateCharCounter);
+
+		// Use a short timeout to allow Thymeleaf to render values before our script runs.
+		setTimeout(() => {
+			updateFieldDependencies();
+		}, 100);
+
+		kycForm.addEventListener('input', () => {
+			if (activeSectionId) {
+				updateFieldDependencies();
+			}
+		});
+	});
+	// A global array to store the files the user selects. This is our "staging area".
+	let fileListStore = [];
+
+	/**
+	 * UPDATED: This function now accepts the customer's data as arguments.
+	 */
+	function openUploadModal(srlNo, customerId, customerType) {
+		fileListStore = []; // Clear any previously selected files
+		updateSelectedFilesDisplay(); // Update the visual list to show "No files"
+
+		// **THE KEY FIX**: Find the single upload form and populate its hidden fields with the correct customer data.
+		const form = document.getElementById('uploadDocForm');
+		form.querySelector('input[name="srl_no"]').value = srlNo;
+		form.querySelector('input[name="customer_id"]').value = customerId;
+		form.querySelector('input[name="customer_type"]').value = customerType;
+
+		// Now, show the modal which is now correctly prepared.
+		$('#uploadModal').modal('show');
+	}
+
+	/**
+	 * Adds newly selected files to our staging array.
+	 */
+	function addFilesToList(event) {
+		const newFiles = event.target.files;
+		for (const file of newFiles) {
+			// Prevent adding the same file twice
+			if (!fileListStore.some(existingFile => existingFile.name === file.name)) {
+				fileListStore.push(file);
+			}
+		}
+		event.target.value = null; // Clear the input to allow selecting the same file again if removed
+		updateSelectedFilesDisplay();
+	}
+
+	/**
+	 * Removes a specific file from the staging array by its index.
+	 */
+	function removeFileFromList(index) {
+		fileListStore.splice(index, 1);
+		updateSelectedFilesDisplay();
+	}
+
+	/**
+	 * Updates the HTML list in the modal to show the staged files.
+	 */
+	function updateSelectedFilesDisplay() {
+		const listElement = document.getElementById('selectedFilesList');
+		if (!listElement) return;
+
+		if (fileListStore.length === 0) {
+			listElement.innerHTML = '<li class="list-group-item text-muted">No files selected.</li>';
+			return;
+		}
+
+		let html = '';
+		fileListStore.forEach((file, index) => {
+			html += `<li class="list-group-item d-flex justify-content-between align-items-center">
+	                   <span class="text-truncate">${file.name}</span>
+	                   <button type="button" class="btn btn-sm btn-danger ml-2" title="Remove file" onclick="removeFileFromList(${index})">×</button>
+	                 </li>`;
+		});
+		listElement.innerHTML = html;
+	}
+
+	/**
+	 * Handles the final submission by sending all staged files to the server.
+	 */
+	async function handleUploadSubmit() {
+		if (fileListStore.length === 0) {
+			alert('Please select at least one file to upload.');
+			return;
+		}
+
+		
+		$('#uploadModal').modal('hide');
+
+		const form = document.getElementById('uploadDocForm');
+		const formData = new FormData();
+
+		// 1. Append the hidden values that were set by openUploadModal()
+		formData.append('srl_no', form.querySelector('input[name="srl_no"]').value);
+		formData.append('customer_id', form.querySelector('input[name="customer_id"]').value);
+		formData.append('customer_type', form.querySelector('input[name="customer_type"]').value);
+
+		// 2. Append all the files from our staging array.
+		fileListStore.forEach(file => {
+			formData.append('files', file, file.name);
+		});
+
+		try {
+			// IMPORTANT: Ensure this URL uses your correct context path (e.g., /BCDRS)
+			const response = await fetch('/BRBS/kyc/individual/upload-document', {
+				method: 'POST',
+				body: formData
+				// If using Spring Security with CSRF, add CSRF headers here
+			});
+
+			if (!response.ok) {
+				const errorText = await response.text();
+				throw new Error(errorText || 'Server responded with an error');
+			}
+
+			$("#alertmsg_success").text("Documents uploaded successfully!");
+			$("#alert_success").modal("show");
+			$('#alert_success .btn-primary').attr("onclick", "location.reload();");
+		} catch (error) {
+			console.error("Upload failed:", error);
+			$("#alertmsg_failure").text("Upload failed: " + error.message);
+			$("#alert_failure").modal("show");
+		} finally {
+			
+		}
+	}
+	/**
+	 * Opens the download modal and fetches the list of documents for the specified customer.
+	 */
+	async function openDownloadModal(customerId) {
+		const tableBody = document.getElementById('docListTableBody');
+		// 1. Show a loading message immediately for good user experience.
+		tableBody.innerHTML = '<tr><td colspan="4" class="text-center"><div class="spinner-border spinner-border-sm"></div> Loading documents...</td></tr>';
+
+		// 2. Open the modal window.
+		$('#downloadModal').modal('show');
+
+		try {
+			// 3. Fetch the list of documents from your backend controller.
+			const response = await fetch(`/BRBS/kyc/individual/list-documents?customerId=${customerId}`);
+			if (!response.ok) {
+				throw new Error('Failed to fetch documents from the server.');
+			}
+
+			const documents = await response.json();
+
+			// 4. Handle the case where no documents are found.
+			if (documents.length === 0) {
+				tableBody.innerHTML = '<tr><td colspan="4" class="text-center">No documents have been uploaded for this customer.</td></tr>';
+				return;
+			}
+
+			// 5. Build the HTML for the table rows dynamically.
+			let rowsHtml = '';
+			documents.forEach(doc => {
+				// +++ CORRECTED CODE +++
+				const formattedDate = new Date(doc.uploadedDate).toLocaleDateString('en-GB'); // Formats date as DD-MM-YYYY
+
+				// +++ THIS IS THE CORRECTED PART +++
+				rowsHtml += `
+	                 <tr>
+	                     <td>${doc.documentName || 'N/A'}</td>
+	                     <td>${doc.uploadedBy || 'N/A'}</td>
+	                     <td>${formattedDate}</td>
+	                     <td class="text-center">
+	                         <!-- This link now uses a Font Awesome icon instead of text -->
+	                         <a href="/BRBS/kyc/individual/download-doc/${doc.docId}" 
+	                            class="btn btn-sm btn-success" 
+	                            title="Download ${doc.documentName}" 
+	                            download>
+	                             <i class="fas fa-download"></i>
+	                         </a>
+	                     </td>
+	                 </tr>
+	             `;
+			});
+
+			// 6. Insert the new rows into the table.
+			tableBody.innerHTML = rowsHtml;
+		} catch (error) {
+			console.error("Failed to load documents:", error);
+			tableBody.innerHTML = `<tr><td colspan="4" class="text-center text-danger">Error: ${error.message}</td></tr>`;
+		}
+	}
+
+</script>
+
+</html>

@@ -1,0 +1,895 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+
+<!-- 
+CREATED BY	: KRISHNAPANDI MG 
+CREATED ON	: 25.05.2025
+PURPOSE		: Access the Modules by Role
+ -->
+ 
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css"
+	href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+<link rel="stylesheet" type="text/css"
+	href="/webjars/font-awesome/5.9.0/css/all.min.css"
+	th:href="@{/webjars/font-awesome/5.9.0/css/all.min.css}">
+<link rel="stylesheet" type="text/css"
+	href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"
+	th:href="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.css}">
+<link rel="stylesheet" type="text/css"
+	href="/webjars/datatables/1.10.19/css/jquery.dataTables.min.css"
+	th:href="@{/webjars/datatables/1.10.19/css/jquery.dataTables.min.css}">
+<link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+<link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon">
+
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"
+	th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+<script src="/webjars/popper.js/1.14.7/umd/popper.min.js"
+	th:src="@{/webjars/popper.js/1.14.7/umd/popper.min.js}"></script>
+<script src="/webjars/jquery/3.4.1/jquery.min.js"
+	th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"
+	th:src="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.js}"></script>
+
+<script src="/webjars/jquery-form/4.2.2/jquery.form.min.js"
+	th:src="@{/webjars/jquery-form/4.2.2/jquery.form.min.js}"></script>
+
+<script src="/webjars/jquery-validation/1.19.0/jquery.validate.min.js"
+	th:src="@{/webjars/jquery-validation/1.19.0/jquery.validate.min.js}"></script>
+
+<script src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"
+	th:src="@{/webjars/datatables/1.10.19/js/jquery.dataTables.min.js}"></script>
+<script
+	src="/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js"
+	th:src="@{/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js}"></script>
+
+<style>
+.btns {
+	float: right;
+	margin: 5px;
+}
+
+.col-sm-5 {
+	padding-bottom: 15px;
+}
+
+.list-body {
+	padding: 0px;
+}
+
+.error {
+	color: red;
+	padding-left: 10px;
+}
+
+.formline {
+	padding-bottom: 15px;
+}
+
+.btn-primary {
+	background-color: #E77400;
+	border-color: #0c0c0c;
+}
+
+.btn-primary:not (:disabled ):not (.disabled ).active, .btn-primary:not
+	 (:disabled ):not (.disabled ):active, .show>.btn-primary.dropdown-toggle
+	{
+	color: #fff;
+	background-color: #cc000000;
+	border-color: #161617;
+}
+
+#finusertb {
+	width: 460px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+	padding: 0px;
+}
+</style>
+<style>
+        .valids { color: green; }
+        .invalids { color: red; }
+    </style>
+<script th:inline="javascript">
+	
+
+	function home() {
+		location.href = 'Dashboard'
+	}
+
+	function back() {
+		window.history.back();
+	}
+
+	function submitform(a) {
+
+		var checkBoxAdminValue, adminValue, 
+		BRF_Reports, BRF_ReportsValue, 
+		Basel_Reports, Basel_ReportsValue, 
+		Archival, ArchivalValue,
+		Audit_Inquiries, Audit_InquiriesValue,
+		RBR_Reports, RBR_ReportsValue,
+		VAT_Ledger, VAT_LedgerValue,
+		Invoice_Data, Invoice_DataValue;
+	 	
+		
+		var finalVar = [];
+
+		checkBoxAdminValue = document.querySelector("#Admin:checked");
+		adminValue = (checkBoxAdminValue) ? 'Y' : 'N';
+
+		if (adminValue === "Y") {
+			finalVar.push("Admin");
+		}
+
+		BRF_Reports = document.querySelector("#BRF_Reports:checked");
+		BRF_ReportsValue = (BRF_Reports) ? 'Y' : 'N';
+		if (BRF_ReportsValue === "Y") {
+			finalVar.push("BRF_Reports");
+		}
+		
+		Basel_Reports = document.querySelector("#Basel_Reports:checked");
+		Basel_ReportsValue = (Basel_Reports) ? 'Y' : 'N';
+		if (Basel_ReportsValue === "Y") {
+			finalVar.push("Basel_Reports");
+		}
+		Archival = document.querySelector("#Archival:checked");
+		ArchivalValue = (Archival) ? 'Y' : 'N';
+		if (ArchivalValue === "Y") {
+			finalVar.push("Archival");
+		}
+
+		Audit_Inquiries = document.querySelector("#Audit_Inquiries:checked");
+		Audit_InquiriesValue = (Audit_Inquiries) ? 'Y' : 'N';
+		if (Audit_InquiriesValue === "Y") {
+			finalVar.push("Audit_Inquiries");
+		}
+
+		RBR_Reports = document.querySelector("#RBR_Reports:checked");
+		RBR_ReportsValue = (RBR_Reports) ? 'Y' : 'N';
+		if (RBR_ReportsValue === "Y") {
+			finalVar.push("RBR_Reports");
+		}
+		
+		VAT_Ledger = document.querySelector("#VAT_Ledger:checked");
+		VAT_LedgerValue = (VAT_Ledger) ? 'Y' : 'N';
+		if (VAT_LedgerValue === "Y") {
+			finalVar.push("VAT_Ledger");
+		}
+		
+		Invoice_Data = document.querySelector("#Invoice_Data:checked");
+		Invoice_DataValue = (Invoice_Data) ? 'Y' : 'N';
+		if (Invoice_DataValue === "Y") {
+			finalVar.push("Invoice_Data");
+		}
+		
+		let Reconciliation = document.querySelector("#Reconciliation:checked");
+		let ReconciliationValue = (Reconciliation) ? 'Y' : 'N';
+		if (ReconciliationValue === "Y") {
+			finalVar.push("Reconciliation");
+		}
+
+		
+		
+		var formmode = a.getAttribute("data-formmode");
+
+		var finalString = finalVar.join(',');
+		var url = "./createAccessRole?formmode=" + formmode 
+		+ "&adminValue="	+ adminValue 
+		+ "&BRF_ReportsValue="	+ BRF_ReportsValue 
+		+ "&Basel_ReportsValue=" + Basel_ReportsValue
+		+ "&ArchivalValue=" + ArchivalValue
+		+ "&Audit_InquiriesValue=" + Audit_InquiriesValue
+		+ "&RBR_ReportsValue=" + RBR_ReportsValue
+		+ "&ReconciliationValue=" + ReconciliationValue   // <-- Add this line
+		+ "&VAT_LedgerValue=" + VAT_LedgerValue
+		+ "&Invoice_DataValue=" + Invoice_DataValue
+		+ "&finalString=" + finalString;
+
+
+		$("#IPSAccessRole").attr('action', url);
+
+		var options = {
+			success : showResponse
+		};
+
+		$("#IPSAccessRole").ajaxSubmit(options);
+
+		function showResponse(responseText, statusText, xhr, $form) {
+
+			$("#alertmsg").text(responseText);
+
+			$('#alert').modal("toggle");
+
+		}
+		;
+
+	};
+
+	function verifySubmit(a) {
+
+		var entryuser = a.getAttribute("data-entry_user");
+		var modifyuser = a.getAttribute("data-modify_user");
+		var formmode = a.getAttribute("data-formmode");
+		var loginuser = /*[[${session.USERID}]]*/null;
+
+		if ((modifyuser != null && modifyuser == loginuser)
+				|| (modifyuser == null && entryuser == loginuser)) {
+			$("#alertmsg").text("Same user cannot verify");
+			$('#alert').modal("toggle");
+		} else {
+
+			var url = "./createAccessRole?formmode=" + formmode;
+
+			$("#IPSAccessRole").attr('action', url);
+
+			var options = {
+				success : showResponse
+			};
+
+			$("#IPSAccessRole").ajaxSubmit(options);
+
+			function showResponse(responseText, statusText, xhr, $form) {
+
+				$("#alertmsg").text(responseText);
+
+				$('#alert').modal("toggle");
+
+			}
+			;
+		}
+
+	};
+	function deleteSubmit(a) {
+		var formmode = a.getAttribute("data-formmode");
+		var url = "./createAccessRole?formmode=" + formmode;
+
+		$("#IPSAccessRole").attr('action', url);
+
+		var options = {
+			success : showResponse
+		};
+
+		$("#IPSAccessRole").ajaxSubmit(options);
+
+		function showResponse(responseText, statusText, xhr, $form) {
+
+			$("#alertmsg").text(responseText);
+
+			$('#alert').modal("toggle");
+
+		};
+	};
+    </script>
+    <script>
+    function addrole(a) {
+		location.href = 'AccessandRoles?formmode=add';
+	}
+    function edit_btn_submit(a) {
+
+		var srlno = a.getAttribute("data-role_id");
+		location.href = 'AccessandRoles?formmode=edit&userid=' + srlno;
+	}
+
+    function list() {
+		location.href = 'AccessandRoles?formmode=list';
+	}
+	function view_btn_submit(a) {
+		var srlno = a.getAttribute("data-role_id");
+
+		location.href = 'AccessandRoles?formmode=view&userid=' + srlno;
+
+	}
+	
+	function verify_btn_submit(a) {
+		var srlno = a.getAttribute("data-role_id");
+
+		location.href = 'AccessandRoles?formmode=verify&userid=' + srlno;
+
+	}
+	function delete_btn_submit(a) {
+		var rollID = a.getAttribute("data-role_id");
+		location.href = 'AccessandRoles?formmode=delete&userid=' + rollID;
+	}
+	
+    </script>
+</head>
+<title>BCDRS</title>
+<body>
+	<div th:insert="XBRLHeaderMenu :: header"></div>
+
+	<!-- -------------------User List Starts----------------------------------------------------- -->
+	<div class="container content">
+
+		<div th:if="${formmode}=='list'">
+
+			<div class="card" style="width: 1433px; margin-left: -26px;">
+				<div class="card-header" style="background-color: #376275;">
+					<div class="float-left" style="color: white;">
+						<h5 th:text="${menu}"
+							style="font-family: verdana; font-size: 30px; font-weight: bold; padding-top: 10px; "></h5>
+					</div>
+					<div class="btn-group nav-buttons float-right">
+						<button type="button" class="btn btn-xs btn-primary btns"
+							onclick="addrole();">Add</button>
+
+					</div>
+				</div>
+			
+
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="table-container" style="max-height: 620px; ">
+						<table class="table table-striped table-bordered table-hover"
+							id="usertable">
+						
+							<thead style="background-color:#e9ecf0; font-family: verdana;" class="thead-light">
+					<tr>
+						<!-- <th></th> -->
+						<th style="width: 15%">Role Id</th>
+						<th style="width: 15%">Role Description</th>
+						<th style="width: 15%">Work Class</th>
+						<th style="width: 40%">Menu List</th>
+						<th style="width: 40%">Status</th>
+						<th style="width: 15%">Select</th>
+
+
+					</tr>
+				</thead>
+				<tbody >
+					<tr th:each="AccessRole : ${AccessandRoles}"
+						th:attr="data-userid=${AccessRole.role_id}"
+						th:id="${AccessRole.role_id}" class="userlist">
+						<td style="width: 125px" th:text="${AccessRole?.role_id}"></td>
+						<td style="width: 250px" th:text="${AccessRole?.role_desc}"></td>
+						<!-- 	<td th:text="${AccessRole.work_class}">123</td> -->
+						<th:block th:switch="${AccessRole?.work_class}">
+							<td th:case="'M'">Maker</td>
+							<td th:case="'C'">Checker</td>
+						</th:block>
+						<td style="width: 250px" th:text="${AccessRole?.menulist}"></td>
+						<th:block th:switch="${AccessRole?.entity_flg}">
+							<td th:case="'Y'" style="color: green;">Verified</td>
+							<td th:case="'N'" style="color: red;">UnVerified</td>
+						</th:block>
+						<td>
+							<div class="dropdown">
+								<button class="btn btn-secondary dropdown-toggle" type="button"
+									id="dropdownMenuButton" title="Action"
+									style="line-height: 0.7; font-size: 11px; color: #3a4550; background: #e3e3e4;"
+									data-toggle="dropdown" aria-haspopup="true"
+									aria-expanded="false">Action</button>
+
+								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
+									style="background-color: #e3e3e4; color: #3a4550;">
+
+									<a th:attr="data-role_id=${AccessRole?.role_id}"
+										class="dropdown-item" title="Modify"
+										style="cursor: pointer; color: #3a4550; background: #e3e3e4; height: 16px; border-radius: .20rem; padding: 2px 10px; top: 10px;"
+										id="edit_value" onclick="edit_btn_submit(this)"
+										th:if="${AccessRole?.modify_flg} !='Y'">Modify</a>
+									<div class="dropdown-divider"
+										th:if="${AccessRole?.modify_flg} !='Y'"></div>
+									<a th:attr="data-role_id=${AccessRole?.role_id}"
+										class="dropdown-item" title="Inquiry"
+										style="cursor: pointer; color: #3a4550; background: #e3e3e4; height: 16px; border-radius: .20rem; padding: 2px 10px; top: 10px;"
+										onclick="view_btn_submit(this)" id="view_btn">View </a>
+									<div class="dropdown-divider"></div>
+									<a th:attr="data-role_id=${AccessRole?.role_id}"
+										class="dropdown-item" title="Delete"
+										style="cursor: pointer; color: #3a4550; background: #e3e3e4; height: 16px; border-radius: .20rem; padding: 2px 10px; top: 10px;"
+										onclick="delete_btn_submit(this)" id="MFundtransfer1">Delete
+									</a>
+
+									<div class="dropdown-divider"
+										th:if="${AccessRole?.entity_flg} == 'N'"></div>
+									<a th:attr="data-role_id=${AccessRole?.role_id}"
+										th:if="${AccessRole?.entity_flg} == 'N'" class="dropdown-item"
+										title="Verify"
+										style="cursor: pointer; color: #3a4550; background: #e3e3e4; height: 16px; border-radius: .20rem; padding: 2px 10px; top: 10px;"
+										onclick="verify_btn_submit(this)" id="MFundtransfer1">Verify
+									</a>
+								</div>
+							</div>
+
+						</td>
+				</tbody>
+						</table>
+					</div>
+					<div class="card-footer text-center"
+						 style="background-color: #376275;">
+						<button type="button" class="btn btn-xs btn-primary" id="btnHome"
+							onclick="home();">Home</button>
+						<button type="button" class="btn btn-xs btn-primary" id="btnBack"
+							onclick="back();">Back</button>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+		
+			<div class="row">
+			<div class="col-sm-12 finuserapply" >
+				
+	<div
+			th:if="${formmode}=='edit' OR ${formmode}=='add' OR ${formmode}=='delete' OR ${formmode}=='view' OR ${formmode}=='verify'">
+			<div class="row">
+				<div class="col-sm-12 finuserapply">
+					<div class="card" style="width: 1433px; margin-left: -26px;">
+						<div class="card-header"style="background-color: #376275;">
+												<div class="float-left">
+								<h6 style="font-size: 1.5rem; color: white;"
+									th:if="${formmode}=='edit'">ACCESS AND ROLE - EDIT</h6>
+								<h6 style="font-size: 1.5rem; color: white;"
+									th:if="${formmode}=='add'">ACCESS AND ROLE - ADD</h6>
+								<h6 style="font-size: 1.5rem; color: white;"
+									th:if="${formmode}=='verify'">ACCESS AND ROLE - VERIFY</h6>
+								<h6 style="font-size: 1.5rem; color: white;"
+									th:if="${formmode}=='view'">ACCESS AND ROLE - VIEW</h6>
+								<h6 style="font-size: 1.5rem; color: white;"
+									th:if="${formmode}=='delete'">ACCESS AND ROLE - DELETE</h6>
+							</div>
+						</div>
+
+						<div class="card-body" style="margin-top: -48px;">
+							<form action="#" th:object="${IPSAccessRole}" method="post"
+								style="margin: 52px;" autocomplete="off" id="IPSAccessRole"
+								th:fragment="finuserapply">
+
+								<div class="row formline">
+									<label class="col-sm-2">Role Id</label>
+									<div class="col-sm-3" th:if="${formmode}=='add'">
+										<input type="text" id="role_id" name="role_id"
+											class="form-control form-control-sm" />
+									</div>
+									<div class="col-sm-3"
+										th:if="${formmode}=='edit' OR ${formmode}=='view'OR ${formmode}=='verify' OR ${formmode}=='delete'">
+										<input type="text" id="role_id" th:value="*{role_id}"
+											th:field="*{role_id}" class="form-control form-control-sm"
+											readonly />
+									</div>
+
+									<div class="col-sm-1"></div>
+									<label class="col-sm-2">Role Description</label>
+									<div class="col-sm-3">
+										<input th:if="${formmode}=='add'" type="text" id="role_desc"
+											name="role_desc" class="form-control form-control-sm" /> <input
+											th:if="${formmode}=='edit' OR ${formmode}=='view' OR ${formmode}=='verify'  OR ${formmode}=='delete'"
+											type="text" id="role_desc" th:value="*{role_desc}"
+											th:field="*{role_desc}" class="form-control form-control-sm"
+											th:readonly="${formmode}=='view' OR ${formmode}=='verify'  OR ${formmode}=='delete'" />
+
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+								<div class="row formline">
+									<label style="height: 2px;"></label>
+
+								</div>
+
+								<div class="row formline">
+
+									<label class="col-sm-2">Permissions</label>
+									<div class="col-sm-3"
+										th:if="${formmode}=='edit'OR ${formmode}=='verify'  OR ${formmode}=='delete'">
+										<select id="permissions" class="form-control form-control-sm"
+											th:value="*{permissions}" th:field="*{permissions}"
+											th:readonly="${formmode}=='verify'  OR ${formmode}=='delete'"
+											autocomplete="off" required>
+											<option value="O">Select</option>
+											<option value="R">Read</option>
+											<option value="W">Write</option>
+										</select>
+
+									</div>
+									<div class="col-sm-3" th:if="${formmode}=='add'">
+										<select id="permissions" class="form-control form-control-sm"
+											name="permissions" autocomplete="off" required>
+											<option value="O">Select</option>
+											<option value="R">Read</option>
+											<option value="W">Write</option>
+										</select>
+
+									</div>
+									<div class="col-sm-3" th:if="${formmode}=='view' ">
+										<!-- <input type="text" id="permissions" th:value="*{permissions}"
+												th:field="*{permissions}" class="form-control form-control-sm"    readonly/> -->
+										<input type="text" id="permissions"
+											class="form-control form-control-sm"
+											th:value="${IPSAccessRole.permissions=='W'} ? 'Write' : 'Read'"
+											readonly>
+									</div>
+									<div class="col-sm-1"></div>
+
+									<label class="col-sm-2">Remarks</label>
+									<div class="col-sm-3" th:if="${formmode}=='edit'">
+										<input th:value="${domain_id}" id="domain_id"
+											th:field="*{domain_id}" class="form-control form-control-sm"
+											required />
+
+									</div>
+									<div class="col-sm-3" th:if=" ${formmode}=='add'">
+										<input id="domain_id" name="domain_id"
+											class="form-control form-control-sm" required />
+
+									</div>
+									<div class="col-sm-3"
+										th:if="${formmode}=='view'OR ${formmode}=='verify' OR ${formmode}=='delete'">
+										<input th:value="${domain_id}" id="domain_id"
+											th:field="*{domain_id}" class="form-control form-control-sm"
+											readonly />
+
+									</div>
+
+								</div>
+								<div class="row formline">
+									<label style="height: 2px;"></label>
+
+								</div>
+								<div class="row formline">
+									<label class="col-sm-2">Work Class</label>
+									<div class="col-sm-3"
+										th:if="${formmode}=='edit'OR ${formmode}=='verify'  OR ${formmode}=='delete'">
+										<select id="work_class" class="form-control form-control-sm"
+											th:value="*{work_class}" th:field="*{work_class}"
+											onchange="roledesc();" autocomplete="off" required
+											th:readonly="${formmode}=='verify'  OR ${formmode}=='delete'">
+											<option value="">Select</option>
+											<option value="M">Maker</option>
+											<option value="C">Checker</option>
+										</select>
+									</div>
+
+									<div class="col-sm-3" th:if="${formmode}=='add'">
+										<select id="work_class" class="form-control form-control-sm"
+											name="work_class" onchange="roledesc();" autocomplete="off"
+											required>
+											<option value="">Select</option>
+											<option value="M">Maker</option>
+											<option value="C">Checker</option>
+										</select>
+									</div>
+									<div class="col-sm-3" th:if="${formmode}=='view'">
+										<input type="text" id="work_class"
+											class="form-control form-control-sm"
+											th:value="${IPSAccessRole.work_class=='M'} ? 'Maker' : 'Checker'"
+											readonly />
+									</div>
+									<div class="col-sm-1"></div>
+
+								
+<label class="col-sm-2">Menu List</label>
+<div class="col-sm-3">
+    <div id="log" style="background-color: #dbdfe2; display: none;"></div>
+    <div th:if="${formmode}=='edit' OR ${formmode}=='view' OR ${formmode}=='verify' OR ${formmode}=='delete'"
+        id="menucontent">
+        <p id="menuValue" th:each="message:${#strings.arraySplit(IPSAccessRole.menulist, ',')}"
+            th:text="${message}"></p>
+    </div>
+    <div id="selectedMenuItemsDisplay" style="margin-top: 10px;">
+        </div>
+</div>
+
+<div class="col-sm-1">
+    <a th:if="${formmode}=='add' OR ${formmode}=='edit'" href="#"><i class="fas fa-search searchico"
+            data-toggle="modal" data-target="#finusers" id="iconacc"></i></a>
+</div>
+
+</div>
+<div class="modal fade" id="finusers">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content" style="border: 2px solid black;">
+
+            <div class="modal-header" style="background-color: #386276;">
+                <h4 class="modal-title">Menu List</h4>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body" style="background-color: #e6eaed;">
+
+                <input type="checkbox" id="Admin" value="Y" name="admin" /> Admin
+
+                <ul>
+                    <li>User Profile</li>
+                    <li>Access and Roles</li>
+                    <li>Bank Level Parameters</li>
+                    <li>Bank and Branch Master</li>
+                    <li>GL Parameter</li>
+                    <li>Alert Parameters</li>
+                    <li>ETL Status Monitor</li>
+                    <li>Report Parameter
+                        <ul>
+                            <li>Report Reference Code</li>
+                        </ul>
+                        <ul>
+                            <li>Report Code Mapping</li>
+                        </ul>
+                        <ul>
+                            <li>Reference Code Maintenance</li>
+                        </ul>
+                        <ul>
+                            <li>File upload</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <input type="checkbox" id="BRF_Reports" value='Y' name="BRF_Reports" />BRF Reports
+
+                <ul>
+                    <li>Fortnightly</li>
+                    <li>Monthly 1</li>
+                    <li>Monthly 2</li>
+                    <li>Monthly 3</li>
+                    <li>Quarterly 1</li>
+                    <li>Quarterly 2</li>
+                    <li>Half Yearly 1</li>
+                    <li>Half Yearly 2</li>
+                    <li>Yearly</li>
+                </ul>
+
+                <input type="checkbox" id="Basel_Reports" value='Y' name="Basel_Reports" />BASEL REPORTS
+
+                <ul>
+                    <li>BRF95-CAR</li>
+                    <li>BRF95 SUMMARY WORKING</li>
+                    <li>CR
+                        <ul>
+                            <li>CR1</li>
+                            <li>CR2</li>
+                            <li>CR3</li>
+                            <li>CR4</li>
+                        </ul>
+                    </li>
+                    <li>SR1</li>
+                    <li>CVA</li>
+                    <li>EIF</li>
+                    <li>MR
+                        <ul>
+                            <li>MR1</li>
+                            <li>MR2</li>
+                            <li>MR3</li>
+                            <li>MR4</li>
+                            <li>MR5</li>
+                            <li>MR6</li>
+                            <li>MR7</li>
+                            <li>MR8</li>
+                            <li>MR9</li>
+                        </ul>
+                    </li>
+                    <li>OR1</li>
+                </ul>
+
+                <input type="checkbox" id="Archival" value="Y" name="Archival" /> Archival
+                <ul></ul>
+                <input type="checkbox" id="Audit_Inquiries" value='Y' name="Audit_Inquiries" />Audit Inquiries
+                <ul>
+                    <li>User Level Audit</li>
+                    <li>Service Level Audit</li>
+                </ul>
+                <input type="checkbox" id="RBR_Reports" value='Y' name="RBR_Reports" />RBR Reports
+
+                <ul>
+                    <li>RBR CCSYS1</li>
+                    <li>RBR Summary</li>
+                    <li>Master RBR</li>
+                    <ul>
+                        <li>Customer</li>
+                        <li>Partner and Shareholder</li>
+                        <li>Security Data</li>
+                        <li>Facility Data</li>
+                        <li>Provision Data</li>
+                        <li>Overall Data</li>
+                    </ul>
+                    <li>Final RBR</li>
+                </ul>
+
+                <input type="checkbox" id="Reconciliation" value='Y' name="Reconciliation" />Reconciliation
+
+                <ul>
+                    <li>TTUM Transaction</li>
+                    <li>Reconciliation Process</li>
+                    <li>Duplicate Records</li>
+                </ul>
+
+                <input type="checkbox" id="VAT_Ledger" value="Y" name="VAT_Ledger" />
+                VAT Ledger
+                <ul></ul>
+                <input type="checkbox" id="Invoice_Data" value="Y" name="Invoice_Data" />Invoice Data
+                <ul></ul>
+
+                <div style="float: right;">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateSelectedMenuItemsDisplay();">SUBMIT</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    // Get the form mode and menu list string from the Thymeleaf context
+    // Ensure these variables are correctly available in your Spring model
+    const formMode = /*[[${formmode}]]*/ 'add';
+    const menuListString = /*[[${IPSAccessRole != null ? IPSAccessRole.menulist : ''}]]*/ '';
+    const selectedMenuNames = menuListString ? menuListString.split(',').map(item => item.trim()) : [];
+
+    function preCheckModalCheckboxes() {
+        // Only run this logic if in 'edit' mode and there are selected menu names
+        if (formMode === 'edit' && selectedMenuNames.length > 0) {
+            // Get all direct input[type="checkbox"] elements within the .modal-body
+            // This targets "Admin", "BRF_Reports", "Basel_Reports", etc.
+            const checkboxes = document.querySelectorAll('#finusers .modal-body > input[type="checkbox"]');
+
+            checkboxes.forEach(checkbox => {
+                // Get the text content of the element right after the checkbox.
+                // This handles cases where the label text might be mixed with spaces or other nodes.
+                let checkboxLabel = '';
+                if (checkbox.nextSibling && checkbox.nextSibling.nodeType === Node.TEXT_NODE) {
+                    checkboxLabel = checkbox.nextSibling.textContent.trim();
+                } else if (checkbox.nextElementSibling && checkbox.nextElementSibling.tagName === 'LABEL') {
+                    // If you wrap your text in a <label> tag, this would work.
+                    checkboxLabel = checkbox.nextElementSibling.textContent.trim();
+                }
+                // Fallback for cases where text might be further down or structured differently.
+                // For your specific HTML, checkbox.nextSibling.textContent.trim() should generally work if it's plain text.
+
+                // Refined way to get the label text, looking for the nearest text node.
+                // This is a bit more robust if spaces/line breaks are involved.
+                let currentElement = checkbox.nextSibling;
+                while (currentElement && currentElement.nodeType !== Node.TEXT_NODE) {
+                    currentElement = currentElement.nextSibling;
+                }
+                if (currentElement && currentElement.nodeType === Node.TEXT_NODE) {
+                     checkboxLabel = currentElement.textContent.trim();
+                }
+
+
+                // Check if this checkbox's label is in the pre-selected list
+                // Use .includes() for checking if the label exists in the array
+                if (selectedMenuNames.includes(checkboxLabel)) {
+                    checkbox.checked = true;
+                } else {
+                    checkbox.checked = false; // Ensure it's unchecked if not in the list
+                }
+            });
+        }
+    }
+
+    function updateSelectedMenuItemsDisplay() {
+        const selectedItems = [];
+        const menuDisplayArea = document.getElementById('selectedMenuItemsDisplay');
+        menuDisplayArea.innerHTML = ''; // Clear previous selections
+
+        // Get all checkboxes within the modal body
+        const checkboxes = document.querySelectorAll('#finusers .modal-body input[type="checkbox"]');
+
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                // Get the text next to the checkbox (e.g., "Admin", "BRF Reports")
+                // Similar robust extraction as in preCheckModalCheckboxes
+                let checkboxLabel = '';
+                let currentElement = checkbox.nextSibling;
+                while (currentElement && currentElement.nodeType !== Node.TEXT_NODE) {
+                    currentElement = currentElement.nextSibling;
+                }
+                if (currentElement && currentElement.nodeType === Node.TEXT_NODE) {
+                     checkboxLabel = currentElement.textContent.trim();
+                }
+
+                selectedItems.push(checkboxLabel);
+            }
+        });
+
+        if (selectedItems.length > 0) {
+            const ul = document.createElement('ul');
+            selectedItems.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                ul.appendChild(li);
+            });
+            menuDisplayArea.appendChild(ul);
+        } else {
+            menuDisplayArea.innerHTML = '<p>No menu items selected.</p>';
+        }
+    }
+
+    // Call preCheckModalCheckboxes when the modal is shown
+    // Ensure jQuery is loaded for this to work ($ is jQuery)
+    $('#finusers').on('shown.bs.modal', function () {
+        preCheckModalCheckboxes();
+    });
+
+    /*]]>*/
+</script>
+
+							</form>
+
+						</div>
+						<div class="card-footer text-center btn btn-xs btn-primary" style="background-color:#376275">
+							<button type="button" class="btn btn-xs btn-primary" id="btnHome"
+							onclick="home();">Home</button>
+							<button th:if="${formmode}=='edit' OR ${formmode}=='add'"
+								type="button" class="btn btn-xs btn-primary"
+								form="IPSAccessRole" th:attr="data-formmode=${formmode}"x
+								id="btnSubmit" onclick="submitform(this);">Submit</button>
+							<button th:if="${formmode}=='verify'" type="button"
+								class="btn btn-xs btn-primary" form="IPSAccessRole"
+								th:attr="data-formmode='verify',data-entry_user=${IPSAccessRole.entry_user},
+									data-modify_user=${IPSAccessRole.modify_user}"
+								id="btnSubmit" onclick="verifySubmit(this);">Submit</button>
+
+							<button th:if="${formmode}=='delete'" type="button"
+								class="btn btn-xs btn-primary" form="IPSAccessRole"
+								th:attr="data-formmode='delete',data-entry_user=${IPSAccessRole.entry_user},
+									data-modify_user=${IPSAccessRole.modify_user}"
+								id="btnSubmit" onclick="deleteSubmit(this);">Delete</button>
+
+							<button type="button" class="btn btn-xs btn-primary" id="btnBack"
+								onclick="back();">Back</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	</div>
+	<div class="modal fade" id="alert">
+		<div
+			class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-body" style="text-align: center">
+					<p id="alertmsg"></p>
+					<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="list();">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="datadelete">
+		<div
+			class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-body"
+					style="margin-top: 8px; text-align: center; color: #f15362;">
+					<button type="button" class="close" data-dismiss="modal">×</button>
+					Are you Sure want to delete?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary"
+						onclick="submitformdelete(this);" th:attr="data-formmode=delete">Submit</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="formmsg">
+		<div
+			class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-body"
+					style="margin-top: 8px; text-align: center; color: aliceblue;">
+					<button type="button" class="close" data-dismiss="modal">×</button>
+					<a th:value="${msg}"></a>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary"
+						onclick="submitformdelete(this);" th:attr="data-formmode=delete">Submit</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>

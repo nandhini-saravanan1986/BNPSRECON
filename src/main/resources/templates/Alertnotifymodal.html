@@ -1,0 +1,1566 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+		th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/font-awesome/5.9.0/css/all.min.css"
+		th:href="@{/webjars/font-awesome/5.9.0/css/all.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"
+		th:href="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/datatables/1.10.19/css/jquery.dataTables.min.css"
+		th:href="@{/webjars/datatables/1.10.19/css/jquery.dataTables.min.css}">
+	<link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+	<link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon">
+
+	<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"
+		th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+	<script src="/webjars/popper.js/1.14.7/umd/popper.min.js"
+		th:src="@{/webjars/popper.js/1.14.7/umd/popper.min.js}"></script>
+	<script src="/webjars/jquery/3.4.1/jquery.min.js" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+	<script src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"
+		th:src="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.js}"></script>
+
+	<script src="/webjars/jquery-form/4.2.2/jquery.form.min.js"
+		th:src="@{/webjars/jquery-form/4.2.2/jquery.form.min.js}"></script>
+
+	<script src="/webjars/jquery-validation/1.19.0/jquery.validate.min.js"
+		th:src="@{/webjars/jquery-validation/1.19.0/jquery.validate.min.js}"></script>
+
+	<script src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/jquery.dataTables.min.js}"></script>
+	<script src="/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js}"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
+	<style>
+		.custom-card {
+			width: 130%;
+			/* You can adjust the width percentage as needed */
+			margin: 0px -50px;
+			/* Center the card horizontally */
+		}
+	</style>
+
+	<style>
+		.btns {
+			float: right;
+			margin: 5px;
+		}
+
+		.col-sm-5 {
+			padding-bottom: 15px;
+		}
+
+		.list-body {
+			padding: 0px;
+		}
+
+		.error {
+			color: red;
+			padding-left: 10px;
+		}
+
+		.formline {
+			padding-bottom: 15px;
+		}
+
+		.btn-primary {
+			background-color: #E77400;
+			border-color: #0c0c0c;
+		}
+
+
+		.btn-primary:not(:disabled):not(.disabled).active,
+		.btn-primary:not(:disabled):not(.disabled):active,
+		.show>.btn-primary.dropdown-toggle {
+			color: #fff;
+			background-color: #cc000000;
+			/* Transparent red, but fully transparent */
+			border-color: #161617;
+		}
+
+		#finusertb {
+			width: 460px;
+		}
+
+		.dataTables_wrapper .dataTables_filter input {
+			margin-left: -0.5em;
+		}
+	</style>
+	<style>
+		.table-container {
+			max-height: 580px;
+			overflow-y: auto;
+			overflow-x: auto;
+		}
+
+		table.fixed-header-table {
+			width: 100%;
+			border-collapse: collapse;
+			table-layout: fixed;
+		}
+
+		thead th {
+			position: sticky;
+			top: 0;
+			background: #f8f9fa;
+			/* or white */
+			z-index: 1;
+			border: 1px solid #dee2e6;
+			text-align: center;
+		}
+
+		table.fixed-header-table th,
+		table.fixed-header-table td {
+			padding: 8px;
+			border: 1px solid #dee2e6;
+			text-align: center;
+		}
+	</style>
+	<style>
+		.dataTables_wrapper .dataTables_filter input {
+			margin-left: -0.5em;
+		}
+	</style>
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+
+		$(function () {
+
+			var finusers = /*[[${FinUserProfiles}]]*/null;
+
+			console.log(finusers);
+
+			$("#usertable,#finusertb").DataTable({
+				"info": false,
+				"lengthChange": false
+
+			});
+
+			$("#expiryDate,#disableDate,#disableTilDate,#passExDate,#effectiveTill")
+				.datepicker({
+					minDate: new Date(),
+					changeMonth: true,
+					changeYear: true,
+					dateFormat: "dd-mm-yy"
+				});
+
+		});
+
+		function getUserlist(mode, num, maxpage) {
+
+			var n = parseInt(num);
+			var max = parseInt(maxpage);
+			var Callurl = 'UserProfile?formmode=list';
+
+			switch (mode) {
+				case "nextpage":
+					n = n + 1;
+					if (n > max) {
+						break;
+					}
+					Callurl = Callurl + "&page=" + n;
+					break;
+				case "prevpage":
+					n = n - 1;
+					if (n < 0) {
+						break;
+					}
+					Callurl = Callurl + "&page=" + n;
+					break;
+				case "givenpage":
+					n = parseInt($("#pageno").val()) - 1;
+					if (n > max || n < 0) {
+						break;
+					}
+					Callurl = Callurl + "&page=" + n;
+			}
+
+			location.href = Callurl;
+		}
+
+		function finuser(a) {
+
+			$
+				.ajax({
+					type: 'get',
+					url: '/XBRL/Finuserdata?userid=' + a.id,
+
+					success: function (data) {
+
+						/*<![CDATA[*/
+
+						$('.finuserapply').html(data);
+
+						$(
+							"#expiryDate,#disableDate,#disableTilDate,#passExDate,#effectiveTill")
+							.datepicker({
+								changeMonth: true,
+								changeYear: true,
+								dateFormat: "dd-mm-yy"
+							});
+
+						/*]]>*/
+
+						$("#finusers").modal("hide");
+					}
+
+				})
+
+		}
+
+		function home() {
+			location.href = 'Dashboard'
+		}
+
+		function back() {
+			window.history.back();
+		}
+
+		function fnClick(a) {
+			var userid = a.getAttribute("data-userid")
+			location.href = 'UserProfile?formmode=edit&userid=' + userid;
+		}
+
+		function edit_btn(a) {
+			var userid = a.getAttribute("data-userid")
+			location.href = 'AlertNotificationmodel?formmode=edit&report_srl=' + userid;
+		}
+
+		function view_btn(a) {
+			var userid = a.getAttribute("data-userid")
+			location.href = 'AlertNotificationmodel?formmode=view&report_srl=' + userid;
+		}
+
+		function delete_btn(a) {
+			var userid = a.getAttribute("data-userid")
+			alert(userid);
+			location.href = 'AlertNotificationmodel?formmode=delete&report_srl=' + userid;
+		}
+
+		function adduser(a) {
+			location.href = 'UserProfile?formmode=add';
+		}
+
+		function list(a) {
+			location.href = 'AlertNotificationmodel?formmode=list';
+		}
+
+		function add() {
+			location.href = 'AlertNotificationmodel?formmode=add';
+		}
+
+		function verify(a) {
+
+			var entryuser = a.getAttribute("data-entry_user");
+			var modifyuser = a.getAttribute("data-modify_user");
+
+			var loginuser = /*[[${session.USERID}]]*/null;
+
+			if ((modifyuser != null && modifyuser == loginuser)
+				|| (modifyuser == null && entryuser == loginuser)) {
+
+				$("#alertmsg").text("Same user cannot verify");
+
+				$('#alert').modal("toggle");
+
+			} else {
+
+				if ($("#userProfile").valid()) {
+
+					var userid = a.getAttribute("data-userid");
+					var url = './verifyUser';
+					$("#userProfile").attr('action', url);
+
+					var options = {
+						success: showResponse
+						// post-submit callback 
+					};
+
+					$('#userProfile').ajaxSubmit(options);
+
+					function showResponse(responseText, statusText, xhr, $form) {
+
+						$("#alertmsg").text(responseText);
+
+						$('#alert').modal("toggle");
+
+					}
+					;
+
+				}
+
+			}
+
+		};
+
+		function passwordReset() {
+
+			var url = './passwordReset';
+			$("#userProfile").attr('action', url);
+
+			var options = {
+				success: showResponse
+				// post-submit callback 
+			};
+
+			$('#userProfile').ajaxSubmit(options);
+
+			function showResponse(responseText, statusText, xhr, $form) {
+
+				$("#alertmsg").text(responseText);
+
+				$('#alert').modal("toggle");
+
+			}
+			;
+		};
+
+		function roledesc() {
+
+			var roleid = $("#roleId").find(':selected').val();
+
+			if (roleid == 'ADM') {
+				$("#roleDesc").val("Admin");
+			} else if (roleid == 'ADT') {
+				$("#roleDesc").val("Audit");
+			} else if (roleid == 'GEN') {
+				$("#roleDesc").val("General User");
+			} else if (roleid == 'RECONADM') {
+				$("#roleDesc").val("Admin");
+			} else if (roleid == 'RECONGEN') {
+				$("#roleDesc").val("General User");
+			}
+			$(this).find(':selected').text();
+
+		}
+
+		function submitform() {
+
+			//Creating Validating Rules
+			$('#addalerter').validate({
+				messages: {
+					userid: "Please Provide User Id"
+				}
+			});
+
+			if ($("#addalerter").valid()) {
+
+				var formmode = /*[[${formmode}]]*/null;
+
+				var url = "./createAlter?formmode=add";
+
+				$("#addalerter").attr('action', url);
+
+				var options = {
+					success: showResponse
+					// post-submit callback 
+				};
+
+				$("#addalerter").ajaxSubmit(options);
+
+				function showResponse(responseText, statusText, xhr, $form) {
+
+					$("#alertmsg").text(responseText);
+
+					$('#alert').modal("toggle");
+
+				}
+				;
+
+			}
+
+		};
+
+
+		function editUser() {
+
+			//Creating Validating Rules
+			$('#editalerter').validate({
+				messages: {
+					userid: "Please Provide User Id"
+				}
+			});
+
+			if ($("#editalerter").valid()) {
+
+				var formmode = /*[[${formmode}]]*/null;
+				var rec_srl = document.getElementById("report_srl").value;
+				var url = "./createAlter?formmode=edit" + "&report_srl=" + rec_srl;
+				//alert(url);
+				$("#editalerter").attr('action', url);
+
+				var options = {
+					success: showResponse
+					// post-submit callback 
+				};
+
+				$("#editalerter").ajaxSubmit(options);
+
+				function showResponse(responseText, statusText, xhr, $form) {
+
+					$("#alertmsg").text(responseText);
+
+					$('#alert').modal("toggle");
+
+				}
+				;
+
+			}
+
+		};
+
+		function deleteUser() {
+
+			
+			//Creating Validating Rules
+			$('#deletealerter').validate({
+				messages: {
+					userid: "Please Provide User Id"
+				}
+			});
+
+			if ($("#deletealerter").valid()) {
+
+				var formmode = /*[[${formmode}]]*/null;
+				var rec_srl = document.getElementById("report_srl").value;
+				var url = "./createAlter?formmode=delete" + "&report_srl=" + rec_srl;
+				//alert(url);
+				$("#deletealerter").attr('action', url);
+
+				var options = {
+					success: showResponse
+					// post-submit callback 
+				};
+
+				$("#deletealerter").ajaxSubmit(options);
+
+				function showResponse(responseText, statusText, xhr, $form) {
+
+					$("#alertmsg").text(responseText);
+
+					$('#alert').modal("toggle");
+
+				}
+				;
+
+			}
+
+		};
+
+		/*]]>*/
+	</script>
+	<script>
+		function submitdata() {
+			var domainids = [];
+			$.each($("input[name='dom']:checked"), function () {
+				domainids.push($(this).val());
+			});
+			$("#getDomain").modal('hide');
+			$("#domainId").val(domainids.join(","));
+		}
+
+
+	</script>
+	<script>
+		function roledesc1() {
+
+			var roleid = $("#roleId").find(':selected').val();
+
+			if (roleid == 'VISAP1') {
+				$("#roleDesc1").val("VISAP1");
+			} else if (roleid == 'VISAR2') {
+				$("#roleDesc1").val("VISAR2");
+			} else if (roleid == 'RFI3') {
+				$("#roleDesc1").val("RFI3");
+			} else if (roleid == 'RFI3') {
+				$("#roleDesc1").val("RFI3");
+			} else if (roleid == 'CURINT4') {
+				$("#roleDesc1").val("CURINT4");
+			}
+			$(this).find(':selected').text();
+
+		}
+	</script>
+// JS part
+<script>
+	function deleteUser(a) {
+		var reportSrl = a.getAttribute("data-deleteid");
+		alert("Deleting: " + reportSrl);
+
+		if (confirm("Are you sure you want to delete this record?")) {
+			fetch('./delete-report/' + reportSrl, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			.then(response => {
+				if (response.ok) {
+					alert("User deleted successfully!");
+					document.querySelector(`tr[data-userid="${reportSrl}"]`).remove();
+				} else {
+					alert("Failed to delete user.");
+				}
+			})
+			.catch(error => {
+				console.error('Error:', error);
+				alert("Error deleting user.");
+			});
+		}
+	}
+</script>
+
+
+
+
+</head>
+<title>BCDRS</title>
+
+<body>
+	<div th:insert="XBRLHeaderMenu :: header"></div>
+	<i class="fa fa-question-circle" aria-hidden="true" onclick="docEmb('UserProfile')"></i>
+	<!-- -------------------User List Starts----------------------------------------------------- -->
+	<div th:if="${formmode}=='list'" class="container content">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="card custom-card">
+					<div class="card-header" style="background-color: #376275;">
+						<div class="float-left" style="color: white;">
+							<h4>ALERT PARAMETERS </h4>
+						</div>
+						
+					</div>
+
+					<div class="table-container" style="overflow-x: auto; border-right: 1px solid #dee2e6">
+				<div class="table-responsive">
+  <table class="table table-bordered table-hover table-sm mb-0">
+    <thead class="thead-light">
+      <tr>
+        <th style="width: 50px; text-align: center;">
+          <a data-toggle="tooltip" class="editrec" title="Click to add new Records">
+            <i class="fa fa-plus-circle" style="color: green;" onclick="add();" aria-hidden="true"></i>
+          </a>
+        </th>
+        <th style="width: 50px; text-align: center;"></th>
+        <th style="text-align:left;">Report Code</th>
+        <th style="text-align:left;">Report Description</th>
+        <th style="text-align:left;">User ID 1</th>
+        <th style="text-align:left;">User Name 1</th>
+        <th style="text-align:left;">Email ID 1</th>
+        <th style="text-align:left;">Mobile No 1</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="alerter : ${alertlists}" th:attr="data-userid=${alerter.report_srl}" th:id="${alerter.report_srl}" class="userlist">
+        <td style="width: 50px; text-align: center;">
+          <a href="#" data-toggle="tooltip" class="editrec" title="Click to Modify this Record">
+            <i class="fas fa-edit" th:attr="data-userid=${alerter.report_srl}" onclick="edit_btn(this);"></i>
+          </a>
+        </td>
+        <td style="width: 50px; text-align: center;">
+          <a href="#" title="Click to Delete this Record">
+            <i class="fas fa-minus-circle text-danger" th:attr="data-deleteid=${alerter.report_srl}" onclick="deleteUser(this)"></i>
+          </a>
+        </td>
+        <td th:text="${alerter.report_srl}">456</td>
+        <td th:text="${alerter.report_desc}">456</td>
+        <td th:text="${alerter.user_id_1}">456</td>
+        <td th:text="${alerter.user_name_1}">456</td>
+        <td th:text="${alerter.email_id_1}">456</td>
+        <td th:text="${alerter.mobile_no_1}">456</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+					</div>
+					<div class="card-footer text-center" style="background-color: #376275;">
+						<button type="button" class="btn btn-xs btn-primary" id="btnHome"
+							onclick="home();">Home</button>
+						<button type="button" class="btn btn-xs btn-primary" id="btnBack"
+							onclick="back();">Back</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!---------------------User List Ends--------------------------------------------------------->
+	<!---------------------User Edit form Starts-------------------------------------------------->
+	<div th:if="${formmode}=='add'" class="container content">
+		<div class="row">
+			<div class="col-sm-12 finuserapply">
+				<form action="#" method="post" autocomplete="off" id="addalerter" th:fragment="finuserapply">
+					<div class="card" style="margin-right:-15%;">
+						<div class="card-header" style="background-color: #376275;">
+							<div class="float-left" style="color: white;">
+								<h3>ALERT PARAMETERS - ADD</h3>
+							</div>
+							<div class="btn-group nav-buttons float-right">
+								<!--<button type="button" class="btn btn-xs btn-primary btns"
+									id="btnAdd" onclick="adduser();">Create User</button>-->
+								<button type="button" class="btn btn-xs btn-primary btns" id="btnInq"
+									onclick="list();">List</button>
+							</div>
+						</div>
+						<div class="card-body">
+
+							<input autocomplete="false" name="hidden" type="text" style="display: none;">
+							<div class="form-group">
+								<div class="row formline">
+									<div class="col-sm-2">
+										<label for="userId">Report Srl</label>
+									</div>
+									<div class="col-sm-3">
+										<input type="text" id="report_srl" class="form-control form-control-sm"
+											name="report_srl" autocomplete="off" required />
+									</div>
+									<div class="col-sm-1">
+										<!-- <a th:if="${formmode}=='add'" href="#"><i
+											class="fas fa-search searchico" data-toggle="modal"
+											data-target="#finusers" id="iconacc"></i></a> -->
+									</div>
+									<div class="col-sm-2">
+										<label for="userName">Report Description</label>
+									</div>
+									<div class="col-sm-3">
+										<input type="text" id="report_desc" name="report_desc"
+											class="form-control form-control-sm" autocomplete="false" />
+									</div>
+								</div>
+
+
+								<div class="row formline">
+
+									<label class="col-sm-2">User ID 1</label>
+									<div class="col-sm-3">
+										<input type="text" id="user_id_1" name="user_id_1"
+											class="form-control form-control-sm" autocomplete="false" />
+									</div>
+
+									<div class="col-sm-1"></div>
+
+
+									<label class="col-sm-2">User Name 1</label>
+									<div class="col-sm-3">
+										<input type="text" id="user_name_1" name="user_name_1"
+											class="form-control form-control-sm" autocomplete="false" />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+
+								<div class="row formline">
+
+									<label class="col-sm-2">Email ID 1</label>
+									<div class="col-sm-3">
+										<input type="email" id="email_id_1" name="email_id_1"
+											class="form-control form-control-sm" autocomplete="off" />
+									</div>
+									<div class="col-sm-1"></div>
+
+
+									<label class="col-sm-2">Mobile No 1</label>
+									<div class="col-sm-3">
+										<input type="number" id="mobile_no_1" name="mobile_no_1"
+											class="form-control form-control-sm" autocomplete="off" />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+								<div class="row formline">
+
+									<label class="col-sm-2">Alert Flag 1</label>
+									<div class="col-sm-3">
+										<input type="text" id="alert_flg_1" name="alert_flg_1"
+											class="form-control form-control-sm" autocomplete="off" />
+									</div>
+									<div class="col-sm-1"></div>
+
+
+									<label class="col-sm-2">User Id 2</label>
+									<div class="col-sm-3">
+										<input type="text" id="user_id_2" name="user_id_2"
+											class="form-control form-control-sm" />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+
+								<div class="row formline">
+
+
+									<label class="col-sm-2">User Name 2</label>
+									<div class="col-sm-3">
+										<input type="text" id="user_name_2" name="user_name_2"
+											class="form-control form-control-sm" autocomplete="off" />
+									</div>
+									<div class="col-sm-1"></div>
+
+
+									<label class="col-sm-2">Email ID 2</label>
+									<div class="col-sm-3">
+										<input type="email" id="email_id_2" name="email_id_2"
+											class="form-control form-control-sm" autocomplete="off" />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+
+								<div class="row formline">
+
+
+									<label class="col-sm-2">Mobile No 2</label>
+									<div class="col-sm-3">
+										<input type="number" id="mobile_no_2" name="mobile_no_2"
+											class="form-control form-control-sm" autocomplete="off" />
+									</div>
+
+									<div class="col-sm-1"></div>
+
+									<label class="col-sm-2">Alert Flag 2</label>
+									<div class="col-sm-3">
+										<input type="text" id="alert_flg_2" name="alert_flg_2"
+											class="form-control form-control-sm" />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+								<div class="row formline">
+
+
+									<label class="col-sm-2">User ID 3</label>
+									<div class="col-sm-3">
+										<input type="text" id="user_id_3" name="user_id_3"
+											class="form-control form-control-sm" autocomplete="off" />
+									</div>
+									<div class="col-sm-1"></div>
+
+
+									<label class="col-sm-2">User Name 3</label>
+									<div class="col-sm-3">
+										<input type="text" name="user_name_3" id="user_name_3"
+											class="form-control form-control-sm" />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+								<div class="row formline">
+
+
+									<label class="col-sm-2">Email ID 3</label>
+									<div class="col-sm-3">
+										<input type="email" id="email_id_3" name="email_id_3"
+											class="form-control form-control-sm" autocomplete="off" />
+									</div>
+									<div class="col-sm-1"></div>
+
+									<label class="col-sm-2">Mobile No 3</label>
+									<div class="col-sm-3">
+										<input type="number" id="mobile_no_3" name="mobile_no_3"
+											class="form-control form-control-sm" />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+								<div class="row formline">
+
+
+									<label class="col-sm-2">Alert Flag 3</label>
+									<div class="col-sm-3">
+										<input type="text" id="alert_flg_3" name="alert_flg_3"
+											class="form-control form-control-sm" />
+									</div>
+
+
+								</div>
+								<div class="card-footer text-center" style="background-color: #376275;">
+									<button type="button" class="btn btn-xs btn-primary" id="btnHome"
+										onclick="home();">Home</button>
+									<button type="button" class="btn btn-xs btn-primary" form="addalerter"
+										id="btnSubmit" onclick="submitform();">Submit</button>
+									<button type="button" class="btn btn-xs btn-primary" id="btnBack"
+										onclick="back();">Back</button>
+								</div>
+							</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+
+	<div th:if="${formmode}=='edit'" class="container content">
+		<div class="row">
+			<div class="col-sm-12 finuserapply">
+				<form action="#" method="post" autocomplete="off" id="editalerter" th:object="${userProfile}"
+					th:fragment="finuserapply">
+					<div class="card" style="margin-right:-15%;">
+						<div class="card-header" style="background-color: #376275;">
+							<div class="float-left" style="color: white;">
+								<h3>ALERT PARAMETERS - MODIFY</h3>
+							</div>
+							<!-- <div class="btn-group nav-buttons float-right">
+								<button type="button" class="btn btn-xs btn-primary btns"
+									id="btnAdd" onclick="adduser();">Create User</button>
+								<button type="button" class="btn btn-xs btn-primary btns"
+									id="btnInq" onclick="list();">List</button>
+							</div> -->
+						</div>
+						<div class="card-body">
+
+							<input autocomplete="false" name="hidden" type="text" style="display: none;">
+							<div class="form-group">
+								<div class="row formline">
+									<div class="col-sm-2">
+										<label for="userId">Report Srl</label>
+									</div>
+									<div class="col-sm-3">
+										<input type="text" id="report_srl" th:value="${userProfile.report_srl}"
+											class="form-control form-control-sm" name="report_srl" autocomplete="off"
+											required />
+									</div>
+									<div class="col-sm-1">
+										<!-- <a th:if="${formmode}=='add'" href="#"><i
+											class="fas fa-search searchico" data-toggle="modal"
+											data-target="#finusers" id="iconacc"></i></a> -->
+									</div>
+									<div class="col-sm-2">
+										<label for="userName">Report Description</label>
+									</div>
+									<div class="col-sm-3">
+										<input type="text" id="report_desc" name="report_desc"
+											th:value="${userProfile.report_desc}" class="form-control form-control-sm"
+											autocomplete="false" />
+									</div>
+								</div>
+
+
+								<div class="row formline">
+
+									<label class="col-sm-2">User ID 1</label>
+									<div class="col-sm-3">
+										<input type="text" id="user_id_1" name="user_id_1"
+											th:value="${userProfile.user_id_1}" class="form-control form-control-sm"
+											autocomplete="false" />
+									</div>
+
+									<div class="col-sm-1"></div>
+
+
+									<label class="col-sm-2">User Name 1</label>
+									<div class="col-sm-3">
+										<input type="text" id="user_name_1" name="user_name_1"
+											th:value="${userProfile.user_name_1}" class="form-control form-control-sm"
+											autocomplete="false" />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+
+								<div class="row formline">
+
+									<label class="col-sm-2">Email ID 1</label>
+									<div class="col-sm-3">
+										<input type="email" id="email_id_1" name="email_id_1"
+											th:value="${userProfile.email_id_1}" class="form-control form-control-sm"
+											autocomplete="off" />
+									</div>
+									<div class="col-sm-1"></div>
+
+
+									<label class="col-sm-2">Mobile No 1</label>
+									<div class="col-sm-3">
+										<input type="number" id="mobile_no_1" name="mobile_no_1"
+											th:value="${userProfile.mobile_no_1}" class="form-control form-control-sm"
+											autocomplete="off" />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+								<div class="row formline">
+
+									<label class="col-sm-2">Alert Flag 1</label>
+									<div class="col-sm-3">
+										<input type="text" id="alert_flg_1" name="alert_flg_1"
+											th:value="${userProfile.alert_flg_1}" class="form-control form-control-sm"
+											autocomplete="off" />
+									</div>
+									<div class="col-sm-1"></div>
+
+
+									<label class="col-sm-2">User Id 2</label>
+									<div class="col-sm-3">
+										<input type="text" id="user_id_2" name="user_id_2"
+											th:value="${userProfile.user_id_2}" class="form-control form-control-sm" />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+
+								<div class="row formline">
+
+
+									<label class="col-sm-2">User Name 2</label>
+									<div class="col-sm-3">
+										<input type="text" id="user_name_2" name="user_name_2"
+											th:value="${userProfile.user_name_2}" class="form-control form-control-sm"
+											autocomplete="off" />
+									</div>
+									<div class="col-sm-1"></div>
+
+
+									<label class="col-sm-2">Email ID 2</label>
+									<div class="col-sm-3">
+										<input type="email" id="email_id_2" name="email_id_2"
+											th:value="${userProfile.email_id_2}" class="form-control form-control-sm"
+											autocomplete="off" />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+
+								<div class="row formline">
+
+
+									<label class="col-sm-2">Mobile No 2</label>
+									<div class="col-sm-3">
+										<input type="number" id="mobile_no_2" name="mobile_no_2"
+											th:value="${userProfile.mobile_no_2}" class="form-control form-control-sm"
+											autocomplete="off" />
+									</div>
+
+									<div class="col-sm-1"></div>
+
+									<label class="col-sm-2">Alert Flag 2</label>
+									<div class="col-sm-3">
+										<input type="text" id="alert_flg_2" name="alert_flg_2"
+											th:value="${userProfile.alert_flg_2}"
+											class="form-control form-control-sm" />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+								<div class="row formline">
+
+
+									<label class="col-sm-2">User ID 3</label>
+									<div class="col-sm-3">
+										<input type="text" id="user_id_3" name="user_id_3"
+											th:value="${userProfile.user_id_3}" class="form-control form-control-sm"
+											autocomplete="off" />
+									</div>
+									<div class="col-sm-1"></div>
+
+
+									<label class="col-sm-2">User Name 3</label>
+									<div class="col-sm-3">
+										<input type="text" name="user_name_3" id="user_name_3"
+											th:value="${userProfile.user_name_3}"
+											class="form-control form-control-sm" />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+								<div class="row formline">
+
+
+									<label class="col-sm-2">Email ID 3</label>
+									<div class="col-sm-3">
+										<input type="email" id="email_id_3" name="email_id_3"
+											th:value="${userProfile.email_id_3}" class="form-control form-control-sm"
+											autocomplete="off" />
+									</div>
+									<div class="col-sm-1"></div>
+
+									<label class="col-sm-2">Mobile No 3</label>
+									<div class="col-sm-3">
+										<input type="number" id="mobile_no_3" name="mobile_no_3"
+											th:value="${userProfile.mobile_no_3}"
+											class="form-control form-control-sm" />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+								<div class="row formline">
+
+
+									<label class="col-sm-2">Alert Flag 3</label>
+									<div class="col-sm-3">
+										<input type="text" id="alert_flg_3" name="alert_flg_3"
+											th:value="${userProfile.alert_flg_3}"
+											class="form-control form-control-sm" />
+									</div>
+
+
+								</div>
+
+								<div class="card-footer text-center" style="background-color: #376275;">
+									<button type="button" class="btn btn-xs btn-primary" id="btnHome"
+										onclick="home();">Home</button>
+									<button type="button" class="btn btn-xs btn-primary" form="editalerter"
+										id="btnSubmit" onclick="editUser();">Submit</button>
+									<button type="button" class="btn btn-xs btn-primary" form="editalerter"
+    title="Delete"
+    onclick="delete_btn(this)"
+    id="delete_btn">
+    Delete
+</button>
+									
+									<button type="button" class="btn btn-xs btn-primary" id="btnBack"
+										onclick="back();">Back</button>
+								</div>
+							</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+	<div th:if="${formmode}=='view'" class="container content">
+		<div class="row">
+			<div class="col-sm-12 finuserapply">
+				<form action="#" method="post" autocomplete="off" id="addalerter" th:object="${userProfile}"
+					th:fragment="finuserapply">
+					<div class="card" style="margin-right:-15%;">
+						<div class="card-header" style="background-color: #376275;">
+							<div class="float-left" style="color: white;">
+								<h3>ALERT NOTIFICATION MODEL - VIEW</h3>
+							</div>
+							<!-- <div class="btn-group nav-buttons float-right">
+								<button type="button" class="btn btn-xs btn-primary btns active"
+									id="btnAdd" onclick="adduser();">Create User</button>
+								<button type="button" class="btn btn-xs btn-primary btns"
+									id="btnInq" onclick="list();">List</button>
+							</div> -->
+						</div>
+						<div class="card-body">
+
+							<input autocomplete="false" name="hidden" type="text" style="display: none;">
+							<div class="form-group">
+								<div class="row formline">
+									<div class="col-sm-2">
+										<label for="userId">Report Srl</label>
+									</div>
+									<div class="col-sm-3">
+										<input type="text" id="report_srl" th:value="${userProfile.report_srl}"
+											class="form-control form-control-sm" name="report_srl" autocomplete="off"
+											required disabled />
+									</div>
+									<div class="col-sm-1">
+										<!-- <a th:if="${formmode}=='add'" href="#"><i
+											class="fas fa-search searchico" data-toggle="modal"
+											data-target="#finusers" id="iconacc"></i></a> -->
+									</div>
+									<div class="col-sm-2">
+										<label for="userName">Report Description</label>
+									</div>
+									<div class="col-sm-3">
+										<input type="text" id="report_desc" name="report_desc"
+											th:value="${userProfile.report_desc}" class="form-control form-control-sm"
+											autocomplete="false" disabled />
+									</div>
+								</div>
+
+
+								<div class="row formline">
+
+									<label class="col-sm-2">User ID 1</label>
+									<div class="col-sm-3">
+										<input type="text" id="user_id_1" name="user_id_1"
+											th:value="${userProfile.user_id_1}" class="form-control form-control-sm"
+											autocomplete="false" disabled />
+									</div>
+
+									<div class="col-sm-1"></div>
+
+
+									<label class="col-sm-2">User Name 1</label>
+									<div class="col-sm-3">
+										<input type="text" id="user_name_1" name="user_name_1"
+											th:value="${userProfile.user_name_1}" class="form-control form-control-sm"
+											autocomplete="false" disabled />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+
+								<div class="row formline">
+
+									<label class="col-sm-2">Email ID 1</label>
+									<div class="col-sm-3">
+										<input type="email" id="email_id_1" name="email_id_1"
+											th:value="${userProfile.email_id_1}" class="form-control form-control-sm"
+											autocomplete="off" disabled />
+									</div>
+									<div class="col-sm-1"></div>
+
+
+									<label class="col-sm-2">Mobile No 1</label>
+									<div class="col-sm-3">
+										<input type="number" id="mobile_no_1" name="mobile_no_1"
+											th:value="${userProfile.mobile_no_1}" class="form-control form-control-sm"
+											autocomplete="off" disabled />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+								<div class="row formline">
+
+									<label class="col-sm-2">Alert Flag 1</label>
+									<div class="col-sm-3">
+										<input type="text" id="alert_flg_1" name="alert_flg_1"
+											th:value="${userProfile.alert_flg_1}" class="form-control form-control-sm"
+											autocomplete="off" disabled />
+									</div>
+									<div class="col-sm-1"></div>
+
+
+									<label class="col-sm-2">User Id 2</label>
+									<div class="col-sm-3">
+										<input type="text" id="user_id_2" name="user_id_2"
+											th:value="${userProfile.user_id_2}" class="form-control form-control-sm"
+											disabled />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+
+								<div class="row formline">
+
+
+									<label class="col-sm-2">User Name 2</label>
+									<div class="col-sm-3">
+										<input type="text" id="user_name_2" name="user_name_2"
+											th:value="${userProfile.user_name_2}" class="form-control form-control-sm"
+											autocomplete="off" disabled />
+									</div>
+									<div class="col-sm-1"></div>
+
+
+									<label class="col-sm-2">Email ID 2</label>
+									<div class="col-sm-3">
+										<input type="email" id="email_id_2" name="email_id_2"
+											th:value="${userProfile.email_id_2}" class="form-control form-control-sm"
+											autocomplete="off" disabled />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+
+								<div class="row formline">
+
+
+									<label class="col-sm-2">Mobile No 2</label>
+									<div class="col-sm-3">
+										<input type="number" id="mobile_no_2" name="mobile_no_2"
+											th:value="${userProfile.mobile_no_2}" class="form-control form-control-sm"
+											autocomplete="off" disabled />
+									</div>
+
+									<div class="col-sm-1"></div>
+
+									<label class="col-sm-2">Alert Flag 2</label>
+									<div class="col-sm-3">
+										<input type="text" id="alert_flg_2" name="alert_flg_2"
+											th:value="${userProfile.alert_flg_2}" class="form-control form-control-sm"
+											disabled />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+								<div class="row formline">
+
+
+									<label class="col-sm-2">User ID 3</label>
+									<div class="col-sm-3">
+										<input type="text" id="user_id_3" name="user_id_3"
+											th:value="${userProfile.user_id_3}" class="form-control form-control-sm"
+											autocomplete="off" disabled />
+									</div>
+									<div class="col-sm-1"></div>
+
+
+									<label class="col-sm-2">User Name 3</label>
+									<div class="col-sm-3">
+										<input type="text" name="user_name_3" id="user_name_3"
+											th:value="${userProfile.user_name_3}" class="form-control form-control-sm"
+											disabled />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+								<div class="row formline">
+
+
+									<label class="col-sm-2">Email ID 3</label>
+									<div class="col-sm-3">
+										<input type="email" id="email_id_3" name="email_id_3"
+											th:value="${userProfile.email_id_3}" class="form-control form-control-sm"
+											autocomplete="off" disabled />
+									</div>
+									<div class="col-sm-1"></div>
+
+									<label class="col-sm-2">Mobile No 3</label>
+									<div class="col-sm-3">
+										<input type="number" id="mobile_no_3" name="mobile_no_3"
+											th:value="${userProfile.mobile_no_3}" class="form-control form-control-sm"
+											disabled />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+								<div class="row formline">
+
+
+									<label class="col-sm-2">Alert Flag 3</label>
+									<div class="col-sm-3">
+										<input type="text" id="alert_flg_3" name="alert_flg_3"
+											th:value="${userProfile.alert_flg_3}" class="form-control form-control-sm"
+											disabled />
+									</div>
+
+
+								</div>
+								<div class="card-footer text-center" style="background-color: #376275;">
+									<button type="button" class="btn btn-xs btn-primary" id="btnHome"
+										onclick="home();">Home</button>
+									<button type="button" class="btn btn-xs btn-primary" form="addalerter"
+										id="btnSubmit" onclick="editUser();">Submit</button>
+									<button type="button" class="btn btn-xs btn-primary" id="btnBack"
+										onclick="back();">Back</button>
+								</div>
+							</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+	<div th:if="${formmode}=='delete'" class="container content">
+		<div class="row">
+			<div class="col-sm-12 finuserapply">
+				<form action="#" method="post" autocomplete="off" id="deletealerter" th:object="${userProfile}"
+					th:fragment="finuserapply">
+					<div class="card">
+						<div class="card-header" style="background-color: #376275;">
+							<div class="float-left" style="color: white;">
+								<h3>ALERT NOTIFICATION MODEL - DELETE</h3>
+							</div>
+							<!-- <div class="btn-group nav-buttons float-right">
+								<button type="button" class="btn btn-xs btn-primary btns active"
+									id="btnAdd" onclick="adduser();">Create User</button>
+								<button type="button" class="btn btn-xs btn-primary btns"
+									id="btnInq" onclick="list();">List</button>
+							</div> -->
+						</div>
+						<div class="card-body">
+
+							<input autocomplete="false" name="hidden" type="text" style="display: none;">
+							<div class="form-group">
+								<div class="row formline">
+									<div class="col-sm-2">
+										<label for="userId">Report Srl</label>
+									</div>
+									<div class="col-sm-3">
+										<input type="text" id="report_srl" th:value="${userProfile.report_srl}"
+											class="form-control form-control-sm" name="report_srl" autocomplete="off"
+											required disabled />
+									</div>
+									<div class="col-sm-1">
+										<!-- <a th:if="${formmode}=='add'" href="#"><i
+											class="fas fa-search searchico" data-toggle="modal"
+											data-target="#finusers" id="iconacc"></i></a> -->
+									</div>
+									<div class="col-sm-2">
+										<label for="userName">Report Description</label>
+									</div>
+									<div class="col-sm-3">
+										<input type="text" id="report_desc" name="report_desc"
+											th:value="${userProfile.report_desc}" class="form-control form-control-sm"
+											autocomplete="false" disabled />
+									</div>
+								</div>
+
+
+								<div class="row formline">
+
+									<label class="col-sm-2">User ID 1</label>
+									<div class="col-sm-3">
+										<input type="text" id="user_id_1" name="user_id_1"
+											th:value="${userProfile.user_id_1}" class="form-control form-control-sm"
+											autocomplete="false" disabled />
+									</div>
+
+									<div class="col-sm-1"></div>
+
+
+									<label class="col-sm-2">User Name 1</label>
+									<div class="col-sm-3">
+										<input type="text" id="user_name_1" name="user_name_1"
+											th:value="${userProfile.user_name_1}" class="form-control form-control-sm"
+											autocomplete="false" disabled />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+
+								<div class="row formline">
+
+									<label class="col-sm-2">Email ID 1</label>
+									<div class="col-sm-3">
+										<input type="email" id="email_id_1" name="email_id_1"
+											th:value="${userProfile.email_id_1}" class="form-control form-control-sm"
+											autocomplete="off" disabled />
+									</div>
+									<div class="col-sm-1"></div>
+
+
+									<label class="col-sm-2">Mobile No 1</label>
+									<div class="col-sm-3">
+										<input type="number" id="mobile_no_1" name="mobile_no_1"
+											th:value="${userProfile.mobile_no_1}" class="form-control form-control-sm"
+											autocomplete="off" disabled />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+								<div class="row formline">
+
+									<label class="col-sm-2">Alert Flag 1</label>
+									<div class="col-sm-3">
+										<input type="text" id="alert_flg_1" name="alert_flg_1"
+											th:value="${userProfile.alert_flg_1}" class="form-control form-control-sm"
+											autocomplete="off" disabled />
+									</div>
+									<div class="col-sm-1"></div>
+
+
+									<label class="col-sm-2">User Id 2</label>
+									<div class="col-sm-3">
+										<input type="text" id="user_id_2" name="user_id_2"
+											th:value="${userProfile.user_id_2}" class="form-control form-control-sm"
+											disabled />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+
+								<div class="row formline">
+
+
+									<label class="col-sm-2">User Name 2</label>
+									<div class="col-sm-3">
+										<input type="text" id="user_name_2" name="user_name_2"
+											th:value="${userProfile.user_name_2}" class="form-control form-control-sm"
+											autocomplete="off" disabled />
+									</div>
+									<div class="col-sm-1"></div>
+
+
+									<label class="col-sm-2">Email ID 2</label>
+									<div class="col-sm-3">
+										<input type="email" id="email_id_2" name="email_id_2"
+											th:value="${userProfile.email_id_2}" class="form-control form-control-sm"
+											autocomplete="off" disabled />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+
+								<div class="row formline">
+
+
+									<label class="col-sm-2">Mobile No 2</label>
+									<div class="col-sm-3">
+										<input type="number" id="mobile_no_2" name="mobile_no_2"
+											th:value="${userProfile.mobile_no_2}" class="form-control form-control-sm"
+											autocomplete="off" disabled />
+									</div>
+
+									<div class="col-sm-1"></div>
+
+									<label class="col-sm-2">Alert Flag 2</label>
+									<div class="col-sm-3">
+										<input type="text" id="alert_flg_2" name="alert_flg_2"
+											th:value="${userProfile.alert_flg_2}" class="form-control form-control-sm"
+											disabled />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+								<div class="row formline">
+
+
+									<label class="col-sm-2">User ID 3</label>
+									<div class="col-sm-3">
+										<input type="text" id="user_id_3" name="user_id_3"
+											th:value="${userProfile.user_id_3}" class="form-control form-control-sm"
+											autocomplete="off" disabled />
+									</div>
+									<div class="col-sm-1"></div>
+
+
+									<label class="col-sm-2">User Name 3</label>
+									<div class="col-sm-3">
+										<input type="text" name="user_name_3" id="user_name_3"
+											th:value="${userProfile.user_name_3}" class="form-control form-control-sm"
+											disabled />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+								<div class="row formline">
+
+
+									<label class="col-sm-2">Email ID 3</label>
+									<div class="col-sm-3">
+										<input type="email" id="email_id_3" name="email_id_3"
+											th:value="${userProfile.email_id_3}" class="form-control form-control-sm"
+											autocomplete="off" disabled />
+									</div>
+									<div class="col-sm-1"></div>
+
+									<label class="col-sm-2">Mobile No 3</label>
+									<div class="col-sm-3">
+										<input type="number" id="mobile_no_3" name="mobile_no_3"
+											th:value="${userProfile.mobile_no_3}" class="form-control form-control-sm"
+											disabled />
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+
+								<div class="row formline">
+
+
+									<label class="col-sm-2">Alert Flag 3</label>
+									<div class="col-sm-3">
+										<input type="text" id="alert_flg_3" name="alert_flg_3"
+											th:value="${userProfile.alert_flg_3}" class="form-control form-control-sm"
+											disabled />
+									</div>
+
+
+								</div>
+								<div class="card-footer text-center" style="background-color: #376275;">
+									<button type="button" class="btn btn-xs btn-primary" id="btnHome"
+										onclick="home();">Home</button>
+									<button type="button" class="btn btn-xs btn-primary" form="deletealerter"
+										id="btnSubmit" onclick="deleteUser();">Submit</button>
+									<button type="button" class="btn btn-xs btn-primary" id="btnBack"
+										onclick="back();">Back</button>
+								</div>
+							</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+	<!---------------------User Edit form Ends-------------------------------------------------->
+	<!-- ---------------------Pop window - fin user list starts--------------------------------->
+
+	<div class="modal fade" id="finusers">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Finacle Users</h4>
+					<button type="button" class="close" data-dismiss="modal">×</button>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					<table class="table table-hover" id="finusertb">
+						<thead class="thead-light">
+							<tr>
+								<th>Branch code</th>
+								<th>Employee Id</th>
+								<th>User Id</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="userProfile : ${FinUserProfiles}" th:id="${userProfile.userid}"
+								class="userlist" th:onclick="finuser(this)">
+								<td th:text="${userProfile.finSolTb.sol_id}">123</td>
+								<td th:text="${userProfile.finGenEmpTb.emp_id}">123</td>
+								<td th:text="${userProfile.userid}">456</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!------------------------Pop window - fin user list Ends--------------------------------->
+	<!-- ---------------------Pop window - Domain list starts--------------------------------->
+
+	<div class="modal fade" id="getDomain">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Domain Id</h4>
+					<button type="button" class="close" data-dismiss="modal">×</button>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					<ul class="list-group">
+						<li class="list-group-item" th:each="domainlist : ${domains}">
+							<input type="checkbox" name="dom" th:value="${domainlist}" /> <label
+								th:text="${domainlist}"></label>
+
+						</li>
+					</ul>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" onclick="submitdata();">Submit</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!------------------------Pop window - Domain  list Ends--------------------------------->
+	<!--------------------------------------------------------------- Modal for alert messages-------------------------------->
+	<div class="modal fade" id="alert">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-body" style="text-align: center">
+					<p id="alertmsg"></p>
+					<button type="button" class="btn btn-primary" onclick="list()" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--------------------------------------------------------------- Modal for alert messages-------------------------------->
+</body>
+
+</html>

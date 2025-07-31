@@ -1,0 +1,1082 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+		th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/font-awesome/5.9.0/css/all.min.css"
+		th:href="@{/webjars/font-awesome/5.9.0/css/all.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"
+		th:href="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/datatables/1.10.19/css/jquery.dataTables.min.css"
+		th:href="@{/webjars/datatables/1.10.19/css/jquery.dataTables.min.css}">
+	<link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+	<link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon">
+
+	<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"
+		th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+	<script src="/webjars/popper.js/1.14.7/umd/popper.min.js"
+		th:src="@{/webjars/popper.js/1.14.7/umd/popper.min.js}"></script>
+	<script src="/webjars/jquery/3.4.1/jquery.min.js" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+	<script src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"
+		th:src="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.js}"></script>
+
+	<script src="/webjars/jquery-form/4.2.2/jquery.form.min.js"
+		th:src="@{/webjars/jquery-form/4.2.2/jquery.form.min.js}"></script>
+
+	<script src="/webjars/jquery-validation/1.19.0/jquery.validate.min.js"
+		th:src="@{/webjars/jquery-validation/1.19.0/jquery.validate.min.js}"></script>
+
+	<script src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/jquery.dataTables.min.js}"></script>
+	<script src="/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js}"></script>
+
+	<style>
+		.required-field::before {
+			content: "*";
+			color: red;
+			float: right;
+			margin-left: 5px;
+			/* Adjust the margin as needed */
+			font-size: 1.2em;
+			/* Adjust the font size as needed */
+		}
+
+		.spaceline {
+			/* Add your styling rules here */
+			margin-bottom: 10px;
+			/* Example: Adds 20 pixels of bottom margin */
+		}
+
+		label {
+			font-size: 16px;
+			/* Adjust the font size as needed */
+			overflow: hidden;
+			/* Hide overflow content if any */
+			text-overflow: ellipsis;
+			/* Show ellipsis (...) for overflow text */
+			display: inline-block;
+			/* Ensure the label stays on a single line */
+		}
+
+		.container-manager {
+			width: 83.5%;
+			padding-right: 15px;
+			padding-left: 15px;
+			margin-right: auto;
+			margin-left: 15.3%;
+			margin-top: 80px;
+			margin-top: 80px;
+		}
+
+		.filterable .filters input[disabled]::-webkit-input-placeholder {
+			color: #333;
+		}
+
+		.filterable .filters input[disabled]::-moz-placeholder {
+			color: #333;
+		}
+
+		.filterable .filters input[disabled]:-ms-input-placeholder {
+			color: #333;
+		}
+
+		.filterable .filters input[disabled]::-webkit-input-placeholder {
+			color: #333;
+		}
+
+		.scrollable-tbody {
+			overflow-y: auto;
+			max-height: 400px;
+			display: block;
+		}
+
+		.table th,
+		.table td {
+			width: auto;
+			white-space: nowrap;
+		}
+
+		.scroll {
+			max-height: 200vh;
+			overflow-y: scroll;
+			overflow-x: scroll;
+		}
+
+		.inner {
+			overflow-y: visible;
+			/* margin-left: 60px; */
+		}
+
+		/* Apply border to all table headers */
+		th {
+			border: 1px solid black;
+			/* Add a border to all headers */
+			padding: 0;
+			text-align: left;
+			/* You can change this as needed */
+		}
+
+		/* Apply border to the input inside th when focused */
+		th input:focus {
+			border: 1px solid black !important;
+			/* Ensures border when input is focused */
+		}
+	</style>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+
+		function filterfunc() {
+			var userdate = document.getElementById("datepickerInput").value;
+			alert(userdate);
+			$('#placelist').empty();
+
+			$
+				.ajax({
+					url: './filterrptdate',
+					type: 'POST',
+					data: {
+						report_date: userdate
+					},
+					success: function (data) {
+						var trHTML = '';
+						$
+							.each(
+								data,
+								function (key, value) {
+									trHTML += '<tr style="white-space: nowrap; overflow: hidden; text-align: center;">'
+										+ '<td>'
+										+ (value.srlno ? value.srlno : '')
+										+ '</td>'
+										+ '<td>'
+										+ (value.report_date ? formatDate(value.report_date) : '')
+										+ '</td>'
+										+ '<td>'
+										+ (value.unique_file_name ? value.unique_file_name : '')
+										+ '</td>'
+										+ '<td>'
+										+ (value.message_reason_code ? value.message_reason_code : '')
+										+ '</td>'
+										+ '<td>'
+										+ (value.member_message_text ? value.member_message_text : '')
+										+ '</td>'
+										+ '<td>'
+										+ (value.document_indicator ? value.document_indicator : '')
+										+ '</td>'
+										+ '<td>'
+										+ (value.full_partial_indicator ? value.full_partial_indicator : '')
+										+ '</td>'
+										+ '<td>'
+										+ (value.case_number ? value.case_number : '')
+										+ '</td>'
+										+ '<td>'
+										+ (value.original_settlement_date ? value.original_settlement_date : '')
+										+ '</td>'
+										+ '<td>'
+										+ (value.processing_status ? value.processing_status : '')
+										+ '</td>'
+										+ '<td>'
+										+ '<div class="dropdown">'
+										+ '<button class="btn btn-xs btn-info btns" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
+										+ 'Action</button>'
+										+ '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">'
+										+ '<button type="button" class="dropdown-item" id="btnmodify" data-attr="'
+										+ (value.srlno ? value.srlno : '')
+										+ '" onclick="modifyuser(this);" style="text-align:center;">Modify</button>'
+										+ '<div class="dropdown-divider"></div>'
+										+ '<button type="button" class="dropdown-item" id="btndelete" data-attr="'
+										+ (value.srlno ? value.srlno : '')
+										+ '" onclick="deleteuser(this);" style="text-align:center;">Delete</button>'
+										+ '<div class="dropdown-divider"></div>'
+										+ '<button type="button" class="dropdown-item" id="btnEnquiry" data-attr="'
+										+ (value.srlno ? value.srlno : '')
+										+ '" onclick="enquiryuser(this);" style="text-align:center;">Enquiry</button>'
+										+ '<div class="dropdown-divider"></div>'
+										+ '<button type="button" class="dropdown-item" id="btntstcase" data-attr="'
+										+ (value.srlno ? value.srlno : '')
+										+ '" onclick="testcases(this);" style="text-align:center;">Test Case</button>'
+										+ '<div class="dropdown-divider"></div>'
+										+ '</div>'
+										+ '</div>'
+										+ '</td>'
+										+ '</tr>';
+
+									function formatDate(date) {
+										var formattedDate = new Date(date);
+										var dd = String(formattedDate.getDate()).padStart(2, '0');
+										var mm = String(formattedDate.getMonth() + 1).padStart(2, '0');
+										var yyyy = formattedDate.getFullYear();
+										return dd + '-' + mm + '-' + yyyy;
+									}
+								});
+
+						$('#placelist').html(trHTML);
+					},
+					error: function (xhr, status, error) {
+						console.error(xhr.responseText);
+						showResponse("Report Date Not Matched", "Error", xhr, null);
+					}
+				});
+		}
+
+		function showResponse(responseText, statusText, xhr, $form) {
+			$("#alertmsg").text(responseText);
+			$('#alert').modal("toggle");
+		}
+		span.onclick = function () {
+			modal.style.display = "none";
+			location.reload();
+		}
+
+		$(function () {
+
+			var finusers = /*[[${FinUserProfiles}]]*/null;
+
+			console.log(finusers);
+
+			$("#usertable,#finusertb").DataTable({
+				"info": false,
+				"lengthChange": false
+
+			});
+
+			$("#expiryDate,#disableDate,#disableTilDate,#passExDate,#effectiveTill")
+				.datepicker({
+					minDate: new Date(),
+					changeMonth: true,
+					changeYear: true,
+					dateFormat: "dd-mm-yy"
+				});
+
+		});
+
+		function getUserlist(mode, num, maxpage) {
+
+			var n = parseInt(num);
+			var max = parseInt(maxpage);
+			var Callurl = 'UserProfile?formmode=list';
+
+			switch (mode) {
+				case "nextpage":
+					n = n + 1;
+					if (n > max) {
+						break;
+					}
+					Callurl = Callurl + "&page=" + n;
+					break;
+				case "prevpage":
+					n = n - 1;
+					if (n < 0) {
+						break;
+					}
+					Callurl = Callurl + "&page=" + n;
+					break;
+				case "givenpage":
+					n = parseInt($("#pageno").val()) - 1;
+					if (n > max || n < 0) {
+						break;
+					}
+					Callurl = Callurl + "&page=" + n;
+			}
+
+			location.href = Callurl;
+		}
+
+		function finuser(a) {
+
+			$
+
+				.ajax({
+					type: 'get',
+					url: './Finuserdata?userid=' + a.id,
+
+					success: function (data) {
+
+						/*<![CDATA[*/
+
+						$('.finuserapply').html(data);
+
+						$(
+							"#expiryDate,#disableDate,#disableTilDate,#passExDate,#effectiveTill")
+							.datepicker({
+								changeMonth: true,
+								changeYear: true,
+								dateFormat: "dd-mm-yy"
+							});
+
+						/*]]>*/
+
+						$("#finusers").modal("hide");
+					}
+
+				})
+
+		}
+
+		function home() {
+			location.href = 'Dashboard'
+		}
+
+		function back() {
+			history.back();
+		}
+
+		function downls() {
+			history.go(-2);
+		}
+
+		function back1() {
+			location.reload();
+		}
+
+		function fnClick(a) {
+			var userid = a.getAttribute("data-userid")
+			location.href = 'studentscreen?formmode=edit&userid=' + userid
+		}
+
+		function adduser(a) {
+
+			location.href = 'ChargeUpload?formmode=add';
+
+		}
+
+		function addDetails(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view2&srlno=' + srlno;
+
+		}
+
+		function testcases(a) {
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view3&srlno=' + srlno;
+		}
+
+		function retreqsubmit(a) {
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view4&srlno=' + srlno;
+		}
+
+		function retreqfullsubmit(a) {
+			var srlno = a.getAttribute("data-attr");
+			alert(srlno);
+			location.href = 'ChargeUpload?formmode=view5&srlno=' + srlno;
+		}
+
+		function retreqnonfullsubmit(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view6&srlno=' + srlno;
+		}
+
+		function chargebacks(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view7&srlno=' + srlno;
+		}
+
+		function representment(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view8&srlno=' + srlno;
+		}
+
+		function refund(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view9&srlno=' + srlno;
+		}
+
+		function refundcharg(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view10&srlno=' + srlno;
+		}
+
+		function memfuncoll(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view11&srlno=' + srlno;
+		}
+
+		function presreversal(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view12&srlno=' + srlno;
+		}
+
+		function memfundiscoll(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view13&srlno=' + srlno;
+		}
+
+		function npcifeecoll(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view14&srlno=' + srlno;
+		}
+		function npcifeedisb(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view15&srlno=' + srlno;
+		}
+		function presentment(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view16&srlno=' + srlno;
+		}
+		function header(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view17&srlno=' + srlno;
+		}
+		function trailer(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view18&srlno=' + srlno;
+		}
+		function voids(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view19&srlno=' + srlno;
+		}
+		function preatrb(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view20&srlno=' + srlno;
+		}
+		function atrbaccep(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view21&srlno=' + srlno;
+		}
+		function smstran(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view22&srlno=' + srlno;
+		}
+		function dmstran(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view23&srlno=' + srlno;
+		}
+
+		function modifyusers(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=edit3&srlno=' + srlno;
+
+		}
+
+		function uploaduser() {
+
+			location.href = 'ChargeUpload?formmode=view1';
+
+		}
+
+		function list() {
+			location.href = 'ChargeUpload?formmode=list';
+		}
+
+		function listusers() {
+			location.href = 'ChargeUpload?formmode=list2';
+		}
+
+		function modifyuser(a) {
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=edit3&srlno=' + srlno;
+		}
+
+		function enquiryuser(a) {
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view&srlno=' + srlno;
+		}
+
+		function chargeback(a) {
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=edit&srlno=' + srlno;
+		}
+
+		function addsubmit(a) {
+
+			if ($("#stp").valid()) {
+
+				var url = "./AddScreen";
+
+				$("#stp").attr('action', url);
+
+				var options = {
+					success: showResponse
+				};
+
+				$("#stp").ajaxSubmit(options);
+
+				function showResponse(responseText, statusText, xhr, $form) {
+					$("#alertmsg").text(responseText);
+					$('#alert').modal("toggle");
+
+				}
+				;
+			}
+		};
+
+		function passwordReset() {
+
+			var url = './passwordReset';
+			$("#userProfile").attr('action', url);
+
+			var options = {
+				success: showResponse
+				// post-submit callback 
+			};
+
+			$('#userProfile').ajaxSubmit(options);
+
+			function showResponse(responseText, statusText, xhr, $form) {
+
+				$("#alertmsg").text(responseText);
+
+				$('#alert').modal("toggle");
+
+			}
+			;
+		};
+
+		function roledesc() {
+
+			var roleid = $("#roleId").find(':selected').val();
+
+			if (roleid == 'ADM') {
+				$("#roleDesc").val("Admin");
+			} else if (roleid == 'ADT') {
+				$("#roleDesc").val("Audit");
+			} else if (roleid == 'GEN') {
+				$("#roleDesc").val("General User");
+			} else if (roleid == 'RECONADM') {
+				$("#roleDesc").val("Admin");
+			} else if (roleid == 'RECONGEN') {
+				$("#roleDesc").val("General User");
+			}
+			$(this).find(':selected').text();
+
+		}
+
+		function submitAddform() {
+
+			if ($("#userProfile").valid()) {
+
+				var url = "./adminUserProfileAdd?formmode=add";
+				$("#userProfile").attr('action', url);
+
+				var options = {
+					success: showResponse
+				};
+
+				$("#userProfile").ajaxSubmit(options);
+
+				function showResponse(responseText, statusText, xhr, $form) {
+					$("#alertmsg").text(responseText);
+					$('#alert').modal("toggle");
+
+				}
+				;
+			}
+		};
+
+		function deleteuser(a) {
+
+			var srlno = a.getAttribute("data-attribute");
+
+			alert(srlno);
+
+			$.ajax({
+				url: './deletescreen?mti=' + srlno,
+				data: $("#upon").serialize(),
+				type: 'POST',
+				success: function (data) {
+					$("#alertmsg").text(data);
+					$('#alert').modal("toggle");
+
+				}
+			});
+
+		};
+
+		function modifysubmit1(a) {
+			var srlno = document.getElementById("srlno56").value;
+			alert(srlno)
+			if ($("#crgbck1").valid()) {
+
+				var url = './modifyscreen?srlno=' + srlno;
+
+				$("#crgbck1").attr('action', url);
+
+				var options = {
+					success: showResponse
+				};
+
+				$("#crgbck1").ajaxSubmit(options);
+
+				function showResponse(responseText, statusText, xhr, $form) {
+					$("#alertmsg").text(responseText);
+					$('#alert').modal("toggle");
+
+				}
+				;
+			}
+		};
+
+		function modifysubmit(a) {
+			var srlno = document.getElementById("srlno56").value;
+			alert(srlno)
+			if ($("#crgbck1").valid()) {
+
+				var url = './modifyscreen?srlno=' + srlno;
+
+				$("#crgbck1").attr('action', url);
+
+				var options = {
+					success: showResponse
+				};
+
+				$("#crgbck1").ajaxSubmit(options);
+
+				function showResponse(responseText, statusText, xhr, $form) {
+					$("#alertmsg").text(responseText);
+					$('#alert').modal("toggle");
+
+				}
+				;
+			}
+		};
+
+		function chargebck(a) {
+			var srlno = document.getElementById("srlno56").value;
+			alert(srlno)
+			if ($("#crgbck1").valid()) {
+
+				var url = './chargebckscreen?srlno=' + srlno;
+
+				$("#crgbck1").attr('action', url);
+				$("#crgbck1")
+					.append(
+						'<input type="hidden" name="formId" value="' + formId + '">');
+
+				var options = {
+					success: showResponse
+				};
+
+				$("#crgbck1").ajaxSubmit(options);
+
+				function showResponse(responseText, statusText, xhr, $form) {
+					$("#alertmsg").text(responseText);
+					$('#alert').modal("toggle");
+
+				}
+				;
+			}
+		};
+
+		function downloads(a) {
+			var srlno = a.getAttribute("data-attribute");
+
+			if (validateRequiredFields($('#reportforms')[0])) {
+				var formmode1 = a.getAttribute("data-formmode1");
+
+				if (formmode1 == "view4" ||
+					formmode1 == "view5" ||
+					formmode1 == "view6" ||
+					formmode1 == "view7" ||
+					formmode1 == "view8" ||
+					formmode1 == "view9" ||
+					formmode1 == "view10" ||
+					formmode1 == "view11" ||
+					formmode1 == "view12" ||
+					formmode1 == "view13" ||
+					formmode1 == "view14" ||
+					formmode1 == "view15" ||
+					formmode1 == "view16" ||
+					formmode1 == "view17" ||
+					formmode1 == "view18" ||
+					formmode1 == "view19" ||
+					formmode1 == "view20" ||
+					formmode1 == "view21" ||
+					formmode1 == "view22" ||
+					formmode1 == "view23"
+				) {
+					if ($("#reportforms").valid()) {
+						var formData = new FormData($("#reportforms")[0]);
+						fetch("exportxml?srlno=" + srlno + "&formmode1=" + formmode1, {
+							method: "POST",
+							body: formData,
+						}).then(response => {
+							if (response.ok) {
+								var contentDisposition = response.headers.get('Content-Disposition');
+								var filename = contentDisposition.split('filename=')[1].trim();
+
+								response.blob().then(blob => {
+									var link = document.createElement('a');
+									link.href = window.URL.createObjectURL(blob);
+									link.download = filename;
+									document.body.appendChild(link);
+									link.click();
+									document.body.removeChild(link);
+								});
+								alert2('Download Successfully');
+							} else {
+								console.error('Download failed:', response);
+							}
+						})
+							.catch(error => {
+								console.error('Error during download:', error);
+							});
+					}
+				} else {
+				}
+			} else {
+				alert1("Please fill in all required fields.");
+			}
+			function alert1(responseText) {
+				$("#alertmsg").text(responseText);
+				$('#alert').modal("toggle");
+			}
+			function alert2(responseText) {
+				$("#alertmsg2").text(responseText);
+				$('#alert2').modal("toggle");
+			}
+			function validateRequiredFields(form) {
+				var requiredFields = form.querySelectorAll('[required]');
+				var isValid = true;
+
+				for (var i = 0; i < requiredFields.length; i++) {
+					if (!requiredFields[i].value.trim()) {
+						isValid = false;
+						highlightField(requiredFields[i]);
+					} else {
+						removeHighlight(requiredFields[i]);
+					}
+				}
+
+				return isValid;
+			}
+			function highlightField(field) {
+				field.style.border = "1px solid red";
+			}
+			function removeHighlight(field) {
+				field.style.border = "";
+			}
+		}
+	</script>
+	<SCRIPT>
+		$(function () {
+			$("#datepickerInput").datepicker({
+				dateFormat: "dd-mm-yy",
+				changeMonth: true,
+				numberOfMonths: 1,
+				gotoCurrent: true,
+				yearRange: '-80:+1000'
+
+			});
+		})
+		$("#datepicker").datepicker({
+			dateFormat: "dd/mm/yy"
+		});
+
+		//Filter Table
+
+		$(document)
+			.ready(
+				function () {
+					$('.filterable .btn-filter')
+						.click(
+							function () {
+								var $panel = $(this).parents(
+									'.filterable'), $filters = $panel
+										.find('.filters input'), $tbody = $panel
+											.find('.table tbody');
+								if ($filters.prop('disabled') == true) {
+									$filters
+										.prop('disabled', false);
+									$filters.first().focus();
+								} else {
+									$filters.val('').prop(
+										'disabled', true);
+									$tbody.find('.no-result')
+										.remove();
+									$tbody.find('tr').show();
+								}
+							});
+
+					$('.filterable .filters input')
+						.keyup(
+							function (e) {
+								/* Ignore tab key */
+								var code = e.keyCode || e.which;
+								if (code == '9')
+									return;
+								/* Useful DOM data and selectors */
+								var $input = $(this), inputContent = $input
+									.val().toLowerCase(), $panel = $input
+										.parents('.filterable'), column = $panel
+											.find('.filters th')
+											.index($input.parents('th')), $table = $panel
+												.find('.table'), $rows = $table
+													.find('tbody tr');
+								/* Dirtiest filter function ever ;) */
+								var $filteredRows = $rows
+									.filter(function () {
+										var value = $(this)
+											.find('td').eq(
+												column)
+											.text()
+											.toLowerCase();
+										return value
+											.indexOf(inputContent) === -1;
+									});
+								/* Clean previous no-result if exist */
+								$table.find('tbody .no-result')
+									.remove();
+								/* Show all rows, hide filtered ones (never do that outside of a demo ! xD) */
+								$rows.show();
+								$filteredRows.hide();
+								/* Prepend no-result row if all rows are filtered */
+								if ($filteredRows.length === $rows.length) {
+									$table
+										.find('tbody')
+										.prepend(
+											$('<tr class="no-result text-center"><td colspan="'
+												+ $table
+													.find('.filters th').length
+												+ '">No result found</td></tr>'));
+								}
+							});
+				});
+
+		function callBusinesstrail() {
+
+			location.href = 'MAPPING_RECONSCILLATION?formmode=upload'
+		}
+	</SCRIPT>
+</head>
+<title>XBRL</title>
+
+<body>
+	<div class="col-sm-2">
+		<div th:insert="XBRLHeaderMenu :: header"></div>
+	</div>
+	<div class="container-manager">
+		<div class="row">
+			<div class="col-sm-12 mt-2">
+				<div class="card w-100 border panel panel-primary filterable">
+					<div class="card-header" style="background-color: #e9ecef">
+						<div class="float-left">
+							<h5>AUTOMATIC TRANSACTION</h5>
+						</div>
+						<div class="float-right">
+							<button type="button" class="btn btn-xs btn-primary btns p-2 border"
+								onclick="callBusinesstrail(this);">Auto - Update</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6 mt-2">
+				<div th:if="${formmode}=='list'">
+					<div class="panel panel-primary filterable">
+						<div class="card w-100 border panel panel-primary filterable">
+							<div class="card-header" style="background-color: #e9ecef">
+								<div class="float-left"
+									style="display: flex; margin-left: -10px; justify-content: space-between; align-items: center;">
+									<h5>Source File</h5>
+
+								</div>
+								<div class="float-right">
+									<button type="button"
+										class="btn btn-xs btn-primary btns p-2 border btn-filter">Filter</button>
+								</div>
+							</div>
+							<div style="overflow-y: auto; max-height: 235px;">
+								<table class="table" id="usertable">
+									<thead class="thead-light">
+										<tr class="filters">
+											<th style="padding: 0; text-align: left; width: 15%;"><input type="text"
+													class="form-control font-weight-bold border-0"
+													placeholder="TRAN DATE" disabled></th>
+											<th style="padding: 0; text-align: left; width: 12%;"><input type="text"
+													class="form-control font-weight-bold border-0" placeholder="TRAN ID"
+													disabled></th>
+											<th style="padding: 0; text-align: left; width: 18%;"><input type="text"
+													class="form-control font-weight-bold border-0"
+													placeholder="PART TRAN ID" disabled></th>
+											<th style="padding: 0; text-align: left; width: 18%;"><input type="text"
+													class="form-control font-weight-bold border-0" placeholder="ACCT NO"
+													disabled></th>
+											<th style="padding: 0; text-align: left;"><input type="text"
+													class="form-control font-weight-bold border-0"
+													placeholder="TRAN TYPE" disabled></th>
+											<th style="padding: 0; text-align: right;"><input type="text"
+													class="form-control font-weight-bold border-0"
+													placeholder="TRAN AMT" disabled style="text-align: right;">
+											</th>
+										</tr>
+									</thead>
+									<tbody id="income">
+										<tr th:each="chartacc : ${listcoredatas}">
+											<td th:text="${#dates.format(chartacc?.tran_date, 'dd-MM-yyyy')}"></td>
+											<td th:text="${chartacc?.tran_id}"></td>
+											<td th:text="${chartacc?.part_tran_srl_num}"></td>
+											<td th:text="${chartacc?.acid}"></td>
+											<td><span th:switch="${chartacc?.part_tran_type}">
+													<span th:case="'C'">Credit</span> <span th:case="'D'">Debit</span>
+													<span th:case="*">Unknown</span>
+													<!-- Optional fallback for other values -->
+												</span></td>
+											<td class="acct-bal" style="text-align: right;"><span
+													th:text="${#numbers.formatDecimal(chartacc.tran_amt, 0, 'COMMA', 2, 'POINT')}"></span>
+											</td>
+										</tr>
+
+									</tbody>
+								</table>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6 mt-2">
+				<div th:if="${formmode}=='list'">
+					<div class="panel panel-primary filterable">
+						<div class="card w-100 border panel panel-primary filterable">
+							<div class="card-header" style="background-color: #e9ecef">
+								<div class="d-flex justify-content-between align-items-center">
+									<h5 class="mb-0">Destination File</h5>
+									<div class="d-flex align-items-center">
+										<button type="button"
+											class="btn btn-xs btn-primary btns p-2 border btn-filter">Filter</button>
+									</div>
+								</div>
+							</div>
+							<div style="overflow-y: auto; max-height: 235px;">
+								<table class="table" id="usertable">
+									<thead class="thead-light">
+										<tr class="filters">
+											<th style="padding: 0; text-align: left; width: 17%;"><input type="text"
+													class="form-control font-weight-bold border-0"
+													placeholder="TRAN DATE" disabled></th>
+											<th style="padding: 0; text-align: left; width: 10%;"><input type="text"
+													class="form-control font-weight-bold border-0"
+													placeholder="ACCOUNT ID" disabled></th>
+											<th style="padding: 0; text-align: left; width: 16%;"><input type="text"
+													class="form-control font-weight-bold border-0"
+													placeholder="PARTICULARS" disabled></th>
+											<th style="padding: 0; text-align: left; width: 27%;"><input type="text"
+													class="form-control font-weight-bold border-0"
+													placeholder="CURRENCY" disabled></th>
+											<th style="padding: 0; text-align: left; width: 12%;"><input type="text"
+													class="form-control font-weight-bold border-0" placeholder="CR/DR"
+													disabled></th>
+											<th style="padding: 0; text-align: right;"><input type="text"
+													class="form-control font-weight-bold border-0"
+													placeholder="TRAN AMT" disabled style="text-align: right;">
+											</th>
+										</tr>
+									</thead>
+									<tbody id="liability">
+										<tr th:each="chartacc : ${listvaluesdatas}">
+											<td th:text="${#dates.format(chartacc?.ntry_value_date, 'dd-MM-yyyy')}">
+											</td>
+											<td th:text="${chartacc?.stmt_account_identifier}"></td>
+											<td th:text="${chartacc?.ntry_entry_reference}"></td>
+											<td th:text="${chartacc?.transaction_currency}"></td>
+											<td><span th:switch="${chartacc?.ntry_credit_debit_indicator}">
+													<span th:case="'DBIT'">Debit</span> <span
+														th:case="'CRDT'">Credit</span>
+													<span th:case="*">Unknown</span>
+													<!-- Optional fallback for other values -->
+												</span></td>
+											<td class="acct-bal" style="text-align: right;"><span
+													th:text="${chartacc.ntry_transaction_amount == 0 ? '0.00' : #numbers.formatDecimal(chartacc.ntry_transaction_amount.toString().replace('-', ''), 0, 'COMMA', 2, 'POINT')}"></span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 mt-2">
+				<div class="card-footer text-center border-top-0" style="background-color: #e9ecef">
+					<button type="button" class="btn btn-xs btn-primary mr-2" id="btnHome"
+						onclick="Home();">Home</button>
+					<button type="button" class="btn btn-xs btn-primary ml-2" id="btnBack"
+						onclick="back();">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="alert">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="menu-title-header">
+					<div class="modal-title" id="exampleModalLabel" style="text-align: center; color: white;">CIM
+						FINANCE</div>
+				</div>
+				<div class="modal-body" style="text-align: center; background-color: #c6ccd2">
+					<p id="alertmsg" style="font-size: 16px;"></p>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="back1();"
+						style="width: 120px">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="alert2">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="menu-title-header">
+					<div class="modal-title" id="exampleModalLabel" style="text-align: center; color: white;">CIM
+						FINANCE</div>
+				</div>
+				<div class="modal-body" style="text-align: center; background-color: #c6ccd2">
+					<p id="alertmsg2" style="font-size: 16px;"></p>
+
+					<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="downls();"
+						style="width: 120px">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

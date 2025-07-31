@@ -1,0 +1,730 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+<link rel="stylesheet" type="text/css" href="/webjars/font-awesome/5.9.0/css/all.min.css"
+	th:href="@{/webjars/font-awesome/5.9.0/css/all.min.css}">
+<link rel="stylesheet" type="text/css" href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"
+	th:href="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.css}">
+<link rel="stylesheet" type="text/css" href="/webjars/datatables/1.10.19/css/jquery.dataTables.min.css"
+	th:href="@{/webjars/datatables/1.10.19/css/jquery.dataTables.min.css}">
+<link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+<link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon">
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"
+	th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+<script src="/webjars/popper.js/1.14.7/umd/popper.min.js"
+	th:src="@{/webjars/popper.js/1.14.7/umd/popper.min.js}"></script>
+<script src="/webjars/jquery/3.4.1/jquery.min.js" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"
+	th:src="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.js}"></script>
+<script src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"
+	th:src="@{/webjars/datatables/1.10.19/js/jquery.dataTables.min.js}"></script>
+<script src="/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js"
+	th:src="@{/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js}"></script>
+<!-- Load jQuery first -->
+<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script> -->
+<script src="/webjars/jquery/3.6.0/jquery.min.js" th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+<script src="/webjars/bootstrap/4.6.0/js/bootstrap.bundle.min.js"
+	th:src="@{/webjars/bootstrap/4.6.0/js/bootstrap.bundle.min.js}"></script>
+	<script src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/jquery.dataTables.min.js}"></script>
+	<script
+		src="/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js}"></script>
+<script th:inline="javascript">
+/* 	$(document).ready(function () {
+		$('#usertable').DataTable({
+			scrollX: true,
+			autoWidth: false,
+			paging: true,
+			lengthChange: false,
+			ordering: true,
+			pageLength: 20,
+			fixedHeader: true,
+			searching: false // 
+		});
+	}); */
+
+	/*<![CDATA[*/
+	$(document).ready(function () {
+		serviceAuditLevelData.forEach(function (item) {
+			if (item.audit_date) {
+				const dateObj = new Date(item.audit_date);
+				const yyyy = dateObj.getFullYear();
+				const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+				const dd = String(dateObj.getDate()).padStart(2, '0');
+				item.audit_date_filter = `${yyyy}-${mm}-${dd}`;
+			} else {
+				item.audit_date_filter = '';
+			}
+		});
+
+		$('#serviceAuditLevelTb').DataTable({
+			data: serviceAuditLevelData,
+			searching: false, // Already correct
+			columns: [
+				{data: 'audit_ref_no', title: 'Audit Ref No'},
+				{
+					data: 'audit_date',
+					title: 'Audit Date',
+					render: function (data) {
+						if (!data) return '';
+						const date = new Date(data);
+						return date.toLocaleDateString('en-GB');
+					}
+				},
+				{data: 'audit_table', title: 'Audit Table'},
+				{data: 'func_code', title: 'Function Code'},
+				{data: 'entry_user', title: 'Entry User'},
+				{
+					data: 'entry_time',
+					title: 'Entry Time',
+					render: function (data) {
+						if (!data) return '';
+						const time = new Date(data);
+						return time.toTimeString().split(' ')[0];
+					}
+				},
+				{data: 'auth_user', title: 'Auth User'},
+				{
+					data: 'auth_time',
+					title: 'Auth Time',
+					render: function (data) {
+						if (!data) return '';
+						const time = new Date(data);
+						return time.toTimeString().split(' ')[0];
+					}
+				},
+				{data: 'event_id', title: 'Event ID'},
+				{data: 'event_name', title: 'Event Name'},
+				{data: 'old_value', title: 'oldvalue'},
+				{data: 'new_value', title: 'newvalue'},
+				{data: 'remarks', title: 'Remarks'}
+			]
+		});
+	});
+
+	function navigateToid(element) {
+		var auditRefNo = element.getAttribute("data-custid");
+		var auditScreen = element.getAttribute("data-audit-screen");
+
+		// Allowed values that should trigger the modal
+		var allowedScreens = ["MODIFY", "ADD", "DELETE", "Edit", "EDIT"];
+
+		console.log("Audit Ref No:", auditRefNo, "Audit Screen:", auditScreen);
+
+		if (!allowedScreens.includes(auditScreen)) {
+			console.log("Audit Screen not in allowed list. Modal will not be shown.");
+			return; // Exit the function, don't fetch or show modal
+		}
+
+		$.ajax({
+			url: './getchanges2',
+			type: 'GET',
+			data: {audit_ref_no: auditRefNo},
+			success: function (response) {
+				if (!response || response.length === 0) {
+					alert("No data received for this Audit Ref No.");
+					return;
+				}
+
+				$("#usertablemodel tbody").empty();
+
+				const entries = response.split('|||');
+				entries.forEach(item => {
+					if (item.trim() === "") return;
+					const match = item.match(/(.*?): OldValue: (.*?), NewValue: (.*)/);
+					if (match) {
+						const [, fieldName, oldValue, newValue] = match;
+						$("#usertablemodel tbody").append(`
+                        <tr>
+                            <td>${fieldName}</td>
+                            <td>${oldValue}</td>
+                            <td>${newValue}</td>
+                        </tr>
+                    `);
+					}
+				});
+
+				$('#exampleModalCenter').modal('show');
+			},
+			error: function (xhr, status, error) {
+				alert("An error occurred while fetching the audit changes.");
+				console.error("Error:", status, error);
+			}
+		});
+	}
+
+
+
+
+
+
+	$(function () {
+
+		/* var fromdate;
+		var todate; */
+		var tabledata = /*[[${auditlogss}]]*/ null;
+
+
+		var table = $('#auditlogtb').DataTable({
+			"info": false,
+			"lengthChange": false,
+			data: tabledata,
+			columns: [
+				{
+					"data": "srl_no",
+					"title": "SRL NO"
+				},
+				{
+					"data": "log_in_user_id",
+					"title": "ENTRY USER ID"
+				},
+				{
+					"data": "log_in_user_name",
+					"title": "ENTRY USER NAME"
+				},
+				{
+					"data": "log_in_designation",
+					"title": "DESIGNATION"
+				},
+				{
+					"data": "log_in_contact_no",
+					"title": "CONTACT NO"
+				},
+				{
+					"data": "log_in_audit_date",
+					"title": "LOGIN DATE"
+				},
+				{
+					"data": "new_user_id",
+					"title": "CREATE USER ID"
+				},
+				{
+					"data": "new_user_name",
+					"title": "CREATE USER NAME"
+				}
+			]
+		});
+
+
+		/*	$("#fromdate").datepicker({
+			 changeMonth : true,
+			 changeYear : true,
+			 maxDate : new Date(),
+			 dateFormat : "dd-mm-yy",
+				 onClose : function() {
+					 fromdate = $(this).datepicker('getDate');
+				 }
+		 });
+		 $("#todate").datepicker({
+			 changeMonth : true,
+			 changeYear : true,
+			 maxDate : new Date(),
+			 dateFormat : "dd-mm-yy",
+			 onClose : function() {
+				 todate = $(this).datepicker('getDate');
+			 }
+		 });
+	 	
+		  $("#view").on("click",function() {
+ 
+			 var fromdate2 = $("#fromdate").val();
+			 var todate2 = $("#todate").val();
+		 	
+			 var diff = new Date(todate - fromdate);
+			 // get days
+			 var days = diff/1000/60/60/24;
+			 if(days<=31){
+			 var url = /*[[@{/auditList}]]*/
+		/*null;
+		var dates = {
+			fromdate : fromdate2,
+			todate : todate2
+		}
+
+		$.ajax({
+			type : "get",
+			cache : false,
+			url : url,
+			data : dates, // multiple data sent using ajax
+			success : function(data) {
+				
+				tabledata = data;
+				
+				console.log(tabledata);
+
+				 $('#auditlogtb').dataTable().fnDestroy();
+					
+					table = $('#auditlogtb').DataTable( {
+						"info" : false,
+						"lengthChange" : false,
+							data: tabledata,
+							columns: [
+								 { "data" : "Srl_No" },
+									{ "data" : "User_ID" },
+									{ "data" : "User_Name"},
+									{ "data" : "Designation"},
+									{ "data" : "Contact_no"},
+									{ "data" : "Audit_date"},
+									{ "data" : null,
+									  "className": 'details-control',
+									  "orderable":  false,
+									  "defaultContent": '',
+									  "title" : ''}
+							]
+						} );
+					
+					$("#auditlogtb_length").parent().remove();
+					$("#auditlogtb_info").parent().remove();
+
+				
+
+			}
+		});
+
+		}else{
+			
+			$("#alertmsg").text("Maximum 31 days only Allowed");
+			$("#alert").modal("toggle");
+			
+		}
+		
+		
+		
+	}); */
+
+
+		$("#downloadfile").on("click", function () {
+
+			var fromdate2 = $("#fromdate").val();
+			var todate2 = $("#todate").val();
+
+			var diff = new Date(todate - fromdate);
+			// get days
+			var days = diff / 1000 / 60 / 60 / 24;
+			if (days <= 31) {
+				var url = /*[[@{/auditLogs/Download}]]*/null;
+
+
+				url = url + "?fromdate=" + fromdate2 + "&todate=" + todate2;
+				location.href = url;
+
+			} else {
+
+				$("#alertmsg").text("Maximum 31 days only Allowed");
+				$("#alert").modal("toggle");
+
+			}
+
+
+
+		});
+
+
+		function format(d) {
+			// `d` is the original data object for the row
+			var htmlstr;
+			var str = d.modified_fields_data;
+
+			var data;
+			var modhtml = "";
+
+			if (str != null) {
+
+				data = str.split("|");
+				var length = data.length - (data.length % 3);
+				var allMods = new Array();
+				var count = 0;
+				for (i = 0; i < length; i = i + 3) {
+					var obj = new Object();
+					for (j = i; j < i + 3; j++) {
+						if (j % 3 == 0) {
+							obj.colname = data[j];
+						} else if (j % 3 == 1) {
+							obj.oldval = data[j];
+						} else {
+							obj.newval = data[j];
+						}
+					}
+					console.log(obj);
+
+					allMods[count] = obj;
+					count++;
+
+				};
+
+				modhtml = '<tr><td colspan="3">Changed Fields :<td></tr>' +
+					'<tr>' +
+					'<td>Column Name</td>' +
+					'<td>Old Value</td>' +
+					'<td>New Value</td>' +
+					'</tr>';
+
+				allMods.forEach(function (value) {
+
+					modhtml = modhtml + "<tr><td id='' >" + value.colname + "</td><td id='' class='alnum'>" + value.oldval + "</td><td id='' class='alnum'>" + value.newval + "</td></tr>";
+
+				});
+
+			}
+
+			htmlstr = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+				'<tr>' +
+				'<td>Unique Id:</td>' +
+				'<td colspan="2">' + d.unique_id + '</td>' +
+				'</tr>';
+
+			htmlstr = htmlstr + modhtml + '</table>';
+
+			return htmlstr;
+		};
+
+
+		$('#auditlogtb tbody').on('click', 'td.details-control', function () {
+			var tr = $(this).closest('tr');
+			var row = table.row(tr);
+
+			if (row.child.isShown()) {
+				// This row is already open - close it
+				row.child.hide();
+				tr.removeClass('shown');
+			}
+			else {
+				// Open this row
+				row.child(format(row.data())).show();
+				tr.addClass('shown');
+			}
+		});
+
+	})
+
+	function goHome() {
+		// Redirect to the home page (adjust the URL as needed)
+		window.location.href = '/BRBS/Dashboard'; // Replace with your actual home page URL
+	}
+	function goBack() {
+		window.history.back();
+	}
+
+
+</script>
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	var serviceAuditLevelData = /*[[${audits}]]*/[];
+	/*]]>*/
+</script>
+<style>
+	.row1 {
+		padding-bottom: 10px;
+	}
+
+	table.dataTable thead th,
+	table.dataTable tfoot th {
+		font-weight: normal;
+	}
+
+	table.table .thead-light th {
+		font-size: 13px;
+		border-color: #d4d7da;
+	}
+
+	.dataTables_scrollBody {
+		overflow: unset !important;
+	}
+
+	.dataTables_wrapper .dataTables_paginate .paginate_button {
+		padding: 0px;
+	}
+
+	td.details-control {
+		background: url("images/details_open.png") no-repeat center center;
+		cursor: pointer;
+	}
+
+	tr.shown td.details-control {
+		background: url("images/details_close.png") no-repeat center center;
+	}
+
+	/* .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background-color: #4285F4;
+    color: white !important;
+    border: none;
+}
+ */
+	/* Pagination hover */
+	/* .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: #3d69fc;
+} */
+	/* Style the DataTable header to match the image */
+	#userAuditLevelTb thead th {
+		background-color: #37474F;
+		/* dark blue-gray */
+		color: white;
+		font-weight: bold;
+		font-size: 13px;
+		text-align: left;
+		border: 1px solid #dee2e6;
+	}
+
+	/* Style for table rows */
+	#userAuditLevelTb tbody td {
+		text-align: left;
+		border: 1px solid #dee2e6;
+		font-size: 13px;
+	}
+
+	/* Zebra striping */
+	#userAuditLevelTb tbody tr:nth-child(odd) {
+		background-color: #f9f9f9;
+	}
+
+	/* No data message color */
+	.dataTables_empty {
+		color: red !important;
+		text-align: left;
+	}
+
+	/* Pagination Button Styles */
+	.dataTables_wrapper .dataTables_paginate .paginate_button {
+		padding: 4px 8px;
+		margin: 2px;
+		border: 1px solid #ccc;
+		background-color: #3d69fc;
+		border-radius: 4px;
+		font-size: 12px;
+	}
+</style>
+<style>
+	/*   .table-container {
+    max-height: 300px;
+    overflow-y: auto;
+  } */
+	.table-container {
+		max-height: 400px;
+		overflow-y: auto;
+		margin-top: 10px;
+	}
+
+	table.fixed-header-table {
+		width: 100%;
+		border-collapse: collapse;
+		table-layout: fixed;
+	}
+
+	thead th {
+		position: sticky;
+		top: 0;
+		background: #f8f9fa;
+		/* or white */
+		z-index: 1;
+		border: 1px solid #dee2e6;
+		text-align: left;
+	}
+
+	table.fixed-header-table th,
+	table.fixed-header-table td {
+		padding: 8px;
+		border: 1px solid #dee2e6;
+		text-align: center;
+	}
+
+	.table-container {
+		max-height: 500px;
+		/* You can adjust this height */
+		overflow-y: auto;
+	}
+	
+	.dataTables_filter {
+    display: none;
+}
+	
+</style>
+<script>
+
+/* document.addEventListener("DOMContentLoaded", function () {
+	const dateInput = document.getElementById("searchDate");
+	const table = document.getElementById("usertable");
+	const rows = table.querySelector("tbody").getElementsByTagName("tr");
+
+	dateInput.addEventListener("input", function () {
+		const selectedDate = this.value; // Format: yyyy-mm-dd
+
+		for (let row of rows) {
+			const entryDateCell = row.cells[4]; // 5th column (Entry Date)
+			const cellText = entryDateCell.textContent.trim(); // Format: dd-MM-yyyy
+
+			if (!selectedDate) {
+				row.style.display = ""; // Show all rows
+				continue;
+			}
+
+			// Convert selectedDate (yyyy-mm-dd) to dd-MM-yyyy
+			const [year, month, day] = selectedDate.split("-");
+			const formattedSelectedDate = `${day}-${month}-${year}`;
+
+			if (cellText === formattedSelectedDate) {
+				row.style.display = "";
+			} else {
+				row.style.display = "none";
+			}
+		}
+	});
+}); */
+
+
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+var serviceAuditLevelData = /*[[${audits}]]*/[];
+/*]]>*/
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const tableElement = $('#usertable');
+
+    if (!$.fn.DataTable.isDataTable(tableElement)) {
+        var table = tableElement.DataTable({
+            scrollX: true,
+            autoWidth: false,
+            paging: true,
+            lengthChange: false,
+            ordering: true,
+            pageLength: 20,
+            fixedHeader: true,
+            searching: true, // must be true for custom filter
+            columnDefs: [
+                { targets: '_all', defaultContent: '-' }
+            ]
+        });
+
+        $('#searchDate').on('change', function () {
+            const selectedDate = this.value; // yyyy-MM-dd
+            $.fn.dataTable.ext.search = [];
+
+            if (selectedDate) {
+                const [yyyy, mm, dd] = selectedDate.split("-");
+                const formatted = `${dd}-${mm}-${yyyy}`;
+
+                $.fn.dataTable.ext.search.push(function (settings, data) {
+                    return data[4] === formatted; // 5th column is Entry Date
+                });
+            }
+
+            table.draw();
+        });
+    }
+});
+
+</script>
+
+</head>
+<title>BCDRS</title>
+
+<body>
+	<div th:insert="XBRLHeaderMenu :: header"></div>
+	<div class="container content">
+		<div class="card" style="width: 1450px; margin-left: -26px;">
+			<div class="card-header d-flex justify-content-between align-items-center"
+				style="background-color: #376275;">
+				<h4 class="mb-0" style="color:white">SERVICE LEVEL AUDIT</h4>
+				<div class="form-inline">
+					<!-- <label for="searchDate" class="mr-2 mb-0" style="color:white">Search records By Date:</label>
+					<input type="date" id="searchDate" class="form-control form-control-sm" /> -->
+					
+					<label for="searchDate" class="mr-2 mb-0" style="color:white">Search records By Date:</label>
+<input type="date" id="searchDate" class="form-control form-control-sm" />
+					
+				</div>
+			</div>
+
+			<form class="form-horizontal" method="post" name="CriteriaForm" id="reportform">
+				<div class="form-group">
+					<div class="row row1"></div>
+				</div>
+			</form>
+
+			<div class="table-container">
+				<table class="table table-striped table-bordered table-hover" id="usertable">
+					<thead>
+						<tr>
+							<th>Audit Ref No</th>
+							<th>Table Name</th>
+							<th>Function</th>
+							<th>Entry User</th>
+							<th>Entry Date</th>
+							<th>Entry Time</th>
+							<th>Authorizer</th>
+							<th style="width: 250px;">Modified Data</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="auditdata : ${audits}"
+							th:attr="data-custid=${auditdata.audit_ref_no}, data-audit-screen=${auditdata.audit_screen}"
+							onclick="navigateToid(this)">
+							<td th:text="${auditdata.audit_ref_no}"></td>
+							<td th:text="${auditdata.audit_table}"></td>
+							<td th:text="${auditdata.func_code}"></td>
+							<td th:text="${auditdata.entry_user}"></td>
+							<td th:text="${auditdata.entry_time != null ? #dates.format(auditdata.entry_time, 'dd-MM-yyyy') : 'N/A'}"></td>
+
+							<td
+								th:text="${auditdata.entry_time != null ? #dates.format(auditdata.entry_time, 'hh:mm a') : 'N/A'}">
+							</td>
+							<td th:text="${auditdata.auth_user}"></td>
+							<td th:text="${auditdata.remarks ?: 'N/A'}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="card-footer text-center" style="background-color: #376275;">
+				<button type="button" class="btn btn-xs btn-primary" id="btnHome" onclick="goHome();">Home</button>
+				<button type="button" class="btn btn-xs btn-primary" id="btnBack" onclick="goBack();">Back</button>
+			</div>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalCenterTitle">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content" style="width: 272%;">
+					<div class="modal-body" style="width: 100%;">
+						<table class="table table-striped table-bordered table-hover" id="usertablemodel"
+							style="width: 100%;">
+							<thead>
+								<tr>
+									<th>Field Name</th>
+									<th>Old Value</th>
+									<th>New Value</th>
+								</tr>
+							</thead>
+							<tbody>
+								<!-- JavaScript will populate rows here -->
+							</tbody>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Alert modal -->
+		<div class="modal fade" id="alert">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+				<div class="modal-content">
+					<div class="modal-body" style="text-align: center">
+						<p id="alertmsg"></p>
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

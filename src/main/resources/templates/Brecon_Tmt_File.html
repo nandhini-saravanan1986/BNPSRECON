@@ -1,0 +1,1333 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+		th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/font-awesome/5.9.0/css/all.min.css"
+		th:href="@{/webjars/font-awesome/5.9.0/css/all.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"
+		th:href="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/datatables/1.10.19/css/jquery.dataTables.min.css"
+		th:href="@{/webjars/datatables/1.10.19/css/jquery.dataTables.min.css}">
+	<link rel="stylesheet" href="/webjars/datatables/1.10.19/css/dataTables.bootstrap4.min.css"
+		th:href="@{/webjars/datatables/1.10.19/css/dataTables.bootstrap4.min.css}">
+	<link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+	<link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon">
+
+	<style>
+		/* Styles from Reconciliation Dashboard example */
+		body {
+			background-color: #f8f9fa;
+			margin-left: 250px;
+			/* Assuming a fixed sidebar from XBRLHeaderMenu */
+			margin-top: 75px;
+			/* Assuming a fixed header from XBRLHeaderMenu */
+			width: calc(100% - 250px);
+			/* Adjust if sidebar width is different, allows for responsiveness */
+			padding: 15px;
+			/* Added padding for content spacing */
+			box-sizing: border-box;
+		}
+
+		.card-header-custom {
+			background-color: #7593b3;
+			color: black;
+		}
+
+		.recon-button,
+		.btn-recon {
+			/* Combined for shared properties */
+			border: none;
+			border-radius: 0.5rem;
+			padding: 0.5rem 1.2rem;
+			font-family: Verdana, Geneva, Tahoma, sans-serif;
+			letter-spacing: .1em;
+			background-color: #36454F;
+			color: white;
+			transition: background-color .3s ease-in-out;
+			text-decoration: none;
+			/* Ensure button links don't have underlines */
+			display: inline-flex;
+			/* For icon alignment */
+			align-items: center;
+			/* For icon alignment */
+			justify-content: center;
+			/* For icon alignment */
+			line-height: 1.5;
+			/* Standard line height */
+			margin-left: 5px;
+			/* Add a little space between buttons */
+			margin-right: 5px;
+		}
+
+		.recon-button:hover,
+		.btn-recon:hover {
+			background-color: #FFD580;
+			color: #36454F;
+			/* Change text color on hover for better contrast */
+			text-decoration: none;
+		}
+
+		.card-header-custom h5 {
+			font-family: verdana;
+			letter-spacing: .1em;
+			margin-bottom: 0;
+			/* Remove default margin from h5 if it's inside d-flex */
+		}
+
+		/* Table header styling from example 1 */
+		th {
+			white-space: nowrap;
+		}
+
+		/* End of Styles from Reconciliation Dashboard example */
+
+
+		/* Existing TTUM Page Styles (preserved) */
+		.required-field::before {
+			content: "*";
+			color: red;
+			/* float: right; -- Removed float to use with col-form-label better */
+			margin-left: 2px;
+			font-size: 1.2em;
+		}
+
+		.col-form-label .required-field::before {
+			float: none;
+			/* Ensure it doesn't float if inside a col-form-label */
+		}
+
+
+		.spaceline {
+			margin-bottom: 10px;
+		}
+
+		label {
+			font-size: 16px;
+			/* overflow: hidden; -- Might not be needed with Bootstrap grid for labels */
+			/* text-overflow: ellipsis; */
+			/* display: inline-block; */
+		}
+
+		.scroll {
+			max-height: 200vh;
+			overflow-y: scroll;
+			overflow-x: scroll;
+		}
+
+		.inner {
+			overflow-y: visible;
+		}
+
+		/* Sticky header for tables within .table-responsive */
+		.table-responsive>.table .thead-dark th {
+			position: sticky;
+			top: 0;
+			background-color: #343a40;
+			/* Bootstrap's dark color */
+			color: white;
+			/* Text color for actual th content */
+			z-index: 10;
+			vertical-align: middle;
+			/* Align filter text vertically */
+		}
+
+		.table td {
+			font-family: calibri;
+		}
+
+		.table th {
+			/* General th styling, not overriding thead-dark specifically for sticky */
+			font-family: calibri;
+			vertical-align: middle;
+		}
+
+
+		/* --- Add these rules for placeholder alignment --- */
+		.filters .filter-align-left input.form-control::placeholder,
+		.filters .filter-align-left input.form-control {
+			text-align: left;
+		}
+
+		.filters .filter-align-left input.form-control::-webkit-input-placeholder {
+			text-align: left;
+		}
+
+		.filters .filter-align-left input.form-control::-moz-placeholder {
+			text-align: left;
+			opacity: 1;
+		}
+
+		.filters .filter-align-left input.form-control:-ms-input-placeholder {
+			text-align: left;
+		}
+
+		.filters .filter-align-right input.form-control::placeholder,
+		.filters .filter-align-right input.form-control {
+			text-align: right;
+		}
+
+		.filters .filter-align-right input.form-control::-webkit-input-placeholder {
+			text-align: right;
+		}
+
+		.filters .filter-align-right input.form-control::-moz-placeholder {
+			text-align: right;
+			opacity: 1;
+		}
+
+		.filters .filter-align-right input.form-control:-ms-input-placeholder {
+			text-align: right;
+		}
+
+		/* --- End of placeholder alignment rules --- */
+
+		/* Your existing CSS for placeholder visibility and styling */
+		.filterable .filters input[disabled] {
+			background-color: transparent;
+			border: none;
+			cursor: auto;
+			box-shadow: none;
+			padding: 0.375rem 0.75rem;
+			height: auto;
+			width: 100%;
+			line-height: 1.5;
+			font-size: 1rem;
+		}
+
+		.filterable .filters input[disabled].font-weight-bold::-webkit-input-placeholder {
+			font-weight: normal;
+			color: #D3D3D3;
+		}
+
+		/* ... rest of your placeholder visibility CSS ... */
+		.filterable .filters input[disabled].font-weight-bold::-moz-placeholder {
+			/* ... */
+		}
+
+		.filterable .filters input[disabled].font-weight-bold:-ms-input-placeholder {
+			/* ... */
+		}
+
+		.filterable .filters input[disabled].font-weight-bold::placeholder {
+			/* ... */
+		}
+
+		.filterable .filters input[disabled]::-webkit-input-placeholder {
+			/* ... */
+		}
+
+		.filterable .filters input[disabled]::-moz-placeholder {
+			/* ... */
+		}
+
+		.filterable .filters input[disabled]:-ms-input-placeholder {
+			/* ... */
+		}
+
+		.filterable .filters input[disabled]::placeholder {
+			/* ... */
+		}
+
+		/* == END OF FIX == */
+
+
+		.icon {
+			cursor: pointer;
+			margin-left: 10px;
+			color: red;
+			font-size: 20px;
+		}
+
+		.close-icon {
+			cursor: pointer;
+			margin-left: 10px;
+			color: blue;
+			font-size: 20px;
+		}
+
+		.row1 {
+			margin-bottom: 1rem;
+			display: flex;
+			/* Align items in the row nicely */
+			align-items: center;
+			/* Vertically align items in the row */
+		}
+
+		.row1 .col-form-label {
+			padding-top: calc(0.375rem + 1px);
+			/* Align with Bootstrap input vertical padding */
+			padding-bottom: calc(0.375rem + 1px);
+			margin-bottom: 0;
+			line-height: 1.5;
+		}
+
+
+		.card-footer .btn {
+			margin: 0 0.25rem;
+		}
+
+		.card-header-custom .btn-toolbar .btn-group .recon-button {
+			margin-left: 2px;
+			/* Fine tune spacing for buttons in toolbar */
+			margin-right: 2px;
+		}
+
+		.form-control-file {
+			/* Style file input a bit better */
+			border: 1px solid #ced4da;
+			padding: .375rem .75rem;
+			border-radius: .25rem;
+		}
+
+		/* Modal header styling */
+		.modal-header.menu-title-header {
+			background-color: #7593b3;
+			color: black;
+			border-bottom: 1px solid #5a7694;
+			/* Darker border for contrast */
+			display: block;
+			/* To allow text-center on h4 */
+			padding: 1rem;
+		}
+
+		.modal-header.menu-title-header .modal-title {
+			font-family: verdana;
+			text-align: center;
+			width: 100%;
+		}
+
+		.modal-body {
+			background-color: #f8f9fa;
+			/* Lighter background for modal body */
+			text-align: center;
+		}
+
+		.modal-body p {
+			font-size: 16px;
+			color: #333;
+			/* Darker text for readability */
+			margin-bottom: 0;
+			/* Remove default p margin if only one message */
+		}
+
+		.modal-footer {
+			background-color: #e9ecef;
+			/* Standard Bootstrap footer/header bg */
+			border-top: 1px solid #dee2e6;
+			justify-content: center !important;
+			/* Ensure button is centered */
+		}
+
+		.main-content-area {
+			/* Add this class to the div wrapping all formmode blocks */
+			width: 100%;
+		}
+	</style>
+	<title>TTUM Transactions</title>
+</head>
+
+<body>
+	<div th:insert="XBRLHeaderMenu :: header"></div>
+
+	<div class="main-content-area">
+
+		<div th:if="${formmode}=='list11'">
+			<div class="card shadow-sm">
+				<div class="card-header card-header-custom d-flex justify-content-between align-items-center flex-wrap">
+					<h5 class="mb-0">TTUM TRANSACTIONS - LIST</h5>
+					<div>
+						<button type="button" class="recon-button" onclick="uploadfiles(this);"><i
+								class="fas fa-upload mr-1"></i>Upload</button>
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-bordered table-striped table-hover" style="font-size: large;">
+							<thead class="thead-dark">
+								<tr style="white-space: nowrap; overflow: hidden; text-align: left">
+									<th>Cycle</th>
+									<th>Credit Account</th>
+									<th>Credit Account Number</th>
+									<th>Debit Account</th>
+									<th>Debit Account Number</th>
+									<th>Amount(AED)</th>
+									<th>Transaction Remarks</th>
+									<th>Particulars</th>
+								</tr>
+							</thead>
+							<tbody id="placelist">
+								<!-- Data will be populated by JavaScript -->
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="card-footer text-center bg-light mt-3">
+					<button type="button" class="btn btn-sm btn-primary" onclick="home();">
+						<i class="fas fa-home mr-1"></i> Home
+					</button>
+					<button type="button" class="btn btn-sm btn-secondary" onclick="back();">
+						<i class="fas fa-arrow-left mr-1"></i> Back
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<div th:if="${formmode}=='upload'">
+			<form action="#" th:object="${reportform}" method="post" enctype="multipart/form-data" id="reportform">
+				<div class="card shadow-sm" style="font-size: large;">
+					<div
+						class="card-header card-header-custom d-flex justify-content-between align-items-center flex-wrap">
+						<h5 class="mb-0">TTUM File - Upload</h5>
+					</div>
+					<div class="card-body">
+						<div class="form-group">
+							<div class="row row1 sr-only"> <!-- Hidden srlno -->
+								<label class="col-sm-3 col-form-label control-label">SRL No</label>
+								<div class="col-sm-9">
+									<input type="hidden" name="srlno" id="srlno" value="" class="form-control"
+										placeholder="Enter File ID" disabled /> <span id="repname"></span>
+									<!-- What is this span for? -->
+								</div>
+							</div>
+							<div class="row row1">
+								<label for="report_name" class="col-sm-3 col-form-label control-label">Report Name<span
+										class="required-field"></span></label>
+								<div class="col-sm-9">
+									<input type="text" name="report_name" id="report_name" class="form-control"
+										placeholder="File name auto-populates" required readonly />
+								</div>
+								<div class="col-sm-2 d-flex align-items-center"> <!-- Col for icon -->
+									<span class="material-icons icon" id="deleteIcon" style="display: none;"
+										onclick="deleteFile(document.getElementById('report_name').value)">
+										<i class="fas fa-trash-alt"></i> <!-- Font Awesome icon -->
+									</span>
+								</div>
+							</div>
+							<div class="row row1">
+								<label for="report_date" class="col-sm-3 col-form-label control-label">Report Date<span
+										class="required-field"></span></label>
+								<div class="col-sm-9">
+									<input type="text" name="report_date" id="report_date" class="form-control"
+										placeholder="dd-mm-yyyy" required />
+								</div>
+							</div>
+							<div class="row row1">
+								<label for="fileInput" class="col-sm-3 col-form-label control-label">XML upload <span
+										class="required-field"></span>
+								</label>
+								<div class="col-sm-9">
+									<input type="file" name="file" id="fileInput" accept=".xml"
+										class="form-control-file" multiple onchange="handleFileSelection()" required />
+								</div>
+							</div>
+							<div class="row row1">
+								<label for="fileList" class="col-sm-3 col-form-label control-label">Selected
+									Files</label>
+								<div class="col-sm-9">
+									<select id="fileList" class="form-control" onclick="updateReportName(event)"
+										multiple size="3"></select> <!-- Added size to show a few items -->
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card-footer text-center bg-light mt-3">
+						<button type="button" class="btn btn-sm btn-primary" onclick="home();">
+							<i class="fas fa-home mr-1"></i> Home
+						</button>
+						<button type="button" class="recon-button" onclick="submitdatas();" id="btnUpload">
+							<!-- Changed to type="button" -->
+							<i class="fas fa-paper-plane mr-1"></i> Submit
+						</button>
+						<button type="button" class="btn btn-sm btn-secondary" onclick="back();">
+							<i class="fas fa-arrow-left mr-1"></i> Back
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div th:if="${formmode}=='list'">
+			<div class="card shadow-sm filterable">
+				<div class="card-header card-header-custom d-flex justify-content-between align-items-center flex-wrap">
+					<h5 class="mb-0">TTUMValues - List</h5>
+					<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+						<div class="btn-group" role="group" aria-label="File actions">
+							<button type="button" class="recon-button" onclick="uploadfiles(this);"><i
+									class="fas fa-upload mr-1"></i>Xml Upload</button>
+							<button type="button" class="recon-button" id="btnsubmitExcel"
+								onclick="genereatevalues();"><i class="fas fa-file-excel mr-1"></i>Gen TTUM
+								Excel</button>
+							<button type="button" class="recon-button" id="btnsubmitAscii"
+								onclick="genereatevalues3();"><i class="fas fa-file-alt mr-1"></i>Gen TTUM
+								Ascii</button>
+						</div>
+						<div class="btn-group" role="group" aria-label="Filter actions">
+							<button type="button" class="recon-button btn-filter"><i
+									class="fas fa-filter mr-1"></i>Filter</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive" th:classappend="${searchmsg == null}?'inner'"
+						style="max-height: 450px;"> <!-- Increased max-height slightly -->
+						<table class="table table-bordered table-striped table-hover" style="font-size: large;">
+							<thead class="thead-dark" style="text-align: center;">
+								<tr class="filters">
+									<th style="width: 10%;" class="filter-align-left"><input type="text"
+											class="form-control font-weight-bold" placeholder="Report date" disabled>
+									</th>
+									<th style="width: 10%;" class="filter-align-left"><input type="text"
+											class="form-control font-weight-bold" placeholder="Value date" disabled>
+									</th>
+									<th style="width: 25%;" class="filter-align-left"><input type="text"
+											class="form-control font-weight-bold" placeholder="Report Name" disabled>
+									</th>
+									<th style="width: 15%;" class="filter-align-left"><input type="text"
+											class="form-control font-weight-bold" placeholder="Account Type" disabled>
+									</th>
+									<th style="width: 11%;" class="filter-align-right"><input type="text"
+											class="form-control font-weight-bold" placeholder="Inserted Entries"
+											disabled></th>
+									<th style="width: 10%;" class="filter-align-right"><input type="text"
+											class="form-control font-weight-bold" placeholder="Total Entries" disabled>
+									</th>
+									<th style="width: 10%;" class="filter-align-right"><input type="text"
+											class="form-control font-weight-bold" placeholder="Credit" disabled></th>
+									<th style="width: 15%;" class="filter-align-right"><input type="text"
+											class="form-control font-weight-bold" placeholder="Debit" disabled></th>
+								</tr>
+							</thead>
+							<tbody id="placelist">
+								<tr th:each="chrgbck : ${chargeback}" style="white-space: nowrap; overflow: hidden;">
+									<td th:text="${chrgbck[0] != null ? #dates.format(chrgbck[0], 'dd-MM-yyyy') : ''}"
+										style="text-align: left;"></td>
+									<td th:text="${chrgbck[1] != null ? #dates.format(chrgbck[1], 'dd-MM-yyyy') : ''}"
+										style="text-align: left;"></td> <!-- Added left align for consistency -->
+									<td th:text="${chrgbck[2]}" style="text-align: left;"></td>
+									<!-- Added left align for consistency -->
+									<td id="reportnamevalues" th:text="${chrgbck[3]}" style="text-align: left;"></td>
+									<!-- Added left align for consistency -->
+									<td th:text="${chrgbck[4]}" style="text-align: right;"></td>
+									<!-- Keep right align for numeric data -->
+									<td th:text="${chrgbck[5]}" style="text-align: right;"></td>
+									<!-- Keep right align for numeric data -->
+									<td th:text="${chrgbck[6]}" style="text-align: right;"></td>
+									<!-- Keep right align for numeric data -->
+									<td th:text="${chrgbck[7]}" style="text-align: right;"></td>
+									<!-- Keep right align for numeric data -->
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="card-footer text-center bg-light mt-3">
+					<button type="button" class="btn btn-sm btn-primary" onclick="home();">
+						<i class="fas fa-home mr-1"></i> Home
+					</button>
+					<button type="button" class="btn btn-sm btn-secondary" onclick="back();">
+						<i class="fas fa-arrow-left mr-1"></i> Back
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<div th:if="${formmode}=='upload1'">
+			<form action="#" th:object="${reportform}" method="post" enctype="multipart/form-data" id="reportform1">
+				<div class="card shadow-sm">
+					<div
+						class="card-header card-header-custom d-flex justify-content-between align-items-center flex-wrap">
+						<h5 class="mb-0">TMT File Generate (Legacy XML Upload)</h5>
+					</div>
+					<div class="card-body">
+						<div class="form-group">
+							<div class="row row1 sr-only">
+								<label class="col-sm-3 col-form-label control-label">SRL No</label>
+								<div class="col-sm-9">
+									<input type="hidden" name="srlno" id="srlno_up1" value="" class="form-control"
+										placeholder="Enter File ID" disabled /> <span id="repname_up1"></span>
+								</div>
+							</div>
+							<div class="row row1">
+								<label for="report_name_up1" class="col-sm-3 col-form-label control-label">Report
+									Name<span class="required-field"></span></label>
+								<div class="col-sm-9">
+									<input type="text" name="report_name" id="report_name_up1" class="form-control"
+										placeholder="File name auto-populates" required readonly />
+								</div>
+							</div>
+							<div class="row row1">
+								<label for="report_date_up1" class="col-sm-3 col-form-label control-label">Report
+									Date<span class="required-field"></span></label>
+								<div class="col-sm-9">
+									<input type="text" name="report_date" id="report_date_up1" class="form-control"
+										placeholder="dd-mm-yyyy" required />
+								</div>
+							</div>
+							<div class="row row1">
+								<label for="fileInput_up1" class="col-sm-3 col-form-label control-label">XML upload<span
+										class="required-field"></span></label>
+								<div class="col-sm-9">
+									<input type="file" name="file" id="fileInput_up1" accept=".xml"
+										onchange="updateFileNameLegacy(this, 'report_name_up1')"
+										class="form-control-file" required /> <!-- Changed onchange target -->
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card-footer text-center bg-light mt-3">
+						<button type="button" class="btn btn-sm btn-primary" onclick="home();"><i
+								class="fas fa-home mr-1"></i> Home</button>
+						<button type="button" class="recon-button" onclick="submitdatasvalues();" id="btnUpload_up1"><i
+								class="fas fa-paper-plane mr-1"></i>Submit</button>
+						<button type="button" class="btn btn-sm btn-secondary" onclick="back();" id="btnback_up1"><i
+								class="fas fa-arrow-left mr-1"></i>Back</button>
+						<button type="reset" class="btn btn-sm btn-warning"
+							onclick="document.getElementById('reportform1').reset(); document.getElementById('report_name_up1').value='';"
+							id="btnClear_up1"><i class="fas fa-eraser mr-1"></i>Clear</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div th:if="${formmode}=='upload2'">
+			<form action="#" th:object="${reportform}" method="post" enctype="multipart/form-data" id="reportform2">
+				<div class="card shadow-sm">
+					<div
+						class="card-header card-header-custom d-flex justify-content-between align-items-center flex-wrap">
+						<h5 class="mb-0">TTUM Excel File Generate</h5>
+					</div>
+					<div class="card-body">
+						<div class="form-group">
+							<div class="row row1 sr-only">
+								<input type="hidden" name="srlno" id="srlno_up2" value="" class="form-control"
+									placeholder="Enter File ID" disabled /> <span id="repname_up2"></span>
+							</div>
+							<div class="row row1">
+								<label for="report_date_up2" class="col-sm-3 col-form-label control-label">Report
+									Date<span class="required-field"></span></label>
+								<div class="col-sm-9">
+									<input type="text" name="report_date" id="report_date_up2" class="form-control"
+										placeholder="dd-mm-yyyy" required />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card-footer text-center bg-light mt-3">
+						<button type="button" class="btn btn-sm btn-primary" id="btnHome_up2" onclick="home();">
+							<i class="fas fa-home mr-1"></i> Home
+						</button>
+						<button type="button" class="recon-button" id="btnGenExcel_up2" onclick="submitdatasvalues1();">
+							<!-- Changed ID for clarity -->
+							<i class="fas fa-file-excel mr-1"></i> Generate Excel
+						</button>
+						<button type="button" class="btn btn-sm btn-secondary" id="btnback_up2" onclick="back();">
+							<i class="fas fa-arrow-left mr-1"></i> Back
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div th:if="${formmode}=='upload3'">
+			<form action="#" th:object="${reportform}" method="post" enctype="multipart/form-data" id="reportform3">
+				<div class="card shadow-sm">
+					<div
+						class="card-header card-header-custom d-flex justify-content-between align-items-center flex-wrap">
+						<h5 class="mb-0">TTUM Ascii File Generate</h5>
+					</div>
+					<div class="card-body">
+						<div class="form-group">
+							<div class="row row1 sr-only">
+								<input type="hidden" name="srlno" id="srlno_up3" value="" class="form-control"
+									placeholder="Enter File ID" disabled /> <span id="repname_up3"></span>
+							</div>
+							<div class="row row1">
+								<label for="report_date_up3" class="col-sm-3 col-form-label control-label">Report
+									Date<span class="required-field"></span></label>
+								<div class="col-sm-9">
+									<input type="text" name="report_date" id="report_date_up3" class="form-control"
+										placeholder="dd-mm-yyyy" required />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card-footer text-center bg-light mt-3">
+						<button type="button" class="btn btn-sm btn-primary" id="btnHome_up3" onclick="home();">
+							<i class="fas fa-home mr-1"></i> Home
+						</button>
+						<button type="button" class="recon-button" id="btnGenAscii_up3" onclick="submitdatasvalues2();">
+							<!-- Changed ID for clarity -->
+							<i class="fas fa-file-alt mr-1"></i> Generate Ascii
+						</button>
+						<button type="button" class="btn btn-sm btn-secondary" id="btnback_up3" onclick="back();">
+							<i class="fas fa-arrow-left mr-1"></i> Back
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div> <!-- End of main-content-area -->
+
+	<!-- Modals -->
+	<div class="modal fade" id="alert" tabindex="-1" role="dialog" aria-labelledby="alertLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header menu-title-header">
+					<h4 class="modal-title" id="alertLabel">BANK OF BARODA</h4>
+				</div>
+				<div class="modal-body">
+					<p id="alertmsg"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="back1();">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="alert2" tabindex="-1" role="dialog" aria-labelledby="alert2Label" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header menu-title-header">
+					<h4 class="modal-title" id="alert2Label">BANK OF BARODA</h4>
+				</div>
+				<div class="modal-body">
+					<p id="alertmsg2"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="downls();">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="alert3" tabindex="-1" role="dialog" aria-labelledby="alert3Label" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header menu-title-header">
+					<h4 class="modal-title" id="alert3Label">BANK OF BARODA</h4>
+				</div>
+				<div class="modal-body">
+					<p id="alertmsgvaldata"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="backval();">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="alert33" tabindex="-1" role="dialog" aria-labelledby="alert33Label" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header menu-title-header">
+					<h4 class="modal-title" id="alert33Label">BANK OF BARODA</h4>
+				</div>
+				<div class="modal-body">
+					<p id="alertmsgvaldataes"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="backval();">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="alert4" tabindex="-1" role="dialog" aria-labelledby="alert4Label" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header menu-title-header">
+					<h4 class="modal-title" id="alert4Label">BANK OF BARODA</h4>
+				</div>
+				<div class="modal-body">
+					<p id="alertmsgvalues"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="backvalues();">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Scripts -->
+	<script src="/webjars/jquery/3.4.1/jquery.min.js" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+	<script src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"
+		th:src="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.js}"></script>
+	<script src="/webjars/popper.js/1.14.7/umd/popper.min.js"
+		th:src="@{/webjars/popper.js/1.14.7/umd/popper.min.js}"></script>
+	<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"
+		th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+	<script src="/webjars/jquery-form/4.2.2/jquery.form.min.js"
+		th:src="@{/webjars/jquery-form/4.2.2/jquery.form.min.js}"></script>
+	<script src="/webjars/jquery-validation/1.19.0/jquery.validate.min.js"
+		th:src="@{/webjars/jquery-validation/1.19.0/jquery.validate.min.js}"></script>
+	<script src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/jquery.dataTables.min.js}"></script>
+	<script src="/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js}"></script>
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+
+		// ALL YOUR EXISTING JAVASCRIPT FUNCTIONS ARE PRESERVED HERE
+		// Minor adjustment to updateFileNameLegacy for formmode 'upload1'
+		function updateFileNameLegacy(fileInputElement, reportNameInputId) {
+			const reportNameInput = document.getElementById(reportNameInputId);
+			if (fileInputElement.files.length > 0) {
+				reportNameInput.value = fileInputElement.files[0].name;
+			} else {
+				reportNameInput.value = '';
+			}
+		}
+
+
+		function filterfunc() {
+			var userdate = document.getElementById("datepickerInput").value; // Ensure datepickerInput ID exists and is unique if used
+			// alert(userdate); // Keep alerts for debugging if necessary
+			$('#placelist').empty();
+
+			$.ajax({
+				url: './filterrptdate',
+				type: 'POST',
+				data: {report_date: userdate},
+				success: function (data) {
+					var trHTML = '';
+					$.each(data, function (key, value) {
+						trHTML += '<tr style="white-space: nowrap; overflow: hidden; text-align: center;">'
+							+ '<td>' + (value.srlno ? value.srlno : '') + '</td>'
+							+ '<td>' + (value.report_date ? formatDate(value.report_date) : '') + '</td>'
+							+ '<td>' + (value.unique_file_name ? value.unique_file_name : '') + '</td>'
+							+ '<td>' + (value.message_reason_code ? value.message_reason_code : '') + '</td>'
+							+ '<td>' + (value.member_message_text ? value.member_message_text : '') + '</td>'
+							+ '<td>' + (value.document_indicator ? value.document_indicator : '') + '</td>'
+							+ '<td>' + (value.full_partial_indicator ? value.full_partial_indicator : '') + '</td>'
+							+ '<td>' + (value.case_number ? value.case_number : '') + '</td>'
+							+ '<td>' + (value.original_settlement_date ? formatDate(value.original_settlement_date) : '') + '</td>' // Added formatDate if it's a date
+							+ '<td>' + (value.processing_status ? value.processing_status : '') + '</td>'
+							+ '<td>'
+							+ '<div class="dropdown">'
+							+ '<button class="btn btn-xs btn-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' // Added dropdown-toggle class
+							+ 'Action</button>'
+							+ '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">' // Ensure ID matches button if used by aria-labelledby
+							+ '<button type="button" class="dropdown-item" data-attr="' + (value.srlno ? value.srlno : '') + '" onclick="modifyuser(this);">Modify</button>'
+							+ '<div class="dropdown-divider"></div>'
+							+ '<button type="button" class="dropdown-item" data-attr="' + (value.srlno ? value.srlno : '') + '" onclick="deleteuser(this);">Delete</button>'
+							+ '<div class="dropdown-divider"></div>'
+							+ '<button type="button" class="dropdown-item" data-attr="' + (value.srlno ? value.srlno : '') + '" onclick="enquiryuser(this);">Enquiry</button>'
+							+ '<div class="dropdown-divider"></div>'
+							+ '<button type="button" class="dropdown-item" data-attr="' + (value.srlno ? value.srlno : '') + '" onclick="testcases(this);">Test Case</button>'
+							// + '<div class="dropdown-divider"></div>' // Extra divider removed
+							+ '</div>'
+							+ '</div>'
+							+ '</td>'
+							+ '</tr>';
+					});
+					$('#placelist').html(trHTML);
+				},
+				error: function (xhr, status, error) {
+					console.error("Filter Error:", xhr.responseText);
+					showResponse("Report Date Not Matched or Error occurred.", "Error", xhr, null); // Use generic showResponse
+				}
+			});
+		}
+		function formatDate(dateString) {
+			if (!dateString) return '';
+			var date = new Date(dateString);
+			var dd = String(date.getDate()).padStart(2, '0');
+			var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+			var yyyy = date.getFullYear();
+			return dd + '-' + mm + '-' + yyyy;
+		}
+
+
+		function showResponse(responseText, statusText, xhr, $form) {
+			var formattedText = String(responseText).replace(/\n/g, "<br>");
+			$("#alertmsg").html(formattedText);
+			$('#alert').modal("show");
+		}
+
+
+		$(function () { // jQuery document ready
+			var finusers = /*[[${FinUserProfiles}]]*/null;
+			if (finusers) {console.log("FinUserProfiles:", finusers);}
+
+			// Initialize DataTables if these tables exist on the current page
+			if ($("#usertable").length) {
+				$("#usertable").DataTable({"info": false, "lengthChange": false});
+			}
+			if ($("#finusertb").length) {
+				$("#finusertb").DataTable({"info": false, "lengthChange": false});
+			}
+
+			// Datepickers - apply to elements with these IDs if they exist
+			const datepickerOptions = {
+				changeMonth: true,
+				changeYear: true,
+				dateFormat: "dd-mm-yy",
+				yearRange: '-80:+20' // Adjusted year range
+			};
+			$("#expiryDate, #disableDate, #disableTilDate, #passExDate, #effectiveTill").datepicker(datepickerOptions);
+			$("#datepickerInput").datepicker(datepickerOptions); // For filterfunc
+			$("#report_date, #report_date_up1, #report_date_up2, #report_date_up3").datepicker(datepickerOptions);
+			$("#report_from_date, #report_to_date").datepicker(datepickerOptions);
+
+
+			// Setup form validation using jQuery Validation plugin if forms exist
+			if ($("#reportform").length) {$("#reportform").validate();}
+			if ($("#reportform1").length) {$("#reportform1").validate();}
+			if ($("#reportform2").length) {$("#reportform2").validate();}
+			if ($("#reportform3").length) {$("#reportform3").validate();}
+			if ($("#stp").length) {$("#stp").validate();}
+			if ($("#userProfile").length) {$("#userProfile").validate();}
+			if ($("#crgbck1").length) {$("#crgbck1").validate();}
+
+
+		});
+
+		function getUserlist(mode, num, maxpage) {
+			var n = parseInt(num);
+			var max = parseInt(maxpage);
+			var Callurl = 'UserProfile?formmode=list'; // Ensure this base URL is correct
+
+			switch (mode) {
+				case "nextpage":
+					n = n + 1; if (n > max) {break;} Callurl = Callurl + "&page=" + n; break;
+				case "prevpage":
+					n = n - 1; if (n < 0) {break;} Callurl = Callurl + "&page=" + n; break;
+				case "givenpage":
+					var pNo = $("#pageno").val(); if (!pNo) {break;}
+					n = parseInt(pNo) - 1;
+					if (n > max || n < 0) {break;} Callurl = Callurl + "&page=" + n;
+			}
+			if (Callurl !== 'UserProfile?formmode=list') {location.href = Callurl;}
+		}
+
+		function finuser(a) {
+			$.ajax({
+				type: 'get',
+				url: './Finuserdata?userid=' + a.id, // Ensure 'a.id' provides the correct user ID
+				success: function (data) {
+					$('.finuserapply').html(data); // Ensure '.finuserapply' element exists
+					$("#expiryDate,#disableDate,#disableTilDate,#passExDate,#effectiveTill").datepicker({
+						changeMonth: true, changeYear: true, dateFormat: "dd-mm-yy"
+					});
+					$("#finusers").modal("hide"); // Ensure '#finusers' modal exists
+				},
+				error: function (xhr, status, error) {console.error("Finuser Error:", xhr.responseText);}
+			})
+		}
+
+		function home() {location.href = 'Dashboard';}
+		function back() {history.back();}
+
+		function downls() { // Used in modal alert2, often after a download initiation
+			// Default action is to go back, but specific logic might be needed.
+			// For example, if it's after a successful file generation for download,
+			// 'Tmtfiletransaction?formmode=list' might be more appropriate.
+			history.back();
+			// Or: location.href = 'Tmtfiletransaction?formmode=list';
+		}
+
+		function backval() { // Used in modal alert3 and alert33, after generation
+			location.href = 'Tmtfiletransaction?formmode=list'; // Go to the list view
+		}
+
+		function back1() {location.reload();} // Used in modal alert
+		function backvalues() {location.reload();} // Used in modal alert4
+
+		function fnClick(a) {
+			var userid = a.getAttribute("data-userid");
+			if (userid) location.href = 'studentscreen?formmode=edit&userid=' + userid;
+		}
+
+		// Functions for ChargeUpload screen (add, modify, view, etc.)
+		// These assume 'ChargeUpload' is the correct controller/path.
+		// Alerts are used for confirmation; consider replacing with modals or toasts.
+		function adduser(a) {location.href = 'ChargeUpload?formmode=add';}
+		function addDetails(a) {var srlno = a.getAttribute("data-attr"); alert("SRLNO: " + srlno); location.href = 'ChargeUpload?formmode=view2&srlno=' + srlno;}
+		function testcases(a) {var srlno = a.getAttribute("data-attr"); alert("SRLNO: " + srlno); location.href = 'ChargeUpload?formmode=view3&srlno=' + srlno;}
+		// ... (many similar functions for ChargeUpload views) ...
+		function modifyusers(a) {var srlno = a.getAttribute("data-attr"); alert("SRLNO: " + srlno); location.href = 'ChargeUpload?formmode=edit3&srlno=' + srlno;}
+		function uploaduser() {location.href = 'ChargeUpload?formmode=view1';}
+		function list() {location.href = 'ChargeUpload?formmode=list';}
+		function listusers() {location.href = 'ChargeUpload?formmode=list2';}
+		function modifyuser(a) {var srlno = a.getAttribute("data-attr"); alert("SRLNO: " + srlno); location.href = 'ChargeUpload?formmode=edit3&srlno=' + srlno;}
+		function enquiryuser(a) {var srlno = a.getAttribute("data-attr"); alert("SRLNO: " + srlno); location.href = 'ChargeUpload?formmode=view&srlno=' + srlno;}
+		function chargeback(a) {var srlno = a.getAttribute("data-attr"); alert("SRLNO: " + srlno); location.href = 'ChargeUpload?formmode=edit&srlno=' + srlno;}
+
+
+		function addsubmit(a) { // Assumes form with ID 'stp'
+			if ($("#stp").valid()) {
+				$("#stp").attr('action', "./AddScreen").ajaxSubmit({success: showResponse});
+			}
+		};
+
+		function passwordReset() { // Assumes form with ID 'userProfile'
+			if ($("#userProfile").valid()) {
+				$("#userProfile").attr('action', './passwordReset').ajaxSubmit({success: showResponse});
+			}
+		};
+
+		function roledesc() {
+			var roleid = $("#roleId").val(); // Get value directly
+			var desc = "";
+			if (roleid == 'ADM') {desc = "Admin";}
+			else if (roleid == 'ADT') {desc = "Audit";}
+			else if (roleid == 'GEN') {desc = "General User";}
+			else if (roleid == 'RECONADM') {desc = "Admin";} // Consider unique descriptions
+			else if (roleid == 'RECONGEN') {desc = "General User";}
+			$("#roleDesc").val(desc); // Assumes 'roleDesc' input exists
+		}
+
+		function submitAddform() { // Assumes form with ID 'userProfile'
+			if ($("#userProfile").valid()) {
+				$("#userProfile").attr('action', "./adminUserProfileAdd?formmode=add").ajaxSubmit({success: showResponse});
+			}
+		};
+
+		function deleteuser(a) { // Used in dropdown, 'data-attr' should provide SRLNO
+			var srlno = a.getAttribute("data-attr");
+			if (!srlno) {alert("SRLNO not found for deletion."); return;}
+			// alert("Deleting SRLNO: " + srlno); // For confirmation
+
+			// Confirm before deleting
+			if (confirm("Are you sure you want to delete record with SRLNO: " + srlno + "?")) {
+				$.ajax({
+					url: './deletescreen?mti=' + srlno, // Ensure 'mti' is the correct backend parameter for SRLNO
+					// data : $("#upon").serialize(), // Remove if '#upon' form is not relevant or doesn't exist
+					type: 'POST',
+					success: function (data) {showResponse(data); location.reload();}, // Reload on success
+					error: function (xhr) {showResponse("Error deleting: " + xhr.responseText);}
+				});
+			}
+		};
+
+		// modifysubmit1 and modifysubmit seem identical. Consolidate if possible.
+		function modifysubmit(a) { // Assumes form 'crgbck1' and input 'srlno56'
+			var srlno = $("#srlno56").val(); // Use jQuery to get value
+			if (!srlno) {alert("SRLNO (srlno56) not found."); return;}
+			// alert("Modifying SRLNO: " + srlno);
+			if ($("#crgbck1").valid()) {
+				$("#crgbck1").attr('action', './modifyscreen?srlno=' + srlno).ajaxSubmit({success: showResponse});
+			}
+		};
+		function modifysubmit1(a) {modifysubmit(a);} // Alias
+
+		function chargebck(a) { // Assumes form 'crgbck1' and input 'srlno56'
+			var srlno = $("#srlno56").val();
+			if (!srlno) {alert("SRLNO (srlno56) not found."); return;}
+			// alert("Chargeback for SRLNO: " + srlno);
+			if ($("#crgbck1").valid()) {
+				// var formId = ... ; // If formId is needed, ensure it's defined in scope.
+				$("#crgbck1").attr('action', './chargebckscreen?srlno=' + srlno)
+					// .append(formId ? '<input type="hidden" name="formId" value="' + formId + '">' : '') // Conditional append
+					.ajaxSubmit({success: showResponse});
+			}
+		};
+
+		function alert2Modal(responseText) {$("#alertmsg2").html(String(responseText).replace(/\n/g, "<br>")); $('#alert2').modal("show");}
+
+		function downloads(a) { // Generic download, assumes form 'reportforms' or closest form
+			var srlno = a.getAttribute("data-attribute") || a.getAttribute("data-attr");
+			var currentForm = $(a).closest('form');
+			if (!currentForm.length) currentForm = $('#reportforms'); // Fallback ID
+
+			if (validateRequiredFields(currentForm[0])) {
+				var formmode1 = a.getAttribute("data-formmode1");
+				if (formmode1 && formmode1.startsWith("view")) {
+					if (currentForm.valid ? currentForm.valid() : true) { // Check for .valid() if jQuery validation is used
+						var formData = new FormData(currentForm[0]);
+						alert2Modal("Download processing..."); // Use modal for feedback
+						fetch("exportxml?srlno=" + srlno + "&formmode1=" + formmode1, {method: "POST", body: formData})
+							.then(response => {
+								if (response.ok) {
+									var contentDisposition = response.headers.get('Content-Disposition');
+									var filename = "download.xml"; // Default
+									if (contentDisposition) {
+										var filenameMatch = contentDisposition.match(/filename\*?=['"]?(?:UTF-\d'')?([^;\r\n"']*)['"]?;?/i);
+										if (filenameMatch && filenameMatch[1]) {filename = decodeURIComponent(filenameMatch[1]);}
+									}
+									return response.blob().then(blob => ({blob, filename}));
+								}
+								return response.text().then(text => Promise.reject(new Error(text || 'Download failed: Server error')));
+							})
+							.then(({blob, filename}) => {
+								var link = document.createElement('a');
+								link.href = window.URL.createObjectURL(blob);
+								link.download = filename;
+								document.body.appendChild(link); link.click(); document.body.removeChild(link);
+								window.URL.revokeObjectURL(link.href); // Clean up
+								alert2Modal('Download Successfully!');
+							})
+							.catch(error => {
+								console.error('Error during download:', error);
+								alert2Modal('Download error: ' + error.message);
+							});
+					}
+				}
+			} else {
+				showResponse("Please fill in all required fields."); // Use main alert modal for validation
+			}
+
+			function validateRequiredFields(form) {
+				if (!form) return false;
+				var isValid = true;
+				$(form).find('[required]').each(function () {
+					if (!$(this).val() || ($(this).is(':checkbox,:radio') && !$(this).is(':checked'))) {
+						isValid = false; highlightField(this);
+					} else {removeHighlight(this);}
+				});
+				return isValid;
+			}
+			function highlightField(field) {$(field).addClass('is-invalid').css('border-color', 'red');}
+			function removeHighlight(field) {$(field).removeClass('is-invalid').css('border-color', '');}
+		}
+
+		// Functions for TTUM File/Transactions specific forms
+		function uploadfiles(button) {location.href = 'Tmtfiletransaction?formmode=upload';}
+		function listsfile(button) {location.href = 'Tmtfiletransaction?formmode=list';} // list1 might be specific list
+
+		let selectedFiles = []; // Global for the multi-file upload form
+
+		function handleFileSelection() { // For formmode='upload'
+			const fileInput = document.getElementById("fileInput");
+			const fileList = document.getElementById("fileList");
+			if (!fileInput || !fileList) {console.error("File input/list elements not found for multi-select."); return;}
+
+			Array.from(fileInput.files).forEach(file => {
+				if (!selectedFiles.some(f => f.name === file.name && f.size === file.size)) { // More robust duplicate check
+					selectedFiles.push(file);
+					const option = document.createElement("option");
+					option.value = file.name; option.text = file.name;
+					fileList.add(option);
+				} else {
+					showResponse2(`File "${file.name}" is already selected or a duplicate.`); // Use specific modal
+				}
+			});
+			fileInput.value = ""; // Clear input for re-selection
+			if (selectedFiles.length > 0 && !$("#report_name").val()) { // Auto-select first if report_name is empty
+				$("#report_name").val(selectedFiles[0].name);
+				$("#deleteIcon").show();
+			}
+		}
+
+		function updateReportName(event) { // When clicking on selected file list for formmode='upload'
+			const fileName = event.target.value; // Selected file from the <select> list
+			$("#report_name").val(fileName);
+			$("#deleteIcon").css('display', fileName ? 'inline-flex' : 'none'); // Use inline-flex for icon vertical align
+		}
+
+		function deleteFile(fileNameToDelete) { // From delete icon next to report_name input on formmode='upload'
+			selectedFiles = selectedFiles.filter(file => file.name !== fileNameToDelete);
+
+			// Remove from the <select> list
+			$("#fileList option[value='" + fileNameToDelete.replace(/'/g, "\\'") + "']").remove(); // Escape quotes
+
+			const reportNameInput = $("#report_name");
+			if (reportNameInput.val() === fileNameToDelete) {
+				reportNameInput.val(''); // Clear current report name
+				if (selectedFiles.length > 0) { // If other files remain, select the first one
+					reportNameInput.val(selectedFiles[0].name);
+				} else { // No files left
+					$("#deleteIcon").hide();
+				}
+			}
+			// If report_name was not the deleted file, but the list is now empty and report_name had a value, clear it.
+			if (selectedFiles.length === 0 && reportNameInput.val()) {
+				reportNameInput.val('');
+				$("#deleteIcon").hide();
+			}
+		}
+
+		function showResponse2(responseText) { // For #alert4 modal (TTUM multi-upload feedback)
+			$("#alertmsgvalues").html(String(responseText).replace(/\n/g, "<br>"));
+			$('#alert4').modal("show");
+		}
+
+		function submitdatas() { // For formmode='upload' (multi-file XMLs)
+			const reportDate = $("#report_date").val(); // Assumes ID report_date is unique to this form
+			/* if (!$("#reportform").valid || ($("#reportform").length && !$("#reportform").validate().form())) {
+				showResponse2("Please correct the form errors."); return;
+			} */
+			if (!reportDate || selectedFiles.length === 0) {
+				showResponse2("Please fill in the report date and select at least one XML file."); return;
+			}
+			showResponse2("File Upload Processing...");
+			const data = new FormData();
+			data.append("report_date", reportDate);
+			selectedFiles.forEach(file => {data.append("files", file); data.append("report_names", file.name);});
+
+			$.ajax({
+				type: "POST", url: "tmtuploadxmlvaluesdatas", data: data,
+				processData: false, contentType: false,
+				success: function (response) {showResponse2(response);},
+				error: function (xhr) {showResponse2("Error: " + (xhr.responseText || "Upload failed"));}
+			});
+		}
+
+		function genereatevalues3() {location.href = 'Tmtfiletransaction?formmode=upload3';} // Gen Ascii
+		function genereatevalues() {location.href = 'Tmtfiletransaction?formmode=upload2';}  // Gen Excel
+
+		function submitdatasvalues() { // For formmode='upload1' (Legacy single XML upload)
+			var form = $('#reportform1');
+			if (!form.length || (form.validate && !form.validate().form())) {
+				showResponse("Please correct form errors."); return;
+			}
+			showResponse("Processing your request..."); // Uses #alert modal
+			form.ajaxSubmit({
+				url: "uploadxmlvalues", type: "POST",
+				success: function (response) {showResponse(response);},
+				error: function (xhr) {showResponse("Error: " + (xhr.responseText || "Processing failed"));}
+			});
+		}
+
+		function showResponse22(responseText) { // For #alert3 modal (Excel Gen feedback)
+			$("#alertmsgvaldata").html(String(responseText).replace(/\n/g, "<br>"));
+			$('#alert3').modal("show");
+		}
+
+		function submitdatasvalues1() { // For formmode='upload2' (Generate Excel)
+			var form = $('#reportform2');
+			if (!form.length || (form.validate && !form.validate().form())) {
+				showResponse22("Please correct form errors."); return;
+			}
+			showResponse22("Excel Download Processing...");
+			$.ajax({
+				type: "POST", url: "exportxmlvalues", data: new FormData(form[0]),
+				processData: false, contentType: false, xhrFields: {responseType: 'blob'},
+				success: function (blob, status, xhr) {
+					var contentType = xhr.getResponseHeader('Content-Type');
+					if (blob.size > 0 && (contentType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || contentType === 'application/octet-stream')) {
+						var filename = "BreconReport.xlsx";
+						var disposition = xhr.getResponseHeader('Content-Disposition');
+						if (disposition) {
+							var filenameMatch = disposition.match(/filename\*?=['"]?(?:UTF-\d'')?([^;\r\n"']*)['"]?;?/i);
+							if (filenameMatch && filenameMatch[1]) {filename = decodeURIComponent(filenameMatch[1]);}
+						}
+						var link = document.createElement('a');
+						link.href = window.URL.createObjectURL(blob); link.download = filename;
+						document.body.appendChild(link); link.click(); document.body.removeChild(link);
+						window.URL.revokeObjectURL(link.href);
+						showResponse22("Excel File Generated successfully!");
+					} else { // Try to read as JSON error if not a valid blob
+						var reader = new FileReader();
+						reader.onload = function () {
+							try {var err = JSON.parse(reader.result); showResponse22(err.message || "Error generating Excel.");}
+							catch (e) {showResponse22(reader.result || "Error generating Excel or no data found.");}
+						};
+						reader.readAsText(blob);
+					}
+				},
+				error: function (xhr) {
+					var msg = "Error: No Records Found or Server Error.";
+					if (xhr.responseJSON && xhr.responseJSON.message) msg = xhr.responseJSON.message;
+					else if (xhr.responseText) {try {var err = JSON.parse(xhr.responseText); msg = err.message || xhr.responseText;} catch (e) {msg = xhr.responseText;} }
+					showResponse22(msg);
+				}
+			});
+		}
+
+		function showResponse33(responseText) { // For #alert33 modal (Ascii Gen feedback)
+			$("#alertmsgvaldataes").html(String(responseText).replace(/\n/g, "<br>"));
+			$('#alert33').modal("show");
+		}
+
+		function submitdatasvalues2() { // For formmode='upload3' (Generate Ascii)
+			var form = $('#reportform3');
+			if (!form.length || (form.validate && !form.validate().form())) {
+				showResponse33("Please correct form errors."); return;
+			}
+			showResponse33("Ascii File Download Processing...");
+			$.ajax({
+				type: "POST", url: "aasciexportxmlvalues", data: new FormData(form[0]),
+				processData: false, contentType: false, xhrFields: {responseType: 'blob'},
+				success: function (blob, status, xhr) {
+					var contentType = xhr.getResponseHeader('Content-Type');
+					if (blob.size > 0 && (contentType === 'text/plain' || contentType === 'application/octet-stream')) {
+						var filename = "BreconReport.txt";
+						var disposition = xhr.getResponseHeader('Content-Disposition');
+						if (disposition) {
+							var filenameMatch = disposition.match(/filename\*?=['"]?(?:UTF-\d'')?([^;\r\n"']*)['"]?;?/i);
+							if (filenameMatch && filenameMatch[1]) {filename = decodeURIComponent(filenameMatch[1]);}
+						}
+						var link = document.createElement('a');
+						link.href = window.URL.createObjectURL(blob); link.download = filename;
+						document.body.appendChild(link); link.click(); document.body.removeChild(link);
+						window.URL.revokeObjectURL(link.href);
+						showResponse33("Ascii File Generated successfully!");
+					} else {
+						var reader = new FileReader();
+						reader.onload = function () {
+							try {var err = JSON.parse(reader.result); showResponse33(err.message || "Error generating Ascii.");}
+							catch (e) {showResponse33(reader.result || "Error generating Ascii or no data found.");}
+						};
+						reader.readAsText(blob);
+					}
+				},
+				error: function (xhr) {
+					var msg = "Error: No Records Found or Server Error.";
+					if (xhr.responseJSON && xhr.responseJSON.message) msg = xhr.responseJSON.message;
+					else if (xhr.responseText) {try {var err = JSON.parse(xhr.responseText); msg = err.message || xhr.responseText;} catch (e) {msg = xhr.responseText;} }
+					showResponse33(msg);
+				}
+			});
+		}
+
+		//Filter Table Logic (original)
+		$(document).ready(function () { // This will run after the previous $(function(){...})
+			if ($('.filterable').length) { // Only bind if filterable elements exist
+				$('.filterable .btn-filter').off('click').on('click', function () { // Use .off().on() for safety if script runs multiple times
+					var $panel = $(this).closest('.filterable'),
+						$filters = $panel.find('.filters input'),
+						$tbody = $panel.find('.table tbody');
+					if ($filters.first().prop('disabled')) { // Check first input's state
+						$filters.prop('disabled', false).first().focus();
+					} else {
+						$filters.val('').prop('disabled', true);
+						$tbody.find('.no-result').remove();
+						$tbody.find('tr').show();
+					}
+				});
+
+				$('.filterable .filters input').off('keyup').on('keyup', function (e) {
+					if (e.key === 'Tab' || e.keyCode === 9) return;
+
+					var $input = $(this),
+						inputContent = $input.val().toLowerCase(),
+						$panel = $input.closest('.filterable'),
+						column = $input.closest('th').index(), // More robust way to get column index
+						$table = $panel.find('.table'),
+						$rows = $table.find('tbody tr');
+
+					var $filteredRows = $rows.filter(function () {
+						var cellText = $(this).find('td').eq(column).text().toLowerCase();
+						return cellText.indexOf(inputContent) === -1;
+					});
+
+					$table.find('tbody .no-result').remove();
+					$rows.show();
+					$filteredRows.hide();
+
+					if ($filteredRows.length === $rows.length && $rows.length > 0) { // Add no-result only if there were rows to filter
+						$table.find('tbody').prepend(
+							'<tr class="no-result text-center"><td colspan="' + $table.find('.filters th').length + '">No result found</td></tr>'
+						);
+					}
+				});
+			}
+		});
+
+		/*]]>*/
+	</script>
+</body>
+
+</html>

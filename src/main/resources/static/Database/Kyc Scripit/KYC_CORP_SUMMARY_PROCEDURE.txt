@@ -1,0 +1,29 @@
+create or replace PROCEDURE KYC_CORP_SUMMARY_PROCEDURE(REPORT_DATE VARCHAR2) IS
+    V_REPORT_DATE DATE := TO_DATE(REPORT_DATE, 'DD-MM-YYYY');
+BEGIN
+    -- Insert data into KYC_CORP table from CORPORATE table
+    INSERT INTO KYC_CORP (
+        COMPANY_NAME,
+        CUSTOMER_ID,
+        LEGAL_STATUS
+    )
+    SELECT 
+        CORPORATE_NAME,
+        CORP_ID,
+        STATUS
+    FROM 
+        CORPORATE;
+
+    COMMIT;
+
+    -- Update the del_flg column to 'N' for all rows in KYC_CORP table
+    UPDATE KYC_CORP
+    SET del_flg = 'N';
+
+    COMMIT;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(-20001, 'An error occurred during KYC_CORP_SUMMARY_PROCEDURE execution.');
+END KYC_CORP_SUMMARY_PROCEDURE;

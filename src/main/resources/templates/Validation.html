@@ -1,0 +1,264 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" type="text/css"
+	href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+<link rel="stylesheet" type="text/css"
+	href="/webjars/font-awesome/5.9.0/css/all.min.css"
+	th:href="@{/webjars/font-awesome/5.9.0/css/all.min.css}">
+<link rel="stylesheet" type="text/css"
+	href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"
+	th:href="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.css}">
+<link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+<link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon">
+
+
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"
+	th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+<script src="/webjars/popper.js/1.14.7/umd/popper.min.js"
+	th:src="@{/webjars/popper.js/1.14.7/umd/popper.min.js}"></script>
+<script src="/webjars/jquery/3.4.1/jquery.min.js"
+	th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"
+	th:src="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.js}"></script>
+<script src="/webjars/jquery-form/4.2.2/jquery.form.min.js"
+	th:src="@{/webjars/jquery-form/4.2.2/jquery.form.min.js}"></script>
+<script src="/webjars/jquery-validation/1.19.0/jquery.validate.min.js"
+	th:src="@{/webjars/jquery-validation/1.19.0/jquery.validate.min.js}"></script>
+
+
+
+<style>
+.row1 {
+	padding: 7px;
+}
+
+.error {
+	color: red;
+	padding-left: 10px;
+}
+
+.underline {
+	text-decoration: underline;
+	color: #08a6f1;
+	cursor: pointer;
+}
+</style>
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	var reportlist = /*[[${reportlist}]]*/null;
+	var frequency;
+	function check(a) {
+		//alert("responseText");
+
+		var srl_no = a.getAttribute("data-srl_no");
+		var report_date = $("#disableDate").val();
+		var url = "./rbsValidationsChk?srl_no=" + srl_no + "&report_date="
+				+ report_date;
+		//alert(url);
+
+		$("#reportform").attr('action', url);
+
+		var options = {
+			success : showResponse
+		// post-submit callback 
+		};
+
+		$("#reportform").ajaxSubmit(options);
+
+		function showResponse(responseText, statusText, xhr, $form) {
+
+			
+			if (responseText.genID == "0") {
+				
+				alert(responseText.status);
+				location.href="./Validation?reportDate="+report_date;
+				//$('#alert').modal("toggle");
+				//alert("responseText"+responseText.status);
+				//$("#amtalertmsg").text(responseText.status);
+				//$('#amtalert').modal("toggle");
+
+			} else {
+				alert(responseText.status);
+				//$("#amtalertmsg").text("Ok");
+				//$('#amtalert').modal("toggle");
+			}
+
+		}
+		;
+	}
+
+	function refreshpage(a) {
+		location.href = "Validation?reportDate=" + $("#disableDate").val();
+
+	}
+	
+	function back() {
+
+		window.history.back();
+	}
+	
+/* 	function submitform(a){
+	
+		
+			var todate = $('#disableDate').val();
+		//alert("hii"+todate);
+			var reportid = "RBSGENERATION";
+			var todate = $('#disableDate').val();
+			//alert("hii"+todate);
+			var currency = "mur";
+			var type ="excel";
+		var reportid = "RBSGENERATION";
+$("#reportform").attr('action', './Reports/' +reportid +'/RBSDownload?todate=' + todate+ '&fromdate='+ todate +'&asondate='+ todate +'&currency='+currency + '&filetype=' + type );
+
+	
+	var Callurl;	
+		Callurl =  './Reports/' + reportid + '/PrecheckRbs?todate=' + todate+ '&fromdate='+ todate;
+	$.ajax({
+		type : 'get',
+		url : Callurl,
+		success : function(data) {
+			if (data == 'success') {
+				alert(data);
+				form.submit();
+			} else {
+				$("#alertmsg").text("No data Available for Verification");
+				$("#alert").modal("toggle");			
+			}
+		}
+	});
+	} */
+	
+	function getexcelTest() {
+		
+		var todate = $('#disableDate').val();
+		var fromdate = $('#disableDate').val();
+		
+		location.href = 'Reports/RBSDownload?reportid=RBSGENERATION&currency=mur&filetype=excel&fromdate='+ fromdate + '&todate=' + todate+ '&asondate=' + todate;
+	}
+	/*]]>*/
+</script>
+</head>
+<title>XBRL</title>
+<body>
+	<div th:insert="XBRLHeaderMenu :: header"></div>
+	<i class="fa fa-question-circle" aria-hidden="true"
+		onclick="docEmb('Report')" id="ques"></i>
+	<div class="container content">
+		<div class="content">
+			<div class="row">
+				<div class="col-sm-12">
+
+					<div class="card-header " id="modheadtitle">
+						<b>BASEL Validation Report</b>
+
+						<div class="float-right">
+
+							<div class="row formline">
+
+								<label style="color: white; padding-right: 20px;">Report
+									Date </label>
+								<div>
+									<input type="text" style="margin-top: -3px;" readonly
+										th:value="${reportDate1}" id="disableDate1" value=""
+										class="form-control form-control-sm" autocomplete="off" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card-body" style="height: 740px;">
+						<form action="#" th:object="${reportform}" method="post"
+							autocomplete="off" id="reportform">
+							<!-- <form class="form-horizontal" method="post"
+									th:object="${reportform}" name="reportform" id="reportform">  -->
+							<input type="hidden" th:value="${reportDate1}" id="reportdates">
+							<table class="table table-bordered  table-hover table-sm"
+								style="width: 100%" id="usertable">
+								<thead class="thead-light">
+
+									<tr>
+										<!-- <th></th> -->
+										<th>Srl</th>
+										<th>Validation Details</th>
+										<th>Tables</th>
+										<th>Check</th>
+										<th>Validation</th>
+
+
+									</tr>
+								</thead>
+								<tbody>
+
+									<tr th:each="userProfile : ${reportlist}" class="userlist">
+
+
+										<td style="display: none;"><input type="text"
+											name="todate" id="disableDate" th:value="${reportDate1}"
+											class="col-sm-3 form-control" placeholder="dd/mm/yyyy" /></td>
+
+
+										<td th:text="${userProfile.rpt_code}"></td>
+										<td th:text="${userProfile.rpt_description}"></td>
+										<td th:text="${userProfile.rpt_status}"></td>
+										<td><button class="btn-primary" type="button"
+												th:attr="data-rpt_code=${userProfile.rpt_code}"
+												form="reportform" onclick="check(this);">Check</button></td>
+										<th:block th:switch="${userProfile?.entity_flg}">
+											<td th:case="'Y'" style="color: green;">Ok</td>
+											<td th:case="'N'" style="color: red;">Not ok</td>
+
+											<td th:case="*" style="color: red;"></td>
+										</th:block>
+										<!-- <th:block th:if="${reportDate1}!=${testDate}"
+													th:switch="${userProfile?.pre_status}">
+													<td th:case="'Y'" style="color: green;">Ok</td>
+													<td th:case="'N'" style="color: red;">Not ok</td>
+													<td th:case="*" style="color: red;"></td>
+												</th:block> -->
+
+									</tr>
+								</tbody>
+							</table>
+							<div class="card-footer text-center">
+
+							<button type="button" class="btn btn-xs btn-primary"
+											id="btnDownload"
+											 onclick="getexcelTest();"
+											form="reportform">Download</button>
+
+								<button type="button" class="btn btn-xs btn-primary"
+									id="btnBack" onclick="back();">Back</button>
+
+
+							</div>
+						</form>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--------------------------------------------------------------- Modal for alert messages-------------------------------->
+	<div class="modal fade" id="alert">
+		<div
+			class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-body" style="text-align: center">
+					<p id="alertmsg"></p>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--------------------------------------------------------------- Modal for alert messages-------------------------------->
+
+
+
+</body>
+</body>
+</html>

@@ -1,0 +1,523 @@
+<!-- Created with Jaspersoft Studio version 7.0.2.final using JasperReports Library version 7.0.2-31532122640f516c6d17238ae0e41a08113d5ac0  -->
+<jasperReport name="Legal Cases Upd1" language="java" pageWidth="2500" pageHeight="595" orientation="Landscape" columnWidth="2460" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="20" uuid="8bd2fe39-c241-4aa1-b09a-d8ff95a04d82" ignorePagination="true">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Dubai_Linux.jrdax"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="TRUE"/>
+	<parameter name="BRANCH_CODE" class="java.lang.String"/>
+	<query language="SQL"><![CDATA[SELECT * FROM legal_cases
+where cin is not null and auth_flg ='Y'
+AND operation = 'UPD' and  BRANCH_CODE = $P{BRANCH_CODE}]]></query>
+	<field name="OPERATION" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="OPERATION"/>
+		<property name="com.jaspersoft.studio.field.label" value="OPERATION"/>
+	</field>
+	<field name="BANK_CODE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="BANK_CODE"/>
+		<property name="com.jaspersoft.studio.field.label" value="BANK_CODE"/>
+	</field>
+	<field name="CIN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CIN"/>
+		<property name="com.jaspersoft.studio.field.label" value="CIN"/>
+	</field>
+	<field name="CSNO" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="CSNO"/>
+		<property name="com.jaspersoft.studio.field.label" value="CSNO"/>
+	</field>
+	<field name="LEGAL_CASE_REC_ID" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="LEGAL_CASE_REC_ID"/>
+		<property name="com.jaspersoft.studio.field.label" value="LEGAL_CASE_REC_ID"/>
+	</field>
+	<field name="LEGAL_CASE_STATUS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="LEGAL_CASE_STATUS"/>
+		<property name="com.jaspersoft.studio.field.label" value="LEGAL_CASE_STATUS"/>
+	</field>
+	<field name="DATE_LEGAL_CASE" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="DATE_LEGAL_CASE"/>
+		<property name="com.jaspersoft.studio.field.label" value="DATE_LEGAL_CASE"/>
+	</field>
+	<field name="DATE_FINAL_JUDGEMENT" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="DATE_FINAL_JUDGEMENT"/>
+		<property name="com.jaspersoft.studio.field.label" value="DATE_FINAL_JUDGEMENT"/>
+	</field>
+	<field name="BORROWER_STATUS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="BORROWER_STATUS"/>
+		<property name="com.jaspersoft.studio.field.label" value="BORROWER_STATUS"/>
+	</field>
+	<field name="SKIPPED_DATE" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="SKIPPED_DATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="SKIPPED_DATE"/>
+	</field>
+	<field name="COUNTRY_SKIPPED_TO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="COUNTRY_SKIPPED_TO"/>
+		<property name="com.jaspersoft.studio.field.label" value="COUNTRY_SKIPPED_TO"/>
+	</field>
+	<field name="RELATED_REFERENCE_CCSYS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="RELATED_REFERENCE_CCSYS"/>
+		<property name="com.jaspersoft.studio.field.label" value="RELATED_REFERENCE_CCSYS"/>
+	</field>
+	<field name="RESERVE_LINE_1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="RESERVE_LINE_1"/>
+		<property name="com.jaspersoft.studio.field.label" value="RESERVE_LINE_1"/>
+	</field>
+	<field name="RESERVE_LINE_2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="RESERVE_LINE_2"/>
+		<property name="com.jaspersoft.studio.field.label" value="RESERVE_LINE_2"/>
+	</field>
+	<field name="RESERVE_LINE_3" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="RESERVE_LINE_3"/>
+		<property name="com.jaspersoft.studio.field.label" value="RESERVE_LINE_3"/>
+	</field>
+	<field name="RESERVE_LINE_4" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="RESERVE_LINE_4"/>
+		<property name="com.jaspersoft.studio.field.label" value="RESERVE_LINE_4"/>
+	</field>
+	<field name="RESERVE_LINE_5" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="RESERVE_LINE_5"/>
+		<property name="com.jaspersoft.studio.field.label" value="RESERVE_LINE_5"/>
+	</field>
+	<field name="REPORT_DATE" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="REPORT_DATE"/>
+		<property name="com.jaspersoft.studio.field.label" value="REPORT_DATE"/>
+	</field>
+	<field name="ENTRY_USER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ENTRY_USER"/>
+		<property name="com.jaspersoft.studio.field.label" value="ENTRY_USER"/>
+	</field>
+	<field name="ENTRY_TIME" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="ENTRY_TIME"/>
+		<property name="com.jaspersoft.studio.field.label" value="ENTRY_TIME"/>
+	</field>
+	<field name="AUTH_USER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="AUTH_USER"/>
+		<property name="com.jaspersoft.studio.field.label" value="AUTH_USER"/>
+	</field>
+	<field name="AUTH_TIME" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="AUTH_TIME"/>
+		<property name="com.jaspersoft.studio.field.label" value="AUTH_TIME"/>
+	</field>
+	<field name="MODIFY_USER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="MODIFY_USER"/>
+		<property name="com.jaspersoft.studio.field.label" value="MODIFY_USER"/>
+	</field>
+	<field name="MODIFY_TIME" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="MODIFY_TIME"/>
+		<property name="com.jaspersoft.studio.field.label" value="MODIFY_TIME"/>
+	</field>
+	<field name="ENTITY_FLG" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ENTITY_FLG"/>
+		<property name="com.jaspersoft.studio.field.label" value="ENTITY_FLG"/>
+	</field>
+	<field name="AUTH_FLG" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="AUTH_FLG"/>
+		<property name="com.jaspersoft.studio.field.label" value="AUTH_FLG"/>
+	</field>
+	<field name="MODIFY_FLG" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="MODIFY_FLG"/>
+		<property name="com.jaspersoft.studio.field.label" value="MODIFY_FLG"/>
+	</field>
+	<field name="DEL_FLG" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="DEL_FLG"/>
+		<property name="com.jaspersoft.studio.field.label" value="DEL_FLG"/>
+	</field>
+	<field name="BRANCH_CODE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="BRANCH_CODE"/>
+		<property name="com.jaspersoft.studio.field.label" value="BRANCH_CODE"/>
+	</field>
+	<background splitType="Stretch"/>
+	<title height="20">
+		<element kind="staticText" uuid="ae71c0b7-ae63-4117-bb2b-1f49b933bd14" mode="Opaque" x="140" y="0" width="80" height="20" backcolor="#FFFF33" markup="none" fontName="Times New Roman" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<paragraph leftIndent="5"/>
+			<text><![CDATA[CIN
+]]></text>
+			<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			<box>
+				<topPen lineWidth="1.0"/>
+				<leftPen lineWidth="1.0"/>
+				<bottomPen lineWidth="1.0"/>
+				<rightPen lineWidth="1.0"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="3cf9ea5d-68ec-4013-86d7-920b718b0d9b" mode="Opaque" x="410" y="0" width="80" height="20" backcolor="#FFFF33" markup="none" fontName="Times New Roman" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<paragraph leftIndent="5"/>
+			<text><![CDATA[Legal case status
+]]></text>
+			<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			<box>
+				<topPen lineWidth="1.0"/>
+				<leftPen lineWidth="1.0"/>
+				<bottomPen lineWidth="1.0"/>
+				<rightPen lineWidth="1.0"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="a51c9308-e44a-4cb4-baa4-0b8f65ec2454" mode="Opaque" x="1500" y="0" width="80" height="20" backcolor="#FFFF33" markup="none" fontName="Times New Roman" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<paragraph leftIndent="5"/>
+			<text><![CDATA[Reserve Line 3
+]]></text>
+			<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			<box>
+				<topPen lineWidth="1.0"/>
+				<leftPen lineWidth="1.0"/>
+				<bottomPen lineWidth="1.0"/>
+				<rightPen lineWidth="1.0"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="d10f8f52-cf46-45f4-8168-2704c318ddbb" mode="Opaque" x="300" y="0" width="110" height="20" backcolor="#FFFF33" markup="none" fontName="Times New Roman" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<paragraph leftIndent="5"/>
+			<text><![CDATA[Legal_Case_Rec_Id
+]]></text>
+			<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			<box>
+				<topPen lineWidth="1.0"/>
+				<leftPen lineWidth="1.0"/>
+				<bottomPen lineWidth="1.0"/>
+				<rightPen lineWidth="1.0"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="6eaff2ba-9ef7-4ac1-8c71-9f4918acc5f9" mode="Opaque" x="580" y="0" width="120" height="20" backcolor="#FFFF33" markup="none" fontName="Times New Roman" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<paragraph leftIndent="5"/>
+			<text><![CDATA[Date Final judgement
+]]></text>
+			<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			<box>
+				<topPen lineWidth="1.0"/>
+				<leftPen lineWidth="1.0"/>
+				<bottomPen lineWidth="1.0"/>
+				<rightPen lineWidth="1.0"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="08b91780-1f31-4da9-b50e-e71b781314c9" mode="Opaque" x="490" y="0" width="90" height="20" backcolor="#FFFF33" markup="none" fontName="Times New Roman" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<paragraph leftIndent="5"/>
+			<text><![CDATA[Date Legal case
+]]></text>
+			<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			<box>
+				<topPen lineWidth="1.0"/>
+				<leftPen lineWidth="1.0"/>
+				<bottomPen lineWidth="1.0"/>
+				<rightPen lineWidth="1.0"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="86f44aac-f656-41f7-a2e9-627a49bd0734" mode="Opaque" x="1420" y="0" width="80" height="20" backcolor="#FFFF33" markup="none" fontName="Times New Roman" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<paragraph leftIndent="5"/>
+			<text><![CDATA[Reserve Line 2
+]]></text>
+			<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			<box>
+				<topPen lineWidth="1.0"/>
+				<leftPen lineWidth="1.0"/>
+				<bottomPen lineWidth="1.0"/>
+				<rightPen lineWidth="1.0"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="51a937be-1970-46c4-a1f2-6f183f00fd2e" mode="Opaque" x="220" y="0" width="80" height="20" backcolor="#FFFF33" markup="none" fontName="Times New Roman" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<paragraph leftIndent="5"/>
+			<text><![CDATA[CSNO
+]]></text>
+			<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			<box>
+				<topPen lineWidth="1.0"/>
+				<leftPen lineWidth="1.0"/>
+				<bottomPen lineWidth="1.0"/>
+				<rightPen lineWidth="1.0"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="19d3aa55-b1b7-4fe5-9b3f-d406a3cc2baa" mode="Opaque" x="810" y="0" width="90" height="20" backcolor="#FFFF33" markup="none" fontName="Times New Roman" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<paragraph leftIndent="5"/>
+			<text><![CDATA[Skipped Date
+]]></text>
+			<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			<box>
+				<topPen lineWidth="1.0"/>
+				<leftPen lineWidth="1.0"/>
+				<bottomPen lineWidth="1.0"/>
+				<rightPen lineWidth="1.0"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="26164d7b-f389-4be2-ae43-54fb404704a9" mode="Opaque" x="60" y="0" width="80" height="20" backcolor="#FFFF33" markup="none" fontName="Times New Roman" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<paragraph leftIndent="5"/>
+			<text><![CDATA[Bank_Code
+]]></text>
+			<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			<box>
+				<topPen lineWidth="1.0"/>
+				<leftPen lineWidth="1.0"/>
+				<bottomPen lineWidth="1.0"/>
+				<rightPen lineWidth="1.0"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="d4b2c6fd-ae1d-4a58-970e-b27c213ac066" mode="Opaque" x="900" y="0" width="110" height="20" backcolor="#FFFF33" markup="none" fontName="Times New Roman" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<paragraph leftIndent="5"/>
+			<text><![CDATA[Country Skipped To
+]]></text>
+			<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			<box>
+				<topPen lineWidth="1.0"/>
+				<leftPen lineWidth="1.0"/>
+				<bottomPen lineWidth="1.0"/>
+				<rightPen lineWidth="1.0"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="70d53e80-af36-4e31-8009-500fd55760b0" mode="Opaque" x="700" y="0" width="110" height="20" backcolor="#FFFF33" markup="none" fontName="Times New Roman" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<paragraph leftIndent="5"/>
+			<text><![CDATA[Borrower Status
+]]></text>
+			<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			<box>
+				<topPen lineWidth="1.0"/>
+				<leftPen lineWidth="1.0"/>
+				<bottomPen lineWidth="1.0"/>
+				<rightPen lineWidth="1.0"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="6465d00f-aa7c-47f5-949c-d506422ed63b" mode="Opaque" x="1580" y="0" width="80" height="20" backcolor="#FFFF33" markup="none" fontName="Times New Roman" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<paragraph leftIndent="5"/>
+			<text><![CDATA[Reserve Line 4
+]]></text>
+			<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			<box>
+				<topPen lineWidth="1.0"/>
+				<leftPen lineWidth="1.0"/>
+				<bottomPen lineWidth="1.0"/>
+				<rightPen lineWidth="1.0"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="019b60a3-5b42-4286-9260-0425c78af45f" mode="Opaque" x="1340" y="0" width="80" height="20" backcolor="#FFFF33" markup="none" fontName="Times New Roman" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<paragraph leftIndent="5"/>
+			<text><![CDATA[Reserve Line 1 
+]]></text>
+			<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			<box>
+				<topPen lineWidth="1.0"/>
+				<leftPen lineWidth="1.0"/>
+				<bottomPen lineWidth="1.0"/>
+				<rightPen lineWidth="1.0"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="c57f22e5-3949-43f9-b1ef-e17b88674c5a" mode="Opaque" x="1660" y="0" width="80" height="20" backcolor="#FFFF33" markup="none" fontName="Times New Roman" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<paragraph leftIndent="5"/>
+			<text><![CDATA[Reserve Line 5]]></text>
+			<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			<box>
+				<topPen lineWidth="1.0"/>
+				<leftPen lineWidth="1.0"/>
+				<bottomPen lineWidth="1.0"/>
+				<rightPen lineWidth="1.0"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="104dcc45-3f8d-4981-9732-0b92cb934a12" mode="Opaque" x="1010" y="0" width="330" height="20" backcolor="#FFFF33" markup="none" fontName="Times New Roman" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<paragraph leftIndent="5"/>
+			<text><![CDATA[Related reference in CCSYS for the person related to Case record
+]]></text>
+			<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			<box>
+				<topPen lineWidth="1.0"/>
+				<leftPen lineWidth="1.0"/>
+				<bottomPen lineWidth="1.0"/>
+				<rightPen lineWidth="1.0"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="629091ee-d6bc-46fa-aed9-2d654319769b" mode="Opaque" x="-20" y="0" width="80" height="20" backcolor="#FFFF33" markup="none" fontName="Times New Roman" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<paragraph leftIndent="5"/>
+			<text><![CDATA[Operation
+]]></text>
+			<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			<box>
+				<topPen lineWidth="1.0"/>
+				<leftPen lineWidth="1.0"/>
+				<bottomPen lineWidth="1.0"/>
+				<rightPen lineWidth="1.0"/>
+			</box>
+		</element>
+	</title>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<element kind="textField" uuid="578b7c09-d71b-46a9-93ee-cf9ea1ec7d33" x="1340" y="0" width="80" height="20" markup="none" fontName="Times New Roman" fontSize="9.0" blankWhenNull="true" hTextAlign="Left" vTextAlign="Middle">
+				<paragraph leftIndent="5"/>
+				<expression><![CDATA[$F{RESERVE_LINE_1}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="88f1e015-89f4-491e-8ca0-5048b3a19bbb" x="580" y="0" width="120" height="20" markup="none" fontName="Times New Roman" fontSize="9.0" pattern="dd/MM/yyyy" blankWhenNull="true" hTextAlign="Right" vTextAlign="Middle">
+				<paragraph leftIndent="5"/>
+				<expression><![CDATA[$F{DATE_FINAL_JUDGEMENT}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="a71dd3b7-25c9-480b-91b1-41e41cd9abbb" x="60" y="0" width="80" height="20" markup="none" fontName="Times New Roman" fontSize="9.0" blankWhenNull="true" hTextAlign="Left" vTextAlign="Middle">
+				<paragraph leftIndent="5"/>
+				<expression><![CDATA[$F{BANK_CODE}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="157fd6b3-826b-413c-a962-cb31f78318bb" x="810" y="0" width="90" height="20" markup="none" fontName="Times New Roman" fontSize="9.0" pattern="dd/MM/yyyy" blankWhenNull="true" hTextAlign="Right" vTextAlign="Middle">
+				<paragraph leftIndent="5"/>
+				<expression><![CDATA[$F{SKIPPED_DATE}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="55d1c675-9966-4f69-8937-484e39fe93f5" x="300" y="0" width="110" height="20" markup="none" fontName="Times New Roman" fontSize="9.0" blankWhenNull="true" hTextAlign="Left" vTextAlign="Middle">
+				<paragraph leftIndent="5"/>
+				<expression><![CDATA[$F{LEGAL_CASE_REC_ID}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="b1e6f342-f5e9-49ce-bb4f-07c03992d54d" x="490" y="0" width="90" height="20" markup="none" fontName="Times New Roman" fontSize="9.0" pdfEncoding="Cp1256" pattern="dd/MM/yyyy" blankWhenNull="true" hTextAlign="Right" vTextAlign="Middle">
+				<paragraph leftIndent="5"/>
+				<expression><![CDATA[$F{DATE_LEGAL_CASE}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="2ed93d86-07e7-4848-ac8a-94fe46bafd58" x="-20" y="0" width="80" height="20" markup="none" fontName="Times New Roman" fontSize="9.0" blankWhenNull="true" hTextAlign="Left" vTextAlign="Middle">
+				<paragraph leftIndent="5"/>
+				<expression><![CDATA[$F{OPERATION}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="21cbcf48-2129-4c7c-9f12-a2b5bca34ef0" x="700" y="0" width="110" height="20" markup="none" fontName="Times New Roman" fontSize="9.0" blankWhenNull="true" hTextAlign="Left" vTextAlign="Middle">
+				<paragraph leftIndent="5"/>
+				<expression><![CDATA[$F{BORROWER_STATUS}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="36c355f8-0658-4f07-955e-bfa64422c901" x="1580" y="0" width="80" height="20" markup="none" fontName="Times New Roman" fontSize="9.0" blankWhenNull="true" hTextAlign="Left" vTextAlign="Middle">
+				<paragraph leftIndent="5"/>
+				<expression><![CDATA[$F{RESERVE_LINE_4}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="ced7cd6a-2e26-453e-82d8-9a25732b7cdb" x="410" y="0" width="80" height="20" markup="none" fontName="Times New Roman" fontSize="9.0" blankWhenNull="true" hTextAlign="Left" vTextAlign="Middle">
+				<paragraph leftIndent="5"/>
+				<expression><![CDATA[$F{LEGAL_CASE_STATUS}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="9a05ea68-25b1-4ec3-b43e-a5441146ba16" x="1420" y="0" width="80" height="20" markup="none" fontName="Times New Roman" fontSize="9.0" blankWhenNull="true" hTextAlign="Left" vTextAlign="Middle">
+				<paragraph leftIndent="5"/>
+				<expression><![CDATA[$F{RESERVE_LINE_2}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="fa89e5d7-ceee-40c1-acb3-1faea18ba3e4" x="220" y="0" width="80" height="20" markup="none" fontName="Times New Roman" fontSize="9.0" blankWhenNull="true" hTextAlign="Left" vTextAlign="Middle">
+				<paragraph leftIndent="5"/>
+				<expression><![CDATA[$F{CSNO}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="188d2a30-c5a9-4e25-9526-38ff8cc6d1f8" x="1500" y="0" width="80" height="20" markup="none" fontName="Times New Roman" fontSize="9.0" blankWhenNull="true" hTextAlign="Left" vTextAlign="Middle">
+				<paragraph leftIndent="5"/>
+				<expression><![CDATA[$F{RESERVE_LINE_3}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="edb76f09-a350-4bc4-bb61-d1adfb629a10" x="140" y="0" width="80" height="20" markup="none" fontName="Times New Roman" fontSize="9.0" blankWhenNull="true" hTextAlign="Left" vTextAlign="Middle">
+				<paragraph leftIndent="5"/>
+				<expression><![CDATA[$F{CIN}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="9433d376-30b9-4b3f-8200-9c5c78379941" x="900" y="0" width="110" height="20" markup="none" fontName="Times New Roman" fontSize="9.0" blankWhenNull="true" hTextAlign="Left" vTextAlign="Middle">
+				<paragraph leftIndent="5"/>
+				<expression><![CDATA[$F{COUNTRY_SKIPPED_TO}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="a66eaea7-cb21-455c-b673-bed70823c8d1" x="1010" y="0" width="330" height="20" markup="none" fontName="Times New Roman" fontSize="9.0" blankWhenNull="true" hTextAlign="Left" vTextAlign="Middle">
+				<paragraph leftIndent="5"/>
+				<expression><![CDATA[$F{RELATED_REFERENCE_CCSYS}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="2959605b-28e5-448c-a3d7-f1c627bf4bbe" x="1660" y="0" width="80" height="20" markup="none" fontName="Times New Roman" fontSize="9.0" blankWhenNull="true" hTextAlign="Left" vTextAlign="Middle">
+				<paragraph leftIndent="5"/>
+				<expression><![CDATA[$F{RESERVE_LINE_5}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+			</element>
+		</band>
+	</detail>
+</jasperReport>

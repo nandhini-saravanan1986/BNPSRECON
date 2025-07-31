@@ -1,0 +1,3885 @@
+
+
+
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<!--
+	CREATED BY : Rajalakshmi
+	DATE : 10-11-24
+-->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css"
+	href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+<link rel="stylesheet" type="text/css"
+	href="/webjars/font-awesome/5.9.0/css/all.min.css"
+	th:href="@{/webjars/font-awesome/5.9.0/css/all.min.css}">
+<link rel="stylesheet" type="text/css"
+	href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"
+	th:href="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.css}">
+<link rel="stylesheet" type="text/css"
+	href="/webjars/datatables/1.10.19/css/jquery.dataTables.min.css"
+	th:href="@{/webjars/datatables/1.10.19/css/jquery.dataTables.min.css}">
+<link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+<link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon">
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"
+	th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+<script src="/webjars/popper.js/1.14.7/umd/popper.min.js"
+	th:src="@{/webjars/popper.js/1.14.7/umd/popper.min.js}"></script>
+<script src="/webjars/jquery/3.4.1/jquery.min.js"
+	th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"
+	th:src="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.js}"></script>
+<script src="/webjars/jquery-form/4.2.2/jquery.form.min.js"
+	th:src="@{/webjars/jquery-form/4.2.2/jquery.form.min.js}"></script>
+<script src="/webjars/jquery-validation/1.19.0/jquery.validate.min.js"
+	th:src="@{/webjars/jquery-validation/1.19.0/jquery.validate.min.js}"></script>
+<script src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"
+	th:src="@{/webjars/datatables/1.10.19/js/jquery.dataTables.min.js}"></script>
+<script
+	src="/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js"
+	th:src="@{/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js}"></script>
+<!-- First load the script that defines the function -->
+<script src="path/to/transvalDefinition.js"></script>
+
+<!-- Then load the script that calls transval -->
+<script src="path/to/selectedAccountCall.js"></script>
+
+<style>
+body {
+	font-size: 0.8rem;
+}
+
+.btn {
+	line-height: 0.5rem;
+}
+
+.table-bordered td, .table-bordered th {
+	font-size: smaller;
+}
+
+.container-manager {
+	width: 80.5%;
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-right: 18.3%;
+	margin-left: 18.3%;
+	margin-top: 85px;
+}
+/*  .container-manager1 {
+	width: 83.5%;
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-right: auto;
+	margin-left: 17.3%;
+	margin-top: 0px;
+}  */
+.table .thead-light th {
+	color: #495057;
+	background-color: #e9ecef;
+	border-color: #dee2e6;
+	width: 23px;
+	padding-left: 8px;
+}
+
+.tablinks {
+	background-color: #f2f2f2;
+	color: #000;
+}
+
+.tablinks.active {
+	background-color: #007bff;
+	color: #fff;
+}
+
+.tab {
+	overflow: hidden;
+	border: 1px solid #ccc;
+	background-color: #f1f1f1;
+}
+
+.scroll {
+	max-height: vh;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.tab button {
+	background-color: inherit;
+	float: left;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	padding: 14px 16px;
+	transition: 0.3s;
+	font-size: 17px;
+}
+
+.tab button:hover {
+	background-color: #ddd;
+}
+
+.tabcontent {
+	display: none;
+	padding: 6px 12px;
+	border: 0px solid #ccc;
+	border-top: none;
+}
+
+#myPieChart {
+	width: 100px;
+	height: 100px;
+}
+
+.input-group-text {
+	cursor: pointer;
+}
+
+#eyeIcon {
+	font-size: 1.2rem;
+}
+</style>
+<style>
+.modal-content a {
+	color: blue;
+}
+
+.modal-content a:hover {
+	text-decoration: underline;
+}
+
+.close {
+	color: red;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close:hover, .close:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.dataTables_filter input {
+	width: 96%;
+	/* Adjust this value to your preferred width */
+}
+
+/* Add left margin to the length menu ("Show Records") */
+.dataTables_length {
+	margin-left: 33px; /* Adjust as needed */
+}
+
+/* Add left margin to the info section ("Showing 1 to X of Y entries") */
+.dataTables_info {
+	margin-left: 100px; /* Adjust as needed */
+}
+
+/* Add left margin to pagination controls */
+.dataTables_paginate {
+	margin-left: 100px; /* Adjust as needed */
+}
+</style>
+
+
+<script>
+    function filterTables() {
+        var input, filter, tables, tr, td, i, j, txtValue;
+        input = document.getElementById("commonSearch");
+        filter = input.value.toUpperCase();
+        tables = ["retailTable", "corporateTable", "allTable"];
+
+        tables.forEach(tableId => {
+            let table = document.getElementById(tableId);
+            if (table) {
+                tr = table.getElementsByTagName("tr");
+
+                for (i = 1; i < tr.length; i++) { // Start from 1 to skip header row
+                    let rowVisible = false;
+
+                    for (j = 0; j < tr[i].cells.length; j++) { // Check all columns in the row
+                        td = tr[i].cells[j];
+
+                        if (td) {
+                            txtValue = td.textContent || td.innerText;
+                            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                rowVisible = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    tr[i].style.display = rowVisible ? "" : "none";
+                }
+            }
+        });
+    }
+</script>
+<script>
+
+
+$(document).ready(function () {
+    // Initialize DataTable
+    var table = $('#usertable').DataTable({
+        "searching": true,            // Enable searching
+        "pageLength": 100,            // Default number of records per page
+        "lengthMenu": [100, 300, 500], // Options for records per page
+        "search": {
+            "caseInsensitive": true,
+            "smart": true
+        },
+        "dom": "<'row'<'col-sm-12'tr>>", // Only display table rows initially
+        "info": true,                // Enable table info (e.g., "Showing 1 to 41...")
+        "paging": true,              // Enable pagination
+        "autoWidth": false,          // Disable auto width for columns
+        "ordering": true,            // Enable column sorting
+        "oLanguage": {
+            "sSearch": "",
+            "sSearchPlaceholder": "Search Here"
+        },
+        "initComplete": function () {
+            // Move the pagination and info elements to the footer
+            var info = $('#usertable_info').detach();   // Table info
+            var paginate = $('#usertable_paginate').detach(); // Pagination buttons
+
+            // Append the info and pagination to the footer
+            $('#datatable-info').append(info).append(paginate);
+        }
+    });
+
+    // Event listener for the search input in card header
+    $('#filterInput').on('input', function () {
+        var searchValue = $(this).val();
+        table.search(searchValue).draw(); // Apply search filter
+    });
+});
+
+
+
+
+
+</script>
+
+<script>
+		// JavaScript function to switch between tabs
+		function Home() {
+			location.href = 'Dashboard';
+		}
+		function Back() {
+			window.history.back();
+		}
+
+  
+
+		document.addEventListener("DOMContentLoaded", function () {
+		    const tables = ["retailTable", "corporateTable", "allTable"];
+		    
+		    tables.forEach(tableId => {
+		        let table = document.getElementById(tableId);
+		        if (!table) return;
+
+		        let tbody = table.getElementsByTagName("tbody")[0];
+		        let rows = Array.from(tbody.getElementsByTagName("tr"));
+		        let recordsPerPage = 15;
+		        let currentPage = 1;
+		        let totalPages = Math.ceil(rows.length / recordsPerPage);
+
+		        function showPage(page) {
+		            let start = (page - 1) * recordsPerPage;
+		            let end = start + recordsPerPage;
+
+		            rows.forEach((row, index) => {
+		                row.style.display = (index >= start && index < end) ? "" : "none";
+		            });
+
+		            document.getElementById(tableId + "_prev").disabled = (page === 1);
+		            document.getElementById(tableId + "_next").disabled = (page === totalPages);
+		        }
+
+		        let prevButton = document.getElementById(tableId + "_prev");
+		        let nextButton = document.getElementById(tableId + "_next");
+
+		        if (prevButton && nextButton) {
+		            prevButton.addEventListener("click", () => showPage(--currentPage));
+		            nextButton.addEventListener("click", () => showPage(++currentPage));
+		        }
+
+		        showPage(currentPage);
+		    });
+		});
+
+		
+		
+		
+		document.addEventListener("DOMContentLoaded", function () {
+		    let tableBody = document.getElementById("tableBody");
+		    let rows = Array.from(tableBody.getElementsByTagName("tr"));
+		    let recordsPerPage = 10000;
+		    let currentPage = 1;
+		    let totalPages = Math.ceil(rows.length / recordsPerPage);
+
+		    function showPage(page) {
+		        let start = (page - 1) * recordsPerPage;
+		        let end = start + recordsPerPage;
+
+		        rows.forEach((row, index) => {
+		            row.style.display = (index >= start && index < end) ? "" : "none";
+		        });
+
+		        document.getElementById("prevPage").disabled = (page === 1);
+		        document.getElementById("nextPage").disabled = (page === totalPages);
+		    }
+
+		    document.getElementById("prevPage").addEventListener("click", () => showPage(--currentPage));
+		    document.getElementById("nextPage").addEventListener("click", () => showPage(++currentPage));
+
+		    document.getElementById("filterInput").addEventListener("keyup", function () {
+		        let filter = this.value.toLowerCase();
+		        rows.forEach(row => {
+		            row.style.display = row.innerText.toLowerCase().includes(filter) ? "" : "none";
+		        });
+		    });
+
+		    showPage(currentPage);
+		});
+
+
+		
+		
+		
+		$(document).ready(function () {
+			$('#masterdata').DataTable({
+				"destroy": true,
+				"scrollY": 600, // Vertical scroll
+				"scrollX": true, // Horizontal scroll
+				"scrollCollapse": true,
+				"paging": true, // Enable pagination
+				"autoWidth": false, // Disable automatic column width calculation
+				"ordering": true, // Enable column sorting
+				"oLanguage": {
+					"sSearch": "", // Custom search input text
+					"sSearchPlaceholder": "Search Here" // Placeholder for search input
+				},
+				"searching": true, // Enable search
+				"pageLength": 100, // Default rows per page
+				"lengthChange": false // Disable page length change dropdown
+			});
+		});
+		
+</script>
+<style>
+/* Add border to the table */
+#masterdata {
+	width: 100%; /* Make the table take full width */
+}
+
+/* Add border to each table cell */
+#masterdata th, #masterdata td {
+	border: 1px solid #ddd; /* Light gray border */
+	text-align: left; /* Left-align text */
+}
+
+/* Optionally, add a background color to the header */
+#masterdata th {
+	background-color: #f2f2f2;
+}
+
+#usertable {
+	width: 100%; /* Make the table take full width */
+}
+
+/* Add border to each table cell */
+#usertable th, #usertable td {
+	
+	text-align: left; /* Left-align text */
+}
+
+/* Optionally, add a background color to the header */
+#usertable th {
+	background-color: #f2f2f2;
+}
+</style>
+
+<script>
+      function formatDecimal(values, decimals) {
+        // Handle both single numbers and lists of numbers
+        if (!Array.isArray(values)) {
+            values = [values]; // Wrap single value into an array
+        }
+
+        return values.map(num => {
+            if (isNaN(num)) return '0.00';
+            return parseFloat(num).toLocaleString('en-US', { 
+                minimumFractionDigits: decimals, 
+                maximumFractionDigits: decimals 
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // List of IDs or class names
+        const elements = document.querySelectorAll('#formattedValue, #formattedValue1,#formattedValue2,#formattedValue3,#formattedValue4'); // Add more selectors if needed
+
+        elements.forEach(el => {
+            const value = parseFloat(el.innerText); // Convert the inner text to a number
+            const formatted = formatDecimal(value, 2)[0]; // Format and get the first result
+            el.innerText = formatted; // Update the element
+        });
+    });
+</script>
+
+<script>
+function ForMyPop(element) {
+    // Get the customer ID from the clicked element's data attribute
+    var cust_id = element.getAttribute('data-cust_id');
+    console.log("Customer ID:", cust_id);
+    document.getElementById('hiddenCifId').value = cust_id;
+    
+    var nat_id_card_num = element.getAttribute('data-NAT_ID_CARD_NUM');
+    console.log("NATIONAL ID CARD:", nat_id_card_num);
+    document.getElementById('hiddenNATIDCARDNUM').value = nat_id_card_num;
+    
+     var tran_id = element.getAttribute('data-Tran_Id');
+    console.log("Transaction Id:", tran_id);
+    document.getElementById('hiddenTranId').value = tran_id;
+
+    // Show the modal
+    var modal = document.getElementById('detailsModal');
+    if (modal) {
+        modal.style.display = "block";
+    } else {
+        console.log("Modal element not found");
+    }
+}
+
+function closemodal() {
+	var modal = document.getElementById('detailsModal');
+	modal.style.display = "none";
+}
+
+		
+		  /* function Dataquality() {
+		        location.href = 'dataQuality?formmode=Dataquality';
+		    } */
+function Dataquality() {
+    location.href = 'dataQuality?formmode=Dataquality';
+}
+		  		  
+		  function radio(element) {   
+			    let selectedValue = element.value;
+			    
+			    console.log();
+
+			    switch (selectedValue) {
+			    case "CIF Number":
+		            location.href = 'dataQuality?formmode=cifnumber';
+		            console.log();
+		            break;
+			        case "Customer Name (Bank Records)":
+			            location.href = 'dataQuality?formmode=customername'; 
+			            break;
+			        case "Customer Name (As Per Passport)":
+			            location.href = 'dataQuality?formmode=customname';  
+			            break;
+			        case "Date of Birth":
+			            location.href = 'dataQuality?formmode=Dateofbirth';
+			            break;
+			        case "Place of birth":
+			        	location.href = 'dataQuality?formmode=placeofbirth';			            
+			            break;
+			        case "Passport Document (Number)":    
+			        	 location.href = 'dataQuality?formmode=PassportNo'; 
+			            break;
+			        case "Expiry date (Passport)":
+			            location.href = 'dataQuality?formmode=PassportExpiry';  
+			            break;
+			        case "Country of Residency":
+			            location.href = 'dataQuality?formmode=CountryofResidency';  
+			            break;
+			            
+			        case "Marker of Employed/ Unemployed/ Self Employed":
+			            location.href = 'dataQuality?formmode=MarkerofEmployed';  
+			            break;
+			        case "Employer Name":
+			            location.href = 'dataQuality?formmode=EmployerName';  
+			            break;
+			        case "Residency address/street name":
+			            location.href = 'dataQuality?formmode=Residencyaddress';  
+			            break;
+			        case "PO Box/Postal Code":
+			            location.href = 'dataQuality?formmode=Poboxpostalcode';  
+			            break;
+			        case "Customer Risk Rating":
+			            location.href = 'dataQuality?formmode=Customerriskrating';  
+			            break;
+			        case "Monthly Salary (AED)":
+			            location.href = 'dataQuality?formmode=Monthlysalary';  
+			            break;
+			        case "Additional Monthly income":
+			            location.href = 'dataQuality?formmode=Addmonthsalary';  
+			            break;
+			        case "1 Nationality":
+			            location.href = 'dataQuality?formmode=Natinality1';  
+			            break;
+			        case "Dual Nationality Flag":
+			            location.href = 'dataQuality?formmode=DualNatinality';  
+			            break;
+			        case "Last KYC review date":
+			            location.href = 'dataQuality?formmode=KYCReviewdate';  
+			            break;
+			        case "Estimated Total Annual Income":
+			            location.href = 'dataQuality?formmode=TotalAnnualIncome';  
+			            break;
+			           
+			        case "Salary Transferred to Bank Melli Iran (Yes/ No)":
+			            location.href = 'dataQuality?formmode=SalaryTransferredBank';  
+			            break;
+			        case "Emirates ID (Number)":
+			            location.href = 'dataQuality?formmode=EmiratesID';  
+			            break;
+			        case "Expiry date (EID)":
+			            location.href = 'dataQuality?formmode=EmiratesExpDate';  
+			            break;
+			        case "2 Nationality":
+			            location.href = 'dataQuality?formmode=Natinality2';  
+			            break;
+			        case "Related Parties Applicable Flag":
+			            location.href = 'dataQuality?formmode=RelatedPartiesFlag';  
+			            break;
+			            
+			        case "Residence Marker (Resident/ Non-Resident)":
+			            location.href = 'dataQuality?formmode=ResidenceMarker';  
+			            break;
+			        case "CUSTOMER NAME MISMATCH":
+			            location.href = 'dataQuality?formmode=CustNameMismatch';  
+			            break;
+			        case "GENDER":
+			            location.href = 'dataQuality?formmode=GENDER';  
+			            break;
+			        /* case "GENDER":
+			            location.href = 'dataQuality?formmode=GENDER';  
+			            break; */
+			        case "Email":
+			            location.href = 'dataQuality?formmode=Email';  
+			            break;
+			        case "Birthday":
+			            location.href = 'dataQuality?formmode=Birthday';  
+			            break;
+			        case "Country Tax Residence":
+			            location.href = 'dataQuality?formmode=CountryTaxResidence';  
+			            break;
+			        case "Short Name":
+			            location.href = 'dataQuality?formmode=Shortname';  
+			            break;
+			        case "Loan Details":
+			            location.href = 'dataQuality?formmode=LoanDetails';  
+			            break;
+			        case "PEP (Politically Exposed Person)":
+			            location.href = 'dataQuality?formmode=pep';  
+			            break;
+			        case "CreditRating":
+			            location.href = 'dataQuality?formmode=CreditRating';  
+			            break;
+			        case "Phone":
+			            location.href = 'dataQuality?formmode=Phone';  
+			            break;
+			        case "TaxCompliance":
+			            location.href = 'dataQuality?formmode=TaxCompliance';  
+			            break;
+			        case "RealEstate":
+			            location.href = 'dataQuality?formmode=RealEstate';  
+			            break;
+			            
+			            
+			            
+			        default:
+			            console.log("No action for this option");
+			    }
+			}
+		
+	</script>
+
+
+
+
+<script>
+function Cifnumber(natIdNum) {
+				$('#cifnum').modal('show'); // Show the modal initially
+				// Fetch additional details based on natIdNum
+				$.ajax({
+					type: 'GET',
+					url: './getcif',
+					data: {natIdNum: natIdNum},
+					success: function (data) {
+						console.log(data);
+						if (data.length > 0) {
+							// Clear previous entries in the modal table
+							$('#trancheDetList').empty();
+
+							// Populate the table with fetched data
+							data.forEach((userDetails, index) => {
+								const rowHtml = `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${userDetails[0]}</td>
+                            <td>${userDetails[1]}</td>
+                            <td>${userDetails[2]}</td>
+                        </tr>
+                    `;
+								$('#trancheDetList').append(rowHtml);
+							});
+						} else {
+							$('#trancheDetList').html('<tr><td colspan="3" class="text-center">No data found</td></tr>');
+						}
+					},
+					error: function () {
+						$('#errorMessage').text('Error fetching user details');
+						$('#errorModal').modal('show');
+					}
+				});
+			}
+	</script>
+
+
+<script>
+function Cifno(natIdNum) {
+				$('#CRcifnum').modal('show'); // Show the modal initially
+				// Fetch additional details based on natIdNum
+				$.ajax({
+					type: 'GET',
+					url: './getcifall',
+					data: {natIdNum: natIdNum},
+					success: function (data) {
+						console.log(data);
+						if (data.length > 0) {
+							// Clear previous entries in the modal table
+							$('#CorpRetailList').empty();
+
+							// Populate the table with fetched data
+							data.forEach((userDetails, index) => {
+								const rowHtml = `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${userDetails[0]}</td>
+                            <td>${userDetails[1]}</td>
+                            <td>${userDetails[2]}</td>
+                        </tr>
+                    `;
+								$('#CorpRetailList').append(rowHtml);
+							});
+						} else {
+							$('#CorpRetailList').html('<tr><td colspan="3" class="text-center">No data found</td></tr>');
+						}
+					},
+					error: function () {
+						$('#errorMessage').text('Error fetching user details');
+						$('#errorModal').modal('show');
+					}
+				});
+			}
+	</script>
+
+<script>
+function RetailCif(natIdNum) {
+				$('#Rcifnum').modal('show'); // Show the modal initially
+				// Fetch additional details based on natIdNum
+				$.ajax({
+					type: 'GET',
+					url: './getcifRetail',
+					data: {natIdNum: natIdNum},
+					success: function (data) {
+						console.log(data);
+						if (data.length > 0) {
+							// Clear previous entries in the modal table
+							$('#RetailList').empty();
+
+							// Populate the table with fetched data
+							data.forEach((userDetails, index) => {
+								const rowHtml = `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${userDetails[0]}</td>
+                            <td>${userDetails[1]}</td>
+                            <td>${userDetails[2]}</td>
+                        </tr>
+                    `;
+								$('#RetailList').append(rowHtml);
+							});
+						} else {
+							$('#RetailList').html('<tr><td colspan="3" class="text-center">No data found</td></tr>');
+						}
+					},
+					error: function () {
+						$('#errorMessage').text('Error fetching user details');
+						$('#errorModal').modal('show');
+					}
+				});
+			}
+	</script>
+<script>
+ 
+    function navigateToCustomerType(button, type) {
+        // Remove the active class and reset styles from all buttons
+        document.querySelectorAll('.custom-button').forEach(btn => {
+            btn.classList.remove('active');  // Remove the 'active' class
+            btn.style.backgroundColor = '';  // Reset background color
+            btn.style.color = '';            // Reset text color
+            btn.style.borderColor = '';      // Reset border color
+        });
+
+        // Add the active class to the clicked button
+        button.classList.add('active');
+
+        // Apply the active style to the clicked button
+        applyActiveButtonStyle(button);
+
+        // Navigate to the specified customer type
+        location.href = 'dataQuality?formmode=cifnumber&customerType=' + type;
+    }
+
+    // Function to apply active button style
+    function applyActiveButtonStyle(button) {
+        button.style.backgroundColor = '#007bff'; // Blue background for the active button
+        button.style.borderColor = '#007bff';     // Blue border for the active button
+        button.style.color = '#fff';              // White text color for the active button
+    }
+
+    // Apply the active style to the default active button when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        const defaultActiveButton = document.querySelector('.custom-button.active');
+        if (defaultActiveButton) {
+            applyActiveButtonStyle(defaultActiveButton);
+        }
+    }); 
+
+</script>
+</head>
+<body>
+	<div class="col-sm-2">
+		<div th:insert="XBRLHeaderMenu :: header"></div>
+	</div>
+	<!-------------------------------------------------------User List Starts------------------------------------------------------->
+	<!-- Start Content-->
+	<div class="container-manager">
+		<div class="row">
+			<div class="col-sm-12 ml-n3 mt-2" style="font-size: 0.8rem;">
+				<!-- ---------------------------------------Dataquality--------------------------------------------------------------- -->
+				<div th:if="${formmode}=='list'">
+					<div class="card">
+						<div class="card-header"
+							style="display: flex; justify-content: space-between; align-items: center;">
+							<!-- Left: Show Records Dropdown -->
+							<div style="display: flex; align-items: center;"></div>
+							<h6 style="font-size: 1.5rem; text-align: center; flex-grow: 1;">DATA
+								QUALITY CHECK VALIDATIONS</h6>
+							<div style="display: flex; align-items: center;">
+								<input id="filterInput" type="text"
+									class="form-control form-control-sm"
+									placeholder="Search Here..." />
+							</div>
+						</div>
+						<div class="card-body">
+							<div class="panel panel-primary filterable">
+								<div>
+									<table id="usertable" class="table display nowrap"
+										style="margin-left: 5px;">
+										<thead class="thead-light">
+											<tr
+												style="white-space: nowrap; overflow: hidden; text-align: left;">
+												<th style="width: 2%; text-align: center">S.No</th>
+												<th style="width: 0%; text-align: left">DATA QUALITY CHECKS</th>
+												<th style="width: 2%; text-align: center">S.No</th>
+												<th style="width: 2%; text-align: left">DATA QUALITY CHECKS</th>
+												<th style="width: 2%; text-align: center">S.No</th>
+												<th style="width: 2%; text-align: left">DATA QUALITY CHECKS</th>
+											</tr>
+										</thead>
+										<tbody id="placelist" class="bg-white">
+											<tr>
+												<td style="text-align: center">1</td>
+												<td><a href="dataQuality?formmode=cifnumber"
+													style="color: blue;">Mulriple CIF Number</a></td>
+												<td style="text-align: center">2</td>
+												<td><a href="dataQuality?formmode=customername"
+													style="color: blue;">Customer Full name </a></td>
+												<td style="text-align: center">3</td>
+												<td><a href="dataQuality?"
+													style="color: blue;">Customer Name (As Per Passport)</a></td>
+											</tr>
+											<tr>
+												<td style="text-align: center">4</td>
+												<td><a href="dataQuality?formmode=CustNameMismatch"  
+													style="color: blue;">Customer Name Mismatch</a></td>
+												<td style="text-align: center">5</td>
+												<td><a href="dataQuality?formmode=Dateofbirth"
+													style="color: blue;">Customer Age and DOB </a></td>
+												<td style="text-align: center">6</td>
+												<td><a href="dataQuality?formmode=placeofbirth"
+													style="color: blue;">Place of Birth</a></td>
+											</tr>
+											<tr>
+												<td style="text-align: center">7</td>
+												<td><a href="dataQuality?formmode=PassportNo"
+													style="color: blue;">Passport Number Pattern Check</a></td>
+												<td style="text-align: center">8</td>
+												<td><a href="dataQuality?formmode=PassportExpiry"
+													style="color: blue;">Passport Expiry & Issue Date</a></td>
+												<td style="text-align: center">9</td>
+												<td><a href="dataQuality?"
+													style="color: blue;">Dual Nationality Flag</a></td>
+											</tr>
+											<tr>
+												<td style="text-align: center">10</td>
+												<td><a href="dataQuality?formmode=EmiratesID"
+													style="color: blue;">Customer Emirates id</a></td>
+												<td style="text-align: center">11</td>
+												<td><a href="dataQuality?formmode=EmiratesExpDate"
+													style="color: blue;">Customer Emirates Expiry date</a></td>
+												<td style="text-align: center">12</td>
+												<td><a href="dataQuality?formmode=Natinality1"
+													style="color: blue;">Individual Nationality</a></td>
+											</tr>
+											<tr>
+												<td style="text-align: center">13</td>
+												<td><a href="dataQuality?formmode=Natinality2"
+													style="color: blue;">Corporate Nationality</a></td>
+												<td style="text-align: center">14</td>
+												<td><a href="dataQuality?formmode=RelatedPartiesFlag"
+													style="color: blue;">Related Parties Applicable Flag</a></td>
+												<td style="text-align: center">15</td>
+												<td><a href="dataQuality?formmode=ResidenceMarker"
+													style="color: blue;">Residence Marker & National ID</a></td>
+											</tr>
+											<tr>
+												<td style="text-align: center">16</td>
+												<td><a href="dataQuality?formmode=CountryofResidency"
+													style="color: blue;">Country of Residency</a></td>
+												<td style="text-align: center">17</td>
+												<td><a href="dataQuality?formmode=Residencyaddress"
+													style="color: blue;">Customer Residency address</a></td>
+												<td style="text-align: center">18</td>
+												<td><a href="dataQuality?formmode=Poboxpostalcode"
+													style="color: blue;">Postal Code</a></td>
+											</tr>
+											<tr>
+												<td style="text-align: center">19</td>
+												<td><a href="dataQuality?formmode=MarkerofEmployed"
+													style="color: blue;">Employment Status </a></td>
+												<td style="text-align: center">20</td>
+												<td><a href="dataQuality?formmode=EmployerName"
+													style="color: blue;">Employer Name</a></td>
+												<td style="text-align: center">21</td>
+												<td><a href="dataQuality?formmode=CountryTaxResidence"
+													style="color: blue;">Country Tax Residence</a></td>
+											</tr>
+											<tr>
+												<td style="text-align: center">22</td>
+												<td><a href="dataQuality?formmode=Customerriskrating"
+													style="color: blue;">Customer Risk Rating</a></td>
+												<td style="text-align: center">23</td>
+												<td><a href="dataQuality?formmode=KYCReviewdate"
+													style="color: blue;">Last KYC Review Date</a></td>
+												<td style="text-align: center">24</td>
+												<td><a href="dataQuality?formmode=pep"
+													style="color: blue;">PEP (Politically Exposed Person)</a></td>
+											</tr>
+											<tr>
+												<td style="text-align: center">25</td>
+												<td><a href="dataQuality?formmode=Monthlysalary"
+													style="color: blue;">Monthly Salary (AED)</a></td>
+												<td style="text-align: center">26</td>
+												<td><a href="dataQuality?formmode=Addmonthsalary"
+													style="color: blue;">Additional Monthly Income</a></td>
+												<td style="text-align: center">27</td>
+												<td><a href="dataQuality?formmode=TotalAnnualIncome"
+													style="color: blue;">Customer Total Annual Income</a></td>
+											</tr>
+											<tr>
+												<td style="text-align: center">28</td>
+												<td><a
+													href="dataQuality?formmode=SalaryTransferredBank"
+													style="color: blue;">Salary Transferred to Bank Melli
+														Iran (Yes/ No)</a></td>
+												<td style="text-align: center">29</td>
+												<td><a href="dataQuality?formmode=GENDER"
+													style="color: blue;">Gender</a></td>
+												<td style="text-align: center">30</td>
+												<td><a href="dataQuality?formmode=Email"
+													style="color: blue;">Email</a></td>
+											</tr>
+											<tr>
+												<td style="text-align: center">31</td>
+												<td><a href="dataQuality?formmode=Birthday"
+													style="color: blue;">Customer Birth day,Month,Year</a></td>
+												<td style="text-align: center">32</td>
+												<td><a href="dataQuality?formmode=Shortname"
+													style="color: blue;">Customer Short Name</a></td>
+												<td style="text-align: center">33</td>
+												<td><a href="dataQuality?formmode=LoanDetails"
+													style="color: blue;">Customer Loan Details</a></td>
+											</tr>
+											<tr>
+												<td style="text-align: center">34</td>
+												<td><a href="dataQuality?formmode=CreditRating"
+													style="color: blue;">Credit Rating</a></td>
+												<td style="text-align: center">35</td>
+												<td><a href="dataQuality?formmode=TaxCompliance"
+													style="color: blue;">Tax Compliance</a></td>
+												<td style="text-align: center">36</td>
+												<td><a href="dataQuality?formmode=RealEstate"
+													style="color: blue;">Real Estate Holdings</a></td>
+											</tr>
+											<tr>
+												<td style="text-align: center">37</td>
+												<td><a href="dataQuality?formmode=Phone"
+													style="color: blue;">Customer Phone Number Format</a></td>
+												<td style="text-align: center"></td>
+												<td><a
+													href="dataQuality?formmode=InternationalTransactions"
+													style="color: blue;"></a></td>
+												<td style="text-align: center"></td>
+												<td><a href="dataQuality?formmode=AuditHistory"
+													style="color: blue;"></a></td>
+											</tr>
+										</tbody>
+									</table>
+
+								</div>
+							</div>
+						</div>
+						<div class="card-footer text-center"
+							style="background-color: #e9ecef;">
+							<button type="button"
+								class="btn btn-xs mr-2 headerbutton bold-button" id=""
+								onclick="Home();" style="color: blue;">Home</button>
+							<button type="button" class="btn btn-xs headerbutton bold-button"
+								id="" onclick="Back();" style="color: blue;">Back</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- -----------------------------------------------------Cifnumber--------------------------------------------------------------- -->
+	<div th:if="${formmode} == 'cifnumber'">
+		<div class="card" style="width: 80%; margin-left: 18%;">
+			<div class="card-header"
+				style="display: flex; justify-content: space-between;">
+				<div style="display: flex; align-items: center;"></div>
+				<div
+					style="display: flex; justify-content: space-between; width: 40%;">
+					<div
+						style="display: flex; justify-content: left; align-items: center; margin-left: 23%;">
+						<h6 style="font-size: 1.5rem; text-align: center;">MULTIPLE
+							CIF NUMBER</h6>
+					</div>
+				</div>
+				<div style="display: flex; justify-content: flex-end; margin: 10px;">
+					<div id="masterdata_filter" class="dataTables_filter">
+						<label> <input type="search" id="commonSearch"
+							class="form-control form-control-sm" placeholder="Search"
+							onkeyup="filterTables()" aria-controls="masterdata">
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="panel panel-primary filterable">
+					<div
+						style="display: flex; justify-content: space-between; flex-wrap: nowrap; overflow-x: auto; margin-left: 1%; width: 98%;">
+
+						<!-- Retail Customer Table -->
+						<div style="flex: 1 1 30%; margin: 5px;">
+							<div
+								style="max-height: 65vh; overflow-y: auto; overflow-x: hidden;">
+								<table class="table table-bordered table-hover table-sm"
+									id="retailTable">
+
+									<h6>RETAIL CUSTOMER</h6>
+									<thead class="thead-light">
+										<tr>
+											<th style="text-align: center">S.NO</th>
+											<th style="text-align: left">NATIONAL ID CARD</th>
+											<th style="text-align: right">CIF NUMBER COUNT</th>
+										</tr>
+									</thead>
+									<tbody style="max-height: 400px; overflow-y: scroll;">
+										<tr th:each="customer, stat : ${getRetailCustomers}"
+											style="cursor: pointer;">
+											<td style="text-align: center" th:text="${stat.index + 1}"></td>
+											<td><a href="#" th:text="${customer[0]}"
+												th:attr="data-NAT_ID_CARD_NUM=${customer[0]}"
+												onclick="RetailCif(this.getAttribute('data-NAT_ID_CARD_NUM'))"></a>
+											</td>
+											<td style="text-align: right" th:text="${customer[1]}"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div style="text-align: right; padding: 10px; margin-top: 5px;">
+								<button id="retailTable_prev"
+									class="btn btn-xs headerbutton bold-button"
+									style="color: blue; margin-right: 10px;">Previous</button>
+								<button id="retailTable_next"
+									class="btn btn-xs headerbutton bold-button"
+									style="color: blue;">Next</button>
+							</div>
+						</div>
+
+
+						<!-- Corporate Customer Table -->
+						<div style="flex: 1 1 30%; margin: 5px;">
+							<div
+								style="max-height: 65vh; overflow-y: auto; overflow-x: hidden;">
+								<table class="table table-bordered table-hover table-sm"
+									id="corporateTable">
+									<h6>CORPORATE CUSTOMER</h6>
+									<thead class="thead-light">
+										<tr>
+											<th style="text-align: center">S.NO</th>
+											<th style="text-align: left">NATIONAL ID CARD</th>
+											<th style="text-align: right">CIF NUMBER COUNT</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="customer, stat : ${getCorporateCustomers}"
+											style="cursor: pointer;">
+											<td style="text-align: center" th:text="${stat.index + 1}"></td>
+											<td><a href="#" th:text="${customer[0]}"
+												th:attr="data-NAT_ID_CARD_NUM=${customer[0]}"
+												onclick="Cifno(this.getAttribute('data-NAT_ID_CARD_NUM'))"></a>
+											</td>
+											<td style="text-align: right" th:text="${customer[1]}"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div style="text-align: right; padding: 10px; margin-top: 5px;">
+								<button id="corporateTable_prev"
+									class="btn btn-xs headerbutton bold-button"
+									style="color: blue; margin-right: 10px;">Previous</button>
+								<button id="corporateTable_next"
+									class="btn btn-xs headerbutton bold-button"
+									style="color: blue;">Next</button>
+							</div>
+						</div>
+
+
+
+						<!-- All Customers Table -->
+						<div style="flex: 1 1 30%; margin: 5px;">
+							<div
+								style="max-height: 65vh; overflow-y: auto; overflow-x: hidden;">
+								<table class="table table-bordered table-hover table-sm"
+									id="allTable">
+									<h6>ALL CUSTOMER</h6>
+									<thead class="thead-light">
+										<tr>
+											<th style="text-align: center">S.NO</th>
+											<th style="text-align: left">NATIONAL ID CARD</th>
+											<th style="text-align: right">CIF NUMBER COUNT</th>
+										</tr>
+									</thead>
+									<tbody style="max-height: 400px; overflow-y: scroll;">
+										<tr th:each="customer, stat : ${getAll}"
+											style="cursor: pointer;">
+											<td style="text-align: center" th:text="${stat.index + 1}"></td>
+											<td><a href="#" th:text="${customer[0]}"
+												th:attr="data-NAT_ID_CARD_NUM=${customer[0]}"
+												onclick="Cifnumber(this.getAttribute('data-NAT_ID_CARD_NUM'))"></a>
+											</td>
+											<td style="text-align: right" th:text="${customer[1]}"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div style="text-align: right; padding: 10px; margin-top: 5px;">
+								<button id="allTable_prev"
+									class="btn btn-xs headerbutton bold-button"
+									style="color: blue; margin-right: 10px;">Previous</button>
+								<button id="allTable_next"
+									class="btn btn-xs headerbutton bold-button"
+									style="color: blue;">Next</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Footer Buttons -->
+			<div class="card-footer text-center"
+				style="background-color: #e9ecef;">
+				<button type="button"
+					class="btn btn-xs mr-2 headerbutton bold-button"
+					style="color: blue;" onclick="Home();">Home</button>
+				<button type="button" class="btn btn-xs headerbutton bold-button"
+					style="color: blue;" onclick="Back();">Back</button>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- ---------------------------------------customername--------------------------------------------------------------- -->
+	<div th:if="${formmode}=='customername'">
+		<div class="card" style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between; align-items: center;">
+					<!-- Left: Show Records Dropdown -->
+					<div style="display: flex; align-items: center;"></div>
+
+					<!-- Center: Title -->
+					<h6 style="font-size: 1.5rem; text-align: center; flex-grow: 1;">CUSTOMER
+						FULL NAME</h6>
+
+					<!-- Right: Search Input -->
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search Here..." />
+					</div>
+				</div>
+
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="text-align: center;">S.NO</th>
+										<th style="text-align: left;">CIF ID</th>
+										<th style="text-align: left;">SALUTATION</th>
+										<th style="text-align: left;">FIRST NAME</th>
+										<th style="text-align: left;">MIDDLE NAME</th>
+										<th style="text-align: left;">LAST NAME</th>
+										<th style="text-align: left;">NAME</th>
+										<th style="text-align: left;">REMARKS</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getName, stat : ${getName}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<td th:text="${getName[0]}"></td>
+										<td th:text="${getName[1]}"></td>
+										<td th:text="${getName[2]}"></td>
+										<td th:text="${getName[3]}"></td>
+										<td th:text="${getName[4]}"></td>
+										<td th:text="${getName[5]}"></td>
+										<td th:text="${getName[6]}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- Pagination Controls -->
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef; display: flex; justify-content: center; align-items: center;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" onclick="Home();"
+						style="color: blue;">Home</button>
+
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						onclick="Back();" style="color: blue; margin-left: 10px;">Back</button>
+					<!--       <div id="paginationNumbers" style="display: flex; margin: 0 10px;"></div> -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- ---------------------------------------customname 1--------------------------------------------------------------- -->
+	<div th:if="${formmode}=='customname'">
+		<div class="card" style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between; align-items: center;">
+					<!-- Left: Show Records Dropdown -->
+					<div style="display: flex; align-items: center;"></div>
+
+					<!-- Center: Title -->
+					<h6 style="font-size: 1.5rem; text-align: center; flex-grow: 1;">CUSTOMER
+						NAME (AS PER PASSPORT)</h6>
+
+					<!-- Right: Search Input -->
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search Here..." />
+					</div>
+				</div>
+
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF ID</th>
+										<th style="width: 1%; text-align: left;">SALUTATION</th>
+										<th style="width: 1%; text-align: left;">FIRST NAME</th>
+										<th style="width: 1%; text-align: left;">MIDDLE NAME</th>
+										<th style="width: 1%; text-align: left;">LAST NAME</th>
+										<th style="width: 1%; text-align: left;">NAME</th>
+										<th style="width: 1%; text-align: left;">REMARKS</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getName1, stat : ${getName1}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<td th:text="${getName1[0]}"></td>
+										<td th:text="${getName1[1]}"></td>
+										<td th:text="${getName1[2]}"></td>
+										<td th:text="${getName1[3]}"></td>
+										<td th:text="${getName1[4]}"></td>
+										<td th:text="${getName1[5]}"></td>
+										<td th:text="${getName1[6]}"></td>
+
+									</tr>
+								</tbody>
+							</table>
+
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- Pagination Controls -->
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef; display: flex; justify-content: center; align-items: center;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" onclick="Home();"
+						style="color: blue;">Home</button>
+
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						onclick="Back();" style="color: blue; margin-left: 10px;">Back</button>
+					<!--       <div id="paginationNumbers" style="display: flex; margin: 0 10px;"></div> -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ---------------------------------------CustNameMismatch--------------------------------------------------------------- -->
+	<div th:if="${formmode}=='CustNameMismatch'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">CUSTOMER NAME MISMATCH</h6>
+					</div>
+
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 0%; text-align: left;">CIF ID</th>
+										<th style="width: 0%; text-align: left;">TITLE</th>
+										<th style="width: 4%; text-align: left;">BANK RECORD NAME</th>
+										<th style="width: 1%; text-align: left;">FIRST NAME</th>
+										<th style="width: 2%; text-align: left;">MIDDLE NAME</th>
+										<th style="width: 1%; text-align: left;">LAST NAME</th>
+										<th style="width: 3%; text-align: left;">PASSPORT NAME</th>
+										<th style="width: 1%; text-align: left;">FIRST NAME</th>
+										<th style="width: 2%; text-align: left;">MIDDLE NAME</th>
+										<th style="width: 1%; text-align: left;">LAST NAME</th>
+										<th style="width: 1%; text-align: left;">REMARKS</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getcustName, stat : ${getcustName}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<td th:text="${getcustName[0]}"></td>
+										<td th:text="${getcustName[1]}"></td>
+										<td th:text="${getcustName[2]}"></td>
+										<td th:text="${getcustName[3]}"></td>
+										<td th:text="${getcustName[4]}"></td>
+										<td th:text="${getcustName[5]}"></td>
+										<td th:text="${getcustName[6]}"></td>
+										<td th:text="${getcustName[7]}"></td>
+										<td th:text="${getcustName[8]}"></td>
+										<td th:text="${getcustName[9]}"></td>
+										<td th:text="${getcustName[10]}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ---------------------------------------dateofbirth--------------------------------------------------------------- -->
+	<div th:if="${formmode}=='Dateofbirth'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">CUSTOMER AGE AND DOB</h6>
+					</div>
+
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF ID</th>
+										<th style="width: 1%; text-align: left;">NAME</th>
+										<th style="width: 1%; text-align: left;">DATE OF BIRTH</th>
+										<th style="width: 1%; text-align: left;">REMARKS</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getcustdob, stat : ${getcustdob}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<td th:text="${getcustdob[0]}"></td>
+										<td th:text="${getcustdob[1]}"></td>
+										<!-- <td th:text="${getcustdob[2]}"></td> -->
+										<td th:text="${#dates.format(getcustdob[2], 'dd-MMM-yyyy')}"></td>
+										<td th:text="${getcustdob[3]}"></td>
+									</tr>
+								</tbody>
+
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ---------------------------------------Place of Birth--------------------------------------------------------------- -->
+	<div th:if="${formmode}=='placeofbirth'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">PLACE OF BIRTH</h6>
+					</div>
+
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF ID</th>
+										<th style="width: 1%; text-align: left;">NAME</th>
+										<th style="width: 1%; text-align: left;">PLACE OF BIRTH</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getpob, stat : ${getpob}" style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getpob[0]}"></td>
+										<!-- orgkey -->
+										<td th:text="${getpob[1]}"></td>
+										<!-- first NAME -->
+										<td th:text="${getpob[2]}"></td>
+										<!-- last NAME -->
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ---------------------------------------Passport expiry date---------------------------------------- -->
+	<div th:if="${formmode}=='PassportExpiry'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">PASSPORT EXPIRY & ISSUE DATE</h6>
+					</div>
+
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF ID</th>
+										<th style="width: 1%; text-align: left;">NAME</th>
+										<th style="width: 1%; text-align: left;">PASSPORT N0</th>
+										<th style="width: 1%; text-align: left;">PASSPORT ISSUE
+											DATE</th>
+										<th style="width: 1%; text-align: left;">PASSPORT EXPIRY
+											DATE</th>
+										<th style="width: 1%; text-align: left;">REMARKS</th>
+
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getPass, stat : ${getPass}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getPass[0]}"></td>
+										<!-- orgkey -->
+										<td th:text="${getPass[1]}"></td>
+										<!-- NAME -->
+										<td th:text="${getPass[2]}"></td>
+										<td th:text="${#dates.format(getPass[3], 'dd-MM-yyyy')}"></td>
+										<td th:text="${#dates.format(getPass[4], 'dd-MM-yyyy')}"></td>
+										<td th:text="${getPass[5]}"></td>
+
+									</tr>
+								</tbody>
+
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ---------------------------------------Passport No--------------------------------------------------------------- -->
+	<div th:if="${formmode}=='PassportNo'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">PASSPORT NUMBER PATTERN CHECK</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.No</th>
+										<th style="width: 1%; text-align: left;">CIF ID</th>
+										<th style="width: 1%; text-align: left;">NAME</th>
+										<th style="width: 1%; text-align: left;">PASSPORT NO</th>
+										<th style="width: 1%; text-align: left;">REMARKS</th>
+
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getPassno, stat : ${getPassno}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getPassno[0]}"></td>
+										<!-- orgkey -->
+										<td th:text="${getPassno[1]}"></td>
+										<!-- NAME -->
+										<td th:text="${getPassno[2]}"></td>
+										<td th:text="${getPassno[3]}"></td>
+
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ----------------Country of Residency------------------ -->
+	<div th:if="${formmode}=='CountryofResidency'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">COUNTRY OF RESIDENCY</h6>
+					</div>
+
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 1%; text-align: left;">NAME</th>
+										<th style="width: 1%; text-align: left;">COUNTRY OF
+											RESIDENCY</th>
+										<th style="width: 1%; text-align: left;">NRE FLG</th>
+
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getCountRes, stat : ${getCountRes}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getCountRes[0]}"></td>
+										<!-- orgkey -->
+										<td th:text="${getCountRes[1]}"></td>
+										<!-- first NAME -->
+										<td th:text="${getCountRes[2]}"></td>
+										<!-- last NAME -->
+										<td th:text="${getCountRes[3]}"></td>
+									</tr>
+								</tbody>
+
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ----------------Marker of Employed------------------ -->
+
+	<div th:if="${formmode}=='MarkerofEmployed'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">
+							EMPLOYEMENT STATUS</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 1%; text-align: left;">EMPLOYER ID</th>
+										<th style="width: 1%; text-align: left;">EMPLOYER NAME</th>
+										<th style="width: 1%; text-align: left;">SOURCE OF INCOME</th>
+										<th style="width: 1%; text-align: left;">EMPLOYEMENT
+											STATUS</th>
+									 <th style="width: 1%; text-align: left;">REMARKS</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getMrkEmp, stat : ${getMrkEmp}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getMrkEmp[0]}"></td>
+										<!-- orgkey -->
+										<td th:text="${getMrkEmp[1]}"></td>
+										<!-- first NAME -->
+										<td th:text="${getMrkEmp[2]}"></td>
+										<!-- last NAME -->
+										<td th:text="${getMrkEmp[3]}"></td>
+										<td th:text="${getMrkEmp[4]}"></td>
+										<td th:text="${getMrkEmp[5]}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ----------------Employer Name------------------ -->
+	<div th:if="${formmode}=='EmployerName'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">EMPLOYER'S NAME</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 1%; text-align: left;">EMPLOYER ID</th>
+										<th style="width: 1%; text-align: left;">EMPLOYERS NAME</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getEmpname, stat : ${getEmpname}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getEmpname[0]}"></td>
+										<!-- orgkey -->
+										<td th:text="${getEmpname[1]}"></td>
+										<!-- first NAME -->
+										<td th:text="${getEmpname[2]}"></td>
+										<!-- last NAME -->
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ----------------Residency address------------------ -->
+	<div th:if="${formmode}=='Residencyaddress'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">CUSTOMER RESIDENCY ADDRESS</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 1%; text-align: left;">NAME</th>
+										<th style="width: 1%; text-align: left;">STREET NAME</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getResadd, stat : ${getResadd}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getResadd[0]}"></td>
+										<!-- orgkey -->
+										<td th:text="${getResadd[1]}"></td>
+										<!-- first NAME -->
+										<td th:text="${getResadd[2]}"></td>
+										<!-- last NAME -->
+
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ----------------PO BOX/POSTAL CODE------------------ -->
+
+	<div th:if="${formmode}=='Poboxpostalcode'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">POSTAL CODE</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 1%; text-align: left;">NAME</th>
+										<th style="width: 1%; text-align: right;">POSTAL CODE</th>
+
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getpostal, stat : ${getpostal}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getpostal[0]}"></td>
+										<!-- Cif Number -->
+										<td th:text="${getpostal[1]}"></td>
+										<!-- Name -->
+										<td th:text="${getpostal[2]}"></td>
+										<!-- Postal Code -->
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ----------------Customer risk Rating------------------ -->
+	<div th:if="${formmode}=='Customerriskrating'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">CUSTOMER RISK RATING</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 1%; text-align: left;">NAME</th>
+										<th style="width: 1%; text-align: left;">RISK RATING</th>
+										<th style="width: 1%; text-align: left;">NRE FLG</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getriskrate, stat : ${getriskrate}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getriskrate[0]}"></td>
+										<!-- Cif Number -->
+										<td th:text="${getriskrate[1]}"></td>
+										<!-- Name -->
+										<td th:text="${getriskrate[2]}"></td>
+										<!-- Postal Code -->
+										<td th:text="${getriskrate[3]}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ----------------Monthlysalary------------------ -->
+	<div th:if="${formmode}=='Monthlysalary'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">MONTHLY SALARY(AED)</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 2%; text-align: left;">NAME</th>
+										<th style="width: 2%; text-align: left;">EMPLOYEMENT
+											STATUS</th>
+										<th style="width: 2%; text-align: left;">CRNCY CODE</th>
+										<th style="width: 2%; text-align: right;">SOURCE OF INCOME</th>
+										<th style="width: 2%; text-align: right;">MONTHLY SALARY</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getmonth, stat : ${getmonth}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getmonth[0]}"></td>
+										<!-- Cif Number -->
+										<td th:text="${getmonth[1]}"></td>
+										<!-- Name -->
+										<td th:text="${getmonth[2]}"></td>
+										<!-- Postal Code -->
+										<td th:text="${getmonth[3]}"></td>
+										<td th:text="${getmonth[4]}" style="text-align: right;"
+											id="formattedValue"></td>
+											<td th:text="${getmonth[5]}" style="text-align: right;"
+											id="formattedValue"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ----------------Natinality1------------------ -->
+	<div th:if="${formmode}=='Natinality1'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">INDIVIDUAL NATIONALITY</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 2%; text-align: left;">NAME</th>
+										<th style="width: 2%; text-align: left;">NATIONALITY</th>
+										<th style="width: 2%; text-align: left;">REMARKS</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getnation, stat : ${getnation}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getnation[0]}"></td>
+										<!-- Cif Number -->
+										<td th:text="${getnation[1]}"></td>
+										<!-- Name -->
+										<td th:text="${getnation[2]}"></td>
+										<!-- Nationality -->
+										<td th:text="${getnation[3]}"></td>
+										<!-- Remarks -->
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- ----------------Natinality2------------------ -->
+	<div th:if="${formmode}=='Natinality2'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;">
+						<!-- <label for="showRecords" style="margin-right: 8px;">Show
+							Records</label> <select id="showRecords"
+							class="form-control form-control-sm" style="width: auto;">
+							<option value="100">100</option>
+							<option value="300">300</option>
+							<option value="500">500</option>
+						</select> -->
+					</div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">CORPORATE NATIONALITY</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 2%; text-align: left;">NAME</th>
+										<th style="width: 2%; text-align: left;">DOB</th>
+										<th style="width: 2%; text-align: left;">NATIONALITY</th>
+										<th style="width: 3%; text-align: left;">MINOR GAURD NAME</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getnation2, stat : ${getnation2}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getnation2[0]}"></td>
+										<!-- Cif Number -->
+										<td th:text="${getnation2[1]}"></td>
+										<!-- Name -->
+										<td th:text="${#dates.format(getnation2[2], 'dd-MM-yyyy')}"></td>
+										<!-- <td th:text="${getnation2[2]}"></td> -->
+										<!-- Nationality -->
+										<td th:text="${getnation2[3]}"></td>
+										<!-- Remarks -->
+										<td th:text="${getnation2[4]}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ----------------Dual Natinality------------------ -->
+	<div th:if="${formmode}=='DualNatinality'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">DUAL NATIONALITY FLAG</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 2%; text-align: left;">NAME</th>
+										<th style="width: 2%; text-align: left;">NATIONALITY 1</th>
+										<th style="width: 2%; text-align: left;">NATIONALITY 2</th>
+										<th style="width: 2%; text-align: left;">DUAL NATIONALITY
+											FLAG</th>
+
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getDualnation, stat : ${getDualnation}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getDualnation[0]}"></td>
+										<!-- Cif Number -->
+										<td th:text="${getDualnation[1]}"></td>
+										<!-- Name -->
+										<td th:text="${getDualnation[2]}"></td>
+										<!-- Postal Code -->
+										<td th:text="${getDualnation[3]}"></td>
+										<td th:text="${getDualnation[4]}"></td>
+
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ----------------Addmonthsalary------------------ -->
+	<div th:if="${formmode}=='Addmonthsalary'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">ADDITIONAL MONTHLY INCOME</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 2%; text-align: left;">NAME</th>
+										<th style="width: 1%; text-align: left;">EMPLOYEMENT
+											STATUS</th>
+										<th style="width: 1%; text-align: left;">CURRENCY CODE</th>
+										<th style="width: 1%; text-align: right;">MONTHLY SALARY</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getAddmonth, stat : ${getAddmonth}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getAddmonth[0]}"></td>
+										<!-- Cif Number -->
+										<td th:text="${getAddmonth[1]}"></td>
+										<!-- Name -->
+										<td th:text="${getAddmonth[2]}"></td>
+										<!-- Postal Code -->
+										<td th:text="${getAddmonth[3]}"></td>
+										<td th:text="${getAddmonth[4]}" style="text-align: right;"
+											id="formattedValue"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- ----------------Country Tax Residence------------------ -->
+	<div th:if="${formmode}=='CountryTaxResidence'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">COUNTRY TAX RESIDENCE</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.No</th>
+										<th style="width: 1%; text-align: left;">NAME</th>
+										<th style="width: 1%; text-align: left;">LAST TAX REVIEW
+											DATE</th>
+										<th style="width: 2%; text-align: left;">ACCT TAX
+											REPORTING REQUIRED</th>
+										<th style="width: 1%; text-align: left;">TAX REPORTING
+											COUNTRY</th>
+										<th style="width: 1%; text-align: left;">TAX REPORTING
+											STATUS</th>
+										<th style="width: 1%; text-align: left;">NEXT TAX REVIEW
+											DATE</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getCountrytax, stat : ${getCountrytax}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<td th:text="${getCountrytax[0]}"></td>
+										<!-- <td th:text="${getCountrytax[1]}"></td>  -->
+										<td th:text="${#dates.format(getCountrytax[1], 'dd-MM-yyyy')}"></td>
+										<td th:text="${getCountrytax[2]}"></td>
+										<td th:text="${getCountrytax[3]}"></td>
+										<td th:text="${getCountrytax[4]}"></td>
+										<td th:text="${#dates.format(getCountrytax[5], 'dd-MM-yyyy')}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ----------------Last KYC Review date------------------ -->
+	<div th:if="${formmode}=='KYCReviewdate'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">LAST KYC REVIEW DATE</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 1%; text-align: left;">NAME</th>
+										<th style="width: 2%; text-align: left;">KYC DATE</th>
+										<th style="width: 2%; text-align: left;">KYC REVIEW DATE</th>
+										<th style="width: 1%; text-align: left;">RISK RATING</th>
+
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getkyc, stat : ${getkyc}" style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getkyc[0]}"></td>
+										<!-- Cif Number -->
+										<td th:text="${getkyc[1]}"></td>
+										<!-- Name -->
+										<!-- <td th:text="${getkyc[2]}"></td> -->
+										<td th:text="${#dates.format(getkyc[2], 'dd-MM-yyyy')}"></td>
+										<td th:text="${#dates.format(getkyc[3], 'dd-MM-yyyy')}"></td>
+										<!-- Postal Code -->
+										<td th:text="${getkyc[4]}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ---------------Estimated Total Annual Income------------------ -->
+	<div th:if="${formmode}=='TotalAnnualIncome'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">CUSTOMER TOTAL ANNUAL INCOME</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 1%; text-align: left;">NAME</th>
+										<th style="width: 2%; text-align: left;">EMPLOYEMENT
+											STATUS</th>
+										<th style="width: 1%; text-align: left;">CURRENCY CODE</th>
+										<th style="width: 1%; text-align: right;">TOTAL ANNUAL
+											INCOME</th>
+										<th style="width: 1%; text-align: left;">OUTLIER FLAG</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getTotalincome, stat : ${getTotalincome}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<td th:text="${getTotalincome[0]}"></td>
+										<td th:text="${getTotalincome[1]}"></td>
+										<td th:text="${getTotalincome[2]}"></td>
+										<td th:text="${getTotalincome[3]}"></td>
+										<td th:text="${getTotalincome[4]}" style="text-align: right;"
+											id="formattedValue"></td>
+										<td th:text="${getTotalincome[5]}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ---------------Salary Transferred to Bank Melli Iran (Yes/ No)------------------ -->
+	<div th:if="${formmode}=='SalaryTransferredBank'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">SALARY TRANSFERRED TO BANK
+							MELLI IRAN (Yes/ No)</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 1%; text-align: left;">NAME</th>
+										<th style="width: 2%; text-align: left;">KYC REVIEW DATE</th>
+										<th style="width: 1%; text-align: left;">RISK RATING</th>
+
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<!-- <tr th:each="getkyc, stat : ${getkyc}" style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										S.No
+										<td th:text="${getkyc[0]}"></td>
+										Cif Number
+										<td th:text="${getkyc[1]}"></td>
+										Name
+										<td th:text="${getkyc[2]}"></td>
+										<td th:text="${#dates.format(getkyc[2], 'dd-MM-yyyy')}"></td>
+										Postal Code
+										<td th:text="${getkyc[3]}"></td>
+									</tr> -->
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ---------------Emirates ID (Number)------------------ -->
+	<div th:if="${formmode}=='EmiratesID'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">CUSTOMER EMIRATES ID</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 2%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 5%; text-align: left;">NAME</th>
+										<th style="width: 2%; text-align: left;">EMIRATES ID</th>
+										<th style="width: 2%; text-align: left;">RESIDENCE
+											COUNTRY</th>
+										<th style="width: 1%; text-align: left;">NATIONALITY</th>
+										<th style="width: 6%; text-align: left;">REMARKS</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getEmid, stat : ${getEmid}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getEmid[0]}"></td>
+										<!-- Cif Number -->
+										<td th:text="${getEmid[1]}"></td>
+										<!-- Name -->
+										<td th:text="${getEmid[2]}"></td>
+										<!-- <td th:text="${#dates.format(getEmid[2], 'dd-MM-yyyy')}"></td> -->
+										<!-- Postal Code -->
+										<td th:text="${getEmid[3]}"></td>
+										<td th:text="${getEmid[4]}"></td>
+										<td th:text="${getEmid[5]}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- -----------------------------------EmiratesExpDate)----------------------------------- -->
+	<div th:if="${formmode}=='EmiratesExpDate'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">CUSTOMER EMIRATES EXPIRY DATE</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 5%; text-align: left;">EMIRATES ID</th>
+										<th style="width: 5%; text-align: left;">DOCUMENT CODE</th>
+										<th style="width: 2%; text-align: left;">DOCUMENT EXPIRY
+											DATE</th>
+										<th style="width: 2%; text-align: left;">IDENTIFICATION
+											TYPE</th>
+
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getEmiExpDate, stat : ${getEmiExpDate}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getEmiExpDate[0]}"></td>
+										<!-- Cif Number -->
+										<td th:text="${getEmiExpDate[1]}"></td>
+										<!-- Name -->
+										<td th:text="${getEmiExpDate[2]}"></td>
+										<td th:text="${getEmiExpDate[3]}"></td>
+										<!--  <td th:text="${#dates.format(getEmiExpDate[2], 'yyyy-MM-dd')}"></td> -->
+
+										<!-- Postal Code -->
+										<!-- <td th:text="${getEmiExpDate[3]}"></td>
+										<td th:text="${getEmiExpDate[4]}"></td>
+										<td th:text="${getEmiExpDate[5]}"></td> -->
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ----------------Related Parties Applicable Flag----------------- -->
+	<div th:if="${formmode}=='RelatedPartiesFlag'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">RELATED PARTIES APPLICABLE
+							FLAG</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<!-- <th style="width: 1%;">ACCOUNT ID</th> -->
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 1%; text-align: left;">NAME</th>
+										<th style="width: 1%; text-align: right;">CUSTOMER COUNT</th>
+										<th style="width: 1%; text-align: left;">RELATED FLAG</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getResadd, stat : ${getResadd}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getResadd[0]}"></td>
+										<!-- orgkey -->
+										<td th:text="${getResadd[1]}"></td>
+										<!-- first NAME -->
+										<td th:text="${getResadd[2]}"></td>
+										<!-- last NAME -->
+										<td th:text="${getResadd[3]}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ----------------Residence Marker (Resident/ Non-Resident)----------------- -->
+	<div th:if="${formmode}=='ResidenceMarker'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">RESIDENCE MARKER & NATIONAL ID</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 1%; text-align: left;">NAME</th>
+										<th style="width: 1%; text-align: left;">RESIDENCE
+											COUNTRY</th>
+										<th style="width: 1%; text-align: left;">NATIONAL ID CARD NUMBER</th>
+										<th style="width: 1%; text-align: left;">RESIDENCE STATUS</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getResidmark, stat : ${getResidmark}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getResidmark[0]}"></td>
+										<!-- orgkey -->
+										<td th:text="${getResidmark[1]}"></td>
+										<!-- first NAME -->
+										<td th:text="${getResidmark[2]}"></td>
+										<!-- last NAME -->
+										<td th:text="${getResidmark[3]}"></td>
+										<td th:text="${getResidmark[4]}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ---------------------------------------GENDER--------------------------------------------------------------- -->
+	<div th:if="${formmode}=='GENDER'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">GENDER</h6>
+					</div>
+
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.No</th>
+										<th style="width: 1%; text-align: left;">CIF ID</th>
+										<th style="width: 1%; text-align: left;">NAME</th>
+										<th style="width: 1%; text-align: left;">SALUTATION</th>
+										<th style="width: 1%; text-align: left;">GENDER</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getGEN, stat : ${getGEN}" style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getGEN[0]}"></td>
+										<!-- orgkey -->
+										<td th:text="${getGEN[1]}"></td>
+										<!-- first NAME -->
+										<td th:text="${getGEN[2]}"></td>
+										<td th:text="${getGEN[3]}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ---------------------------------------EMAIL--------------------------------------------------------------- -->
+	<div th:if="${formmode}=='Email'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">EMAIL</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF ID</th>
+										<th style="width: 1%; text-align: left;">NAME</th>
+										<th style="width: 1%; text-align: left;">EMAIL</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getEmail, stat : ${getEmail}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getEmail[0]}"></td>
+										<!-- orgkey -->
+										<td th:text="${getEmail[1]}"></td>
+										<!-- first NAME -->
+										<td th:text="${getEmail[2]}"></td>
+
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ---------------------------------------BIRTHDAY--------------------------------------------------------------- -->
+	<div th:if="${formmode}=='Birthday'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">CUSTOMER BIRTH DAY,MONTH,YEAR</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF ID</th>
+										<th style="width: 1%; text-align: left;">NAME</th>
+										<th style="width: 1%; text-align: left;">BIRTH DAY</th>
+										<th style="width: 1%; text-align: left;">BIRTH MONTH</th>
+										<th style="width: 1%; text-align: left;">BIRTH YEAR</th>
+										<th style="width: 1%; text-align: left;">DOB</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getBirth, stat : ${getBirth}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getBirth[0]}"></td>
+										<!-- orgkey -->
+										<td th:text="${getBirth[1]}"></td>
+										<!-- first NAME -->
+										<td th:text="${getBirth[2]}"></td>
+										<td th:text="${getBirth[3]}"></td>
+										<td th:text="${getBirth[4]}"></td>
+										<!-- <td th:text="${getBirth[5]}"></td> -->
+										<td th:text="${#dates.format(getBirth[5], 'dd-MM-yyyy')}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ---------------------------------------Shortname--------------------------------------------------------------- -->
+	<div th:if="${formmode}=='Shortname'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">CUSTOMER SHORT NAME</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF ID</th>
+										<th style="width: 1%; text-align: left;">NAME</th>
+										<th style="width: 1%; text-align: left;">FIRST NAME</th>
+										<th style="width: 1%; text-align: left;">LAST NAME</th>
+										<th style="width: 1%; text-align: left;">SHORT NAME</th>
+
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getShortname, stat : ${getShortname}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getShortname[0]}"></td>
+										<!-- orgkey -->
+										<td th:text="${getShortname[1]}"></td>
+										<!-- first NAME -->
+										<td th:text="${getShortname[2]}"></td>
+										<td th:text="${getShortname[3]}"></td>
+										<td th:text="${getShortname[4]}"></td>
+
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ----------------LoanDetails------------------ -->
+	<div th:if="${formmode}=='LoanDetails'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">CUSTOMER LOAN DETAILS</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">ACID</th>
+										<th style="width: 2%; text-align: left;">LOAN TYPE</th>
+										<th style="width: 2%; text-align: left;">ACCOUNT TYPE</th>
+										<th style="width: 2%; text-align: right;">INTREST ON
+											PAYMENT</th>
+										<th style="width: 3%; text-align: left;">PAYOFF DATE</th>
+										<th style="width: 3%; text-align: right;">LINKED ACCOUNT
+											ID</th>
+										<th style="width: 3%; text-align: right;">DMD AMOUNT</th>
+										<th style="width: 3%; text-align: left;">DMD DATE</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getLoan, stat : ${getLoan}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getLoan[0]}"></td>
+										<!-- Cif Number -->
+										<td th:text="${getLoan[1]}"></td>
+										<!-- Name -->
+										<!-- <td th:text="${#dates.format(getnation2[2], 'dd-MM-yyyy')}"></td> -->
+										<td th:text="${getLoan[2]}"></td>
+										<!-- Nationality -->
+										<td th:text="${getLoan[3]}"></td>
+										<!-- Remarks -->
+										<td th:text="${getLoan[4]}"></td>
+										<td th:text="${getLoan[5]}"></td>
+										<td th:text="${getLoan[6]}" style="text-align: right;"
+											id="formattedValue"></td>
+										<td th:text="${#dates.format(getLoan[7], 'dd-MM-yyyy')}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ----------------CreditRating------------------ -->
+	<div th:if="${formmode}=='CreditRating'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">CREDIT RATING</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 2%; text-align: left;">NAME</th>
+										<th style="width: 2%; text-align: left;">EMPLOYEMENT
+											STATUS</th>
+										<th style="width: 2%; text-align: left;">CRNCY CODE</th>
+										<th style="width: 2%; text-align: right;">MONTHLY SALARY</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getmonth, stat : ${getmonth}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getmonth[0]}"></td>
+										<!-- Cif Number -->
+										<td th:text="${getmonth[1]}"></td>
+										<!-- Name -->
+										<td th:text="${getmonth[2]}"></td>
+										<!-- Postal Code -->
+										<td th:text="${getmonth[3]}"></td>
+										<td th:text="${getmonth[4]}" style="text-align: right;"
+											id="formattedValue"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ----------------Phone number------------------ -->
+	<div th:if="${formmode}=='Phone'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">CUSTOMER PHONE NUMBER FORMAT</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 2%; text-align: left;">NAME</th>
+										<th style="width: 2%; text-align: left;">PHONE</th>
+										<th style="width: 2%; text-align: left;">MOBILE ALERT TYPE</th>
+										<th style="width: 2%; text-align: left;">COUNTRY</th>
+										<th style="width: 2%; text-align: left;">REMARKS</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getphone, stat : ${getphone}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<td th:text="${getphone[0]}"></td>
+										<td th:text="${getphone[1]}"></td>
+										<td th:text="${getphone[2]}"></td>
+										<td th:text="${getphone[3]}"></td>
+										<td th:text="${getphone[4]}"></td>
+										<!-- first NAME -->
+										<!-- <td th:text="${getphone[2]}"></td> -->
+										<td th:text="${getphone[5]}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ----------------TaxCompliance------------------ -->
+	<div th:if="${formmode}=='TaxCompliance'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<!-- <div
+						style="display: flex; justify-content: space-between; width: 40%;"> -->
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">TAX COMPLIANCE</h6>
+					</div>
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 2%; text-align: left;">NAME</th>
+										<th style="width: 2%; text-align: left;">EMPLOYEMENT
+											STATUS</th>
+										<th style="width: 2%; text-align: left;">CRNCY CODE</th>
+										<th style="width: 2%; text-align: right;">MONTHLY SALARY</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getmonth, stat : ${getmonth}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}" style="text-align: center;"></td>
+										<!-- S.No -->
+										<td th:text="${getmonth[0]}"></td>
+										<!-- Cif Number -->
+										<td th:text="${getmonth[1]}"></td>
+										<!-- Name -->
+										<td th:text="${getmonth[2]}"></td>
+										<!-- Postal Code -->
+										<td th:text="${getmonth[3]}"></td>
+										<td th:text="${getmonth[4]}" style="text-align: right;"
+											id="formattedValue"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ----------------RealEstate------------------ -->
+	<div th:if="${formmode}=='RealEstate'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">REAL ESTATE HOLDINGS</h6>
+					</div>
+
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 2%; text-align: left;">NAME</th>
+										<th style="width: 2%; text-align: left;">DOCUMENT_ID</th>
+										<th style="width: 2%; text-align: left;">PROPERTY_TYPE</th>
+										<th style="width: 2%; text-align: left;">AREA_SQFT</th>
+										<th style="width: 2%; text-align: left;">ADDRESS</th>
+										<th style="width: 2%; text-align: right;">MARKET_VALUE</th>
+										<th style="width: 2%; text-align: left;">AGENT_ID</th>
+										<th style="width: 2%; text-align: left;">LEASE_START_DATE</th>
+										<th style="width: 2%; text-align: left;">LEASE_END_DATE</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getmonth, stat : ${getmonth}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}"></td>
+										<td th:text="${getmonth[0]}"></td>
+										<td th:text="${getmonth[1]}"></td>
+										<td th:text="${getmonth[2]}"></td>
+										<td th:text="${getmonth[3]}"></td>
+										<td th:text="${getmonth[4]}" style="text-align: right;"
+											id="formattedValue"></td>
+										<td th:text="${getmonth[5]}"></td>
+										<td th:text="${getmonth[6]}" style="text-align: right;"
+											id="formattedValue"></td>
+										<td th:text="${getmonth[7]}"></td>
+										<td th:text="${getmonth[8]}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ----------------pep------------------ -->
+	<div th:if="${formmode}=='pep'">
+		<div class="card " style="margin-left: 18%; width: 81%;">
+			<div class="card border" style="margin-left: 0%; width: 100%;">
+				<div class="card-header"
+					style="display: flex; justify-content: space-between;">
+					<div style="display: flex; align-items: center;"></div>
+					<div
+						style="display: flex; justify-content: left; align-items: center;">
+						<h6 style="font-size: 1.5rem;">PEP (POLITICALLY EXPOSED
+							PERSON)</h6>
+					</div>
+
+					<div style="display: flex; align-items: center;">
+						<input id="filterInput" type="text"
+							class="form-control form-control-sm" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="panel panel-primary filterable">
+						<div
+							style="max-height: 100vh; overflow-y: auto; border: 1px solid #ddd;">
+							<table class="table table-bordered table-hover table-sm"
+								style="margin-bottom: 0px; font-size: initial;">
+								<thead class="thead-light"
+									style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 1;">
+									<tr>
+										<th style="width: 0%; text-align: center;">S.NO</th>
+										<th style="width: 1%; text-align: left;">CIF NUMBER</th>
+										<th style="width: 2%; text-align: left;">NAME</th>
+										<th style="width: 2%; text-align: left;">DOB</th>
+										<th style="width: 2%; text-align: left;">SOURCE</th>
+										<th style="width: 3%; text-align: left;">REMARKS</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="getnation2, stat : ${getnation2}"
+										style="cursor: pointer;">
+										<td th:text="${stat.index + 1}"></td>
+										<td th:text="${getnation2[0]}"></td>
+										<td th:text="${getnation2[1]}"></td>
+										<td th:text="${#dates.format(getnation2[2], 'dd-MM-yyyy')}"></td>
+										<td th:text="${getnation2[3]}"></td>
+										<td th:text="${getnation2[4]}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div style="text-align: right; padding: 10px; margin-top: 5px;">
+							<button id="prevPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue; margin-right: 10px;">Previous</button>
+							<button id="nextPage" class="btn btn-xs headerbutton bold-button"
+								style="color: blue;">Next</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center"
+					style="background-color: #e9ecef;">
+					<button type="button"
+						class="btn btn-xs mr-2 headerbutton bold-button" id=""
+						onclick="Home();" style="color: blue;">Home</button>
+					<button type="button" class="btn btn-xs headerbutton bold-button"
+						id="" onclick="Back();" style="color: blue;">Back</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--------------------------------------------------- Hidden fields to store data for later use ---------------------------------->
+	<input type="hidden" id="hiddenCifId" value="" />
+	<input type="hidden" id="hiddenAcctNo" value="" />
+	<input type="hidden" id="hiddenNATIDCARDNUM" value="" />
+	<input type="hidden" id="hiddenTranId" value="" />
+	<!-------------------------------------------------------------Modal10---------------------------------------------------------------->
+	<div class="modal" id="cifnum" style="background-color: transparent;"
+		tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog"
+			style="max-width: 30%; margin: auto; display: flex; align-items: center; justify-content: center; height: 100vh;">
+			<div class="modal-content" style="width: 100%; margin: 0;">
+				<div class="card-header" style="text-align: center;">
+					<h4 style="color: black;" class="fw-bold">MULTI CIF NUMBER</h4>
+				</div>
+				<div class="card-body"
+					style="background-color: white; overflow-y: auto; max-height: 630px;">
+					<div class="scrollable-content">
+						<table class="table  table-bordered  table-hover table-sm"
+							style="margin-bottom: 0px; font-size: initial;">
+							<thead>
+								<tr>
+									<th style="font-weight: bold; width: 1%;">S.NO</th>
+									<th style="font-weight: bold; width: 3%;">NATIONAL ID CARD</th>
+									<th style="font-weight: bold; width: 4%;">NAME</th>
+									<th style="font-weight: bold; width: 3%;">CIF NUMBER</th>
+								</tr>
+							</thead>
+							<tbody id="trancheDetList">
+								<!-- Table rows will be inserted here -->
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="card-footer text-center">
+					<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="submitAndCloseModal();">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-------------------------------------------------------------Modal11---------------------------------------------------------------->
+	<div class="modal" id="CRcifnum" style="background-color: transparent;"
+		tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content"
+				style="left: 59%; transform: translate(-28%, 74%); width: 125%;">
+				<div class="card-header" style="text-align: center;">
+					<h4 style="color: black;" class="fw-bold">MULTI CIF NUMBER</h4>
+				</div>
+				<div class="card-body"
+					style="background-color: white; overflow-y: auto; max-height: 630px;">
+					<div class="scrollable-content">
+						<table class="table  table-bordered  table-hover table-sm"
+							style="margin-bottom: 0px; font-size: initial;">
+							<thead>
+								<tr style="text-align: left;">
+									<th style="font-weight: bold;">S.NO</th>
+									<th style="font-weight: bold;">NATIONAL ID CARD</th>
+									<th style="font-weight: bold;">NAME</th>
+									<th style="font-weight: bold;">CIF NUMBER</th>
+								</tr>
+							</thead>
+							<tbody id="CorpRetailList">
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="card-footer text-center">
+					<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="submitAndCloseModal();">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-------------------------------------------------------------Modal12---------------------------------------------------------------->
+	<div class="modal" id="Rcifnum" style="background-color: transparent;"
+		tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content"
+				style="left: 59%; transform: translate(-28%, 74%); width: 125%;">
+				<div class="card-header" style="text-align: center;">
+					<h4 style="color: black;" class="fw-bold">MULTI CIF NUMBER</h4>
+				</div>
+				<div class="card-body"
+					style="background-color: white; overflow-y: auto; max-height: 630px;">
+					<div class="scrollable-content">
+						<table class="table  table-bordered  table-hover table-sm"
+							style="margin-bottom: 0px; font-size: initial;">
+							<thead>
+								<tr style="text-align: left;">
+									<th style="font-weight: bold;">S.NO</th>
+									<th style="font-weight: bold;">NATIONAL ID CARD</th>
+									<th style="font-weight: bold;">NAME</th>
+									<th style="font-weight: bold;">CIF NUMBER</th>
+								</tr>
+							</thead>
+							<tbody id="RetailList">
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="card-footer text-center">
+					<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="submitAndCloseModal();">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- -------------------------------------------------------------end-------------------------------------------- -->
+</body>
+</html>

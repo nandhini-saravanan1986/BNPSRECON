@@ -1,0 +1,1580 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+		th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/font-awesome/5.9.0/css/all.min.css"
+		th:href="@{/webjars/font-awesome/5.9.0/css/all.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"
+		th:href="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/datatables/1.10.19/css/jquery.dataTables.min.css"
+		th:href="@{/webjars/datatables/1.10.19/css/jquery.dataTables.min.css}">
+
+
+	<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"
+		th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+	<script src="/webjars/popper.js/1.14.7/umd/popper.min.js"
+		th:src="@{/webjars/popper.js/1.14.7/umd/popper.min.js}"></script>
+	<script src="/webjars/jquery/3.4.1/jquery.min.js" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+	<script src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"
+		th:src="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.js}"></script>
+	<script src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/jquery.dataTables.min.js}"></script>
+	<script src="/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js}"></script>
+
+
+	<link rel="stylesheet" type="text/css" href="webjars/chartjs/2.8.0/Chart.min.css"
+		th:href="@{webjars/chartjs/2.8.0/Chart.min.css}">
+	<script src="webjars/chartjs/2.8.0/Chart.min.js" th:src="@{webjars/chartjs/2.8.0/Chart.min.js}"></script>
+
+	<link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+	<link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon">
+
+
+	<style>
+		.custom-fieldset {
+			border: 2px solid #007bff;
+			border-radius: 10px;
+			padding: 20px;
+			background-color: #f9f9f9;
+			box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+		}
+
+		.custom-fieldset legend {
+			font-weight: bold;
+			font-size: 1.5rem;
+			color: #007bff;
+			padding: 0 10px;
+		}
+
+		.form-label {
+			font-weight: 500;
+		}
+
+		.table-responsive {
+			margin-top: 20px;
+		}
+
+		.table th {
+			background-color: #007bff !important;
+			color: white;
+			text-align: center;
+		}
+
+		.table tbody tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+
+		.table tbody tr:hover {
+			background-color: #e0f7fa !important;
+			transition: background-color 0.3s;
+		}
+
+		.status-completed {
+			color: white;
+			background-color: #28a745;
+			padding: 4px 10px;
+			border-radius: 5px;
+			text-align: center;
+			display: inline-block;
+		}
+
+		.status-pending {
+			color: white;
+			background-color: #fd7e14;
+			padding: 4px 10px;
+			border-radius: 5px;
+			text-align: center;
+			display: inline-block;
+		}
+
+		.chart-canvas {
+			height: 350px !important;
+			width: 100% !important;
+		}
+
+		#replist_filter {
+			padding-left: 100px;
+		}
+
+		.dataTables_wrapper .dataTables_paginate .paginate_button {
+			padding: 0px;
+		}
+
+		@media (min-width: 1200px) {
+			.container {
+				max-width: 113vw;
+			}
+		}
+
+		.container {
+			width: 100%;
+			padding-right: 15px;
+			padding-left: 15px;
+			margin-right: 10px;
+			margin-left: 246px;
+		}
+
+		.button-hover {
+			background-color: #f0f0f0;
+			padding: 10px;
+			border-radius: 10px;
+			transition: transform 0.3s ease, background-color 0.3s ease;
+			cursor: pointer;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+
+		.button-hover:hover {
+			transform: scale(1.1);
+			background-color: #acb9c9;
+			color: white;
+		}
+
+		.button-hover span {
+			font-size: ;
+			font-weight: ;
+		}
+
+		.button-hover label {
+			font-size: 16px;
+		}
+
+		small {
+			font-size: 100%;
+			font-weight: 700;
+		}
+
+		#paginationControls {
+			margin-top: 20px;
+		}
+
+		#paginationControls button {
+			margin: 0 10px;
+		}
+
+		fieldset.custom-fieldset {
+			border: 1px solid #dee2e6;
+			border-radius: 8px;
+			padding: 20px;
+			margin-bottom: 20px;
+			background-color: #f8f9fa;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+		}
+
+		legend.custom-legend {
+			font-size: 18px;
+			font-weight: 600;
+			color: #495057;
+			padding: 0 10px;
+			width: auto;
+			margin-bottom: 20px;
+		}
+
+		.chart-container {
+			background-color: #f8f9fa;
+			border-radius: 8px;
+			padding: 20px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+			margin-bottom: 20px;
+		}
+	</style>
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+
+		$(function () {
+			var Dashboardpage = /*[[${Dashboardpage}]]*/0;
+			var completed = /*[[${completed}]]*/0;
+			var Pending = /*[[${Pending}]]*/0;
+			var incomplete = /*[[${Under_review}]]*/0;
+
+			if (Dashboardpage == 'DCD_BRANCH' || Dashboardpage == 'DCD_ADMIN' || Dashboardpage == 'DCD_BRANCH_MANAGER'
+				|| Dashboardpage == 'Superadmin') {
+				var ctxL = document.getElementById("pieChart").getContext('2d');
+				var myBarChart = new Chart(ctxL, {
+					type: 'bar',
+					data: {
+						labels: ["Completed", "Pending", "In Completed"],
+						datasets: [{
+							label: "Individual Task Status",
+							data: [completed, Pending, incomplete],
+							backgroundColor: ['rgba(102,153,51,0.8)', // Green
+								'rgba(255,206,86,0.8)', // Yellow
+								'rgba(200,99,132,0.8)' // Pink
+							],
+							borderColor: ['rgba(102,153,51,0.8)', // Green
+								'rgba(255,206,86,0.8)', // Yellow
+								'rgba(200,99,132,0.8)' // Pink
+							],
+							borderWidth: 1
+						}]
+					},
+					options: {
+						responsive: true,
+						scales: {
+							y: {
+								beginAtZero: true
+							}
+						}
+					}
+				});
+			}
+		});
+
+		$(function () {
+			var Dashboardpage = /*[[${Dashboardpage}]]*/0;
+			var corpbarcompleted = /*[[${corpbarcompleted}]]*/0;
+			var corpbarPending = /*[[${corpbarPending}]]*/0;
+			var corpbarincomplete = /*[[${corpbarincomplete}]]*/0;
+
+			if (Dashboardpage == 'DCD_BRANCH' || Dashboardpage == 'DCD_ADMIN' || Dashboardpage == 'DCD_BRANCH_MANAGER'
+				|| Dashboardpage == 'Superadmin') {
+				var ctxL = document.getElementById("pieChart1").getContext('2d');
+				var myBarChart = new Chart(ctxL, {
+					type: 'bar',
+					data: {
+						labels: ["Completed", "Pending", "In Completed"],
+						datasets: [{
+							label: "Corporate Task Status",
+							data: [corpbarcompleted, corpbarPending, corpbarincomplete],
+							backgroundColor: ['rgba(102,153,51,0.8)', // Green
+								'rgba(255,206,86,0.8)', // Yellow
+								'rgba(200,99,132,0.8)' // Pink
+							],
+							borderColor: ['rgba(102,153,51,0.8)', // Green
+								'rgba(255,206,86,0.8)', // Yellow
+								'rgba(200,99,132,0.8)' // Pink
+							],
+							borderWidth: 1
+						}]
+					},
+					options: {
+						responsive: true,
+						scales: {
+							y: {
+								beginAtZero: true
+							}
+						}
+					}
+				});
+			}
+		});
+
+		/*]]>*/
+	</script>
+
+
+	<script>
+		$(document).ready(function () {
+			const startYear = 2000;
+			const currentYear = new Date().getFullYear();
+			const yearSelect = $('#year');
+			if (yearSelect.length) { // Check if element exists
+				for (let year = startYear; year <= currentYear; year++) {
+					yearSelect.append(`<option value="${year}">${year}</option>`);
+				}
+				// Select current year by default if needed, or handle in year dropdown population script
+				// yearSelect.val(currentYear); 
+			}
+			searchh(); // Call searchh after populating year dropdown
+		});
+
+		let barChart; // For the first chart (bubbleChart ID)
+
+		function searchh() {
+			const yearElement = document.getElementById('year');
+			if (!yearElement) {
+				console.error("Year selection element 'year' not found for searchh.");
+				return;
+			}
+			const year = yearElement.value;
+			if (!year) { // If no year is selected, don't proceed
+				// console.warn("No year selected for RWA/Tier chart.");
+				// Optionally, clear the chart or show a message
+				if (barChart) {
+					barChart.destroy();
+					barChart = null;
+				}
+				// You might want to draw an empty chart or a placeholder
+				// updateChart(0,0,0,0,0,0,0,0,0,0,0,0); // Example: clear with zeros
+				return;
+			}
+
+			$.ajax({
+				url: './getvalues', // Ensure this endpoint is correct
+				type: 'POST',
+				contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+				data: {year: year},
+				success: function (response) {
+					let rwaQ1 = 0, tier1Q1 = 0, tier2Q1 = 0;
+					let rwaQ2 = 0, tier1Q2 = 0, tier2Q2 = 0;
+					let rwaQ3 = 0, tier1Q3 = 0, tier2Q3 = 0;
+					let rwaQ4 = 0, tier1Q4 = 0, tier2Q4 = 0;
+
+					if (response && response.length > 0) {
+						response.forEach(item => {
+							const parts = item.report_date.split("-");
+							const day = parseInt(parts[0], 10);
+							const month = parseInt(parts[1], 10);
+							// const yearPart = parts[2].length === 2 ? "20" + parts[2] : parts[2];
+							// const dateObj = new Date(`${yearPart}-${month}-${day}`); // Not strictly needed for quarter logic
+
+							if (month >= 1 && month <= 3) { // Q1
+								rwaQ1 = parseFloat(item.r68_RATIOS1) || 0;
+								tier1Q1 = parseFloat(item.r14_RATIOS2) || 0;
+								tier2Q1 = parseFloat(item.r22_RATIOS2) || 0;
+							} else if (month >= 4 && month <= 6) { // Q2
+								rwaQ2 = parseFloat(item.r68_RATIOS1) || 0;
+								tier1Q2 = parseFloat(item.r14_RATIOS2) || 0;
+								tier2Q2 = parseFloat(item.r22_RATIOS2) || 0;
+							} else if (month >= 7 && month <= 9) { // Q3
+								rwaQ3 = parseFloat(item.r68_RATIOS1) || 0;
+								tier1Q3 = parseFloat(item.r14_RATIOS2) || 0;
+								tier2Q3 = parseFloat(item.r22_RATIOS2) || 0;
+							} else if (month >= 10 && month <= 12) { // Q4
+								rwaQ4 = parseFloat(item.r68_RATIOS1) || 0;
+								tier1Q4 = parseFloat(item.r14_RATIOS2) || 0;
+								tier2Q4 = parseFloat(item.r22_RATIOS2) || 0;
+							}
+						});
+					}
+					updateChart( // This is the only updateChart function now
+						rwaQ1, tier1Q1, tier2Q1,
+						rwaQ2, tier1Q2, tier2Q2,
+						rwaQ3, tier1Q3, tier2Q3,
+						rwaQ4, tier1Q4, tier2Q4
+					);
+				},
+				error: function (xhr, status, error) {
+					console.error("Error fetching RWA/Tier values: ", status, error);
+					alert("Error fetching RWA/Tier data: " + error);
+					// Optionally clear chart on error
+					if (barChart) {
+						barChart.destroy();
+						barChart = null;
+					}
+				}
+			});
+		}
+		// NOTE: The first, older definition of updateChart that was here has been REMOVED.
+	</script>
+
+
+
+	<script>
+		// Year dropdown population for multiple dropdowns
+		document.addEventListener('DOMContentLoaded', function () {
+			const currentYear = new Date().getFullYear();
+			const startYear = currentYear - 9; // For 10 years range including current
+			// IDs for all year dropdowns that need this population logic
+			const dropdownIds = ['year', 'year1']; // 'year2', 'year3', 'year4' if they exist and need this
+
+			dropdownIds.forEach(id => {
+				const select = document.getElementById(id);
+				if (!select) {
+					// console.warn(`Year dropdown with ID '${id}' not found.`);
+					return;
+				}
+
+				// Clear existing options except for a potential placeholder
+				// select.innerHTML = '<option value="">Select Year</option>'; // This clears everything
+
+				let firstOption = select.options[0];
+				if (select.options.length > 1 || (firstOption && firstOption.value !== "")) { // if not already populated or has a non-placeholder first option
+					select.innerHTML = '<option value="">Select Year</option>';
+				} else if (!firstOption || firstOption.value !== "") { // if no options or first is not placeholder
+					select.innerHTML = '<option value="">Select Year</option>';
+				}
+
+
+				for (let y = currentYear; y >= startYear; y--) {
+					const option = document.createElement('option');
+					option.value = y;
+					option.textContent = y;
+					select.appendChild(option);
+				}
+				// Set current year as selected by default
+				if (select.querySelector(`option[value="${currentYear}"]`)) {
+					select.value = currentYear;
+				} else if (select.options.length > 1) { // if current year is not in range, select first available year
+					select.value = select.options[1].value;
+				}
+
+
+				// Special handling for 'year' to trigger searchh on load if it's the main chart trigger
+				if (id === 'year') {
+					// searchh(); // searchh is called in $(document).ready after 'year' is populated
+				}
+				if (id === 'year1') {
+					// get_year(); // get_year is called in window.onload after 'year1' is populated
+				}
+
+			});
+		});
+	</script>
+	<script>
+		let plchart = null; // For the second chart (plchart ID)
+
+		// This is the ONLY definition of updateChart now
+		// This is the ONLY definition of updateChart now
+		// 'barChart' should be declared in a scope accessible by this function,
+		// typically at the top of your script block:
+		// let barChart; // <<< Declare this outside, e.g., before searchh() function
+
+		function updateChart(
+			rwaQ1, tier1Q1, tier2Q1,
+			rwaQ2, tier1Q2, tier2Q2,
+			rwaQ3, tier1Q3, tier2Q3,
+			rwaQ4, tier1Q4, tier2Q4
+		) {
+			const bubbleChartEl = document.getElementById('bubbleChart');
+			if (!bubbleChartEl) {
+				console.error("Canvas element 'bubbleChart' not found.");
+				return;
+			}
+			const ctx = bubbleChartEl.getContext('2d');
+			const labels = ['Q1', 'Q2', 'Q3', 'Q4'];
+
+			// --- CORRECTED GRADIENT DEFINITIONS ---
+			const gradient1 = ctx.createLinearGradient(0, 0, 0, 400);
+			gradient1.addColorStop(0, 'rgba(153, 102, 255, 0.8)');
+			gradient1.addColorStop(1, 'rgba(153, 102, 255, 0.2)');
+
+			const gradient2 = ctx.createLinearGradient(0, 0, 0, 400);
+			gradient2.addColorStop(0, 'rgba(75, 192, 192, 0.8)');
+			gradient2.addColorStop(1, 'rgba(75, 192, 192, 0.2)');
+
+			const gradient3 = ctx.createLinearGradient(0, 0, 0, 400);
+			gradient3.addColorStop(0, 'rgba(255, 159, 64, 0.8)');
+			gradient3.addColorStop(1, 'rgba(255, 159, 64, 0.2)');
+			// --- END OF GRADIENT DEFINITIONS ---
+
+
+			const data = {
+				labels: labels,
+				datasets: [
+					{
+						label: 'RWA',
+						backgroundColor: gradient1, // Assign gradient1
+						borderColor: 'rgba(153, 102, 255, 1)',
+						borderWidth: 1,
+						data: [rwaQ1, rwaQ2, rwaQ3, rwaQ4]
+					},
+					{
+						label: 'Tier 1',
+						backgroundColor: gradient2, // Assign gradient2
+						borderColor: 'rgba(75, 192, 192, 1)',
+						borderWidth: 1,
+						data: [tier1Q1, tier1Q2, tier1Q3, tier1Q4]
+					},
+					{
+						label: 'Tier 2',
+						backgroundColor: gradient3, // Assign gradient3
+						borderColor: 'rgba(255, 159, 64, 1)',
+						borderWidth: 1,
+						data: [tier2Q1, tier2Q2, tier2Q3, tier2Q4]
+					}
+				]
+			};
+
+			const options = {
+				responsive: true,
+				maintainAspectRatio: false,
+				scales: {
+					y: {
+						beginAtZero: true,
+						title: {display: true, text: 'Amount in Millions', font: {size: 18, weight: 'bold'}, color: '#333'},
+						ticks: {
+							display: true,
+							color: '#333',
+							callback: function (value) {
+								if (value === 0) return '0';
+								return (value / 1000000).toFixed(0); // Whole numbers for Y-axis
+							}
+						}
+					},
+					x: {
+						title: {display: true, text: 'Computation of Capital Adequacy Ratio(BRF95)', font: {size: 18, weight: 'bold'}, color: '#333'},
+						ticks: {color: '#333'}
+					}
+				},
+				plugins: {
+					legend: {labels: {color: '#000', font: {size: 14}}},
+					tooltip: {
+						callbacks: {
+							label: function (context) {
+								let valInMillions = context.parsed.y / 1000000;
+								return `${context.dataset.label}: ${valInMillions.toFixed(1)}M`; // Tooltip shows 1 decimal
+							}
+						}
+					}
+				}
+			};
+
+			if (barChart) { // 'barChart' uses the variable declared outside
+				barChart.destroy();
+			}
+			barChart = new Chart(ctx, {type: 'bar', data: data, options: options});
+		}
+
+		function populateYearDropdownProfit() { // Renamed to avoid conflict if used elsewhere
+			const select = document.getElementById("year1");
+			if (!select) {console.error("Element 'year1' not found."); return;}
+			// Population logic is now in DOMContentLoaded event
+		}
+
+		function initializeEmptyChartProfit() { // Renamed for clarity
+			const plchartEl = document.getElementById("plchart");
+			if (!plchartEl) {console.error("Canvas 'plchart' not found."); return;}
+			const ctx = plchartEl.getContext("2d");
+			const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+			const emptyData = Array(12).fill(0);
+
+			plchart = new Chart(ctx, {
+				type: 'line',
+				data: {
+					labels: monthLabels,
+					datasets: [{
+						label: 'Amt in Million', data: emptyData, borderColor: '#666', borderWidth: 2,
+						fill: {target: {value: 0}, above: 'rgba(0, 128, 0, 0.5)', below: 'rgba(255, 99, 132, 0.5)'},
+						tension: 0.4, pointRadius: 5, pointStyle: 'circle', pointBorderColor: 'black', pointBackgroundColor: 'black'
+					}]
+				},
+				options: {
+					responsive: true,
+					maintainAspectRatio: false,
+					interaction: {
+						mode: 'nearest',
+						intersect: true
+					},
+					scales: {
+						y: {
+							beginAtZero: false, // Keep this if you can have negative profit/loss
+							title: {display: true, text: 'Amount in Millions', font: {size: 18, weight: 'bold'}},
+							ticks: {
+								display: true, color: '#333',
+								callback: function (value) {
+									if (value === 0) return '0';
+									// MODIFIED HERE: Change .toFixed(1) to .toFixed(0)
+									// This assumes 'value' for this chart is already appropriately scaled (e.g., 10.5 for 10.5M)
+									// If 'value' was a large number like 10500000, you'd need (value / 1000000).toFixed(0)
+									return value.toFixed(0);
+								}
+							}
+						},
+						x: {title: {display: false}, ticks: {color: '#333'}}
+					},
+					plugins: {
+						legend: {
+							labels: {
+								generateLabels: function (chart) {
+									return [
+										{text: 'Amount in Millions', fillStyle: '#666', strokeStyle: '#666', lineWidth: 2},
+										{text: 'Profit', fillStyle: 'rgba(0, 128, 0, 0.5)'},
+										{text: 'Loss', fillStyle: 'rgba(255, 99, 132, 0.5)'}
+									];
+								}
+							}
+						},
+						tooltip: {
+							enabled: true,
+							callbacks: {
+								label: function (context) {
+									// Tooltip can still show decimals if data has them, e.g. 10.5M
+									return ` ${context.dataset.label}: ${context.raw.toFixed(1)}M`;
+								}
+							}
+						}
+					}
+				}
+			});
+		}
+
+		function get_year_profit_data() { // Renamed for clarity
+			const year1Element = document.getElementById("year1");
+			if (!year1Element) {console.error("Element 'year1' not found for profit data."); return;}
+			const year = year1Element.value;
+
+			if (!year) {
+				// console.warn("No year selected for profit chart.");
+				if (plchart) { // Clear existing data if no year selected
+					plchart.data.datasets[0].data = Array(12).fill(0);
+					plchart.update();
+				}
+				return;
+			}
+			if (!plchart) { // Ensure chart is initialized
+				initializeEmptyChartProfit();
+			}
+
+
+			fetch(`/BRBS/profit-data?year=${year}`) // Ensure this endpoint is correct
+				.then(response => response.json())
+				.then(data => {
+					const monthlyValues = [];
+					for (let i = 1; i <= 12; i++) {
+						const key = i.toString().padStart(2, '0');
+						monthlyValues.push(parseFloat(data[key]) || 0);
+					}
+					if (plchart) {
+						plchart.data.datasets[0].data = monthlyValues;
+						plchart.data.datasets[0].pointBackgroundColor = monthlyValues.map(v => v >= 0 ? 'black' : 'black');
+						plchart.data.datasets[0].pointBorderColor = 'black';
+						plchart.update();
+					}
+				})
+				.catch(error => {
+					console.error('Error fetching profit data:', error);
+					if (plchart) { // Clear chart on error
+						plchart.data.datasets[0].data = Array(12).fill(0);
+						plchart.update();
+					}
+				});
+		}
+
+		window.onload = function () {
+			// Set frequency from URL parameter if available
+			const urlParams = new URLSearchParams(window.location.search);
+			const frequency = urlParams.get('frequency');
+			if (frequency) {
+				const dropdown = document.getElementById('frequency');
+				if (dropdown) {
+					dropdown.value = frequency;
+				}
+			}
+
+			// Your existing logic
+			initializeEmptyChartProfit();
+			getData(); // For the summary table (BRF Status)
+			document.getElementById("year1").value = "2023";
+			document.getElementById("year").value = "2023";
+
+			searchh();
+			get_year_profit_data();
+		};
+
+	</script>
+
+
+
+
+
+</head>
+<style>
+	.dashboard-container {
+		display: flex;
+		gap: 10px;
+		padding: 15px;
+		flex-wrap: wrap;
+	}
+
+	.left-panel {
+		flex: 1;
+		min-width: 500px;
+		max-width: 50%;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.right-panel {
+		flex: 1;
+		min-width: 300px;
+		max-width: 60%;
+
+	}
+
+	.chart-section {
+		background-color: #f8f9fa;
+		padding: 10px;
+		border-radius: 8px;
+	}
+
+	.chart-section h4 {
+		margin-bottom: 10px;
+		font-weight: bold;
+		font-size: 1.2rem;
+	}
+
+	.custom-fieldset {
+		border: 1px solid #ccc;
+		padding: 20px;
+		border-radius: 8px;
+		margin-bottom: 20px;
+	}
+
+	.custom-fieldset legend {
+		font-weight: bold;
+		font-size: 1.5rem;
+		padding: 0 5px;
+		width: auto;
+	}
+
+	.form-select {
+		max-width: 200px;
+		background-color: #f0f0f0;
+	}
+
+	.table-scroll-wrapper {
+		max-height: 700px;
+		overflow-y: auto;
+	}
+
+	.styled-table {
+		width: 100%;
+		margin: 25px 0;
+		font-size: 0.9em;
+		min-width: 400px;
+		box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+		border-radius: 5px;
+		overflow: hidden;
+	}
+
+	.styled-table thead tr {
+		background-color: #009879;
+		text-align: left;
+		font-weight: bold;
+	}
+
+	.styled-table th,
+	.styled-table td {
+		padding: 12px 15px;
+	}
+
+	.styled-table tbody tr {
+		border-bottom: 1px solid #dddddd;
+	}
+
+	.styled-table tbody tr:nth-of-type(even) {
+		background-color: #f3f3f3;
+	}
+
+	.styled-table tbody tr:last-of-type {
+		border-bottom: 2px solid #009879;
+	}
+
+	.styled-table tbody tr:hover {
+		background-color: #e0f7fa;
+		color: #009879;
+		font-weight: bold;
+	}
+
+
+	.styled-table caption {
+		font-size: 1.2em;
+		margin-bottom: 10px;
+		font-weight: bold;
+		color: #333;
+	}
+
+	canvas.chart-canvas {
+		width: 90% !important;
+		height: 200px !important;
+	}
+</style>
+<title>BCDRS</title>
+
+<body>
+	<div th:insert="XBRLHeaderMenu :: header"></div>
+	<div class="container content">
+		<!-- <i class="fa fa-question-circle" aria-hidden="true"
+		onclick="docEmb('Report')" id="ques"></i> -->
+		<div class="col-sm-12">
+
+			<div class="card" th:if="${Dashboardpage=='Superadmin' or Dashboardpage=='BRF_SYSTEM'}">
+				<div class="card-header center">
+					<h4 style="font-size: 1.5rem;">DASHBOARD</h4>
+				</div>
+				<br>
+				<!----------------------------------Start Tier values--------------------------------------------------->
+
+				<fieldset class="custom-fieldset">
+					<legend style="font-weight: 400; font-size: 1.3rem;">
+						Summary Reports</legend>
+					<div class="row" style="background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
+						<!-- Left Side (50%) -->
+						<div class="col-md-6">
+							<!-- First row: Dropdowns + Button -->
+							<div class="row mb-3">
+
+								<div class="col-md-auto">
+									<label for="date" class="form-label">Select Year :</label>
+								</div>
+								<div class="col-md-3">
+
+									<select name="year" id="year" class="form-control" onchange="searchh();"
+										style="background-color: #f0f0f0;">
+										<option value="">Select Year</option>
+
+									</select>
+								</div>
+								<div class="col-md-auto"></div>
+
+							</div>
+
+							<!-- Second row: Tier status blocks -->
+							<div class="row text-center">
+								<div class="col-md-12">
+									<canvas id="bubbleChart"></canvas>
+								</div>
+							</div>
+						</div>
+
+						<!-- Right Side (50%) -->
+						<div class="col-md-6">
+							<div class="col-md-6 d-flex align-items-center" style="gap: 10px;">
+								<label for="date" class="form-label mb-0">Report Date:</label> <input type="date"
+									id="date" class="form-control" onchange="fetchReportData()"
+									style="background-color: #f0f0f0; max-width: 200px;">
+							</div>
+							<br> <br>
+
+							<div class="table-responsive">
+								<table class="table table-bordered">
+									<thead class="table-light">
+										<tr style="background-color: #f0f0f0;">
+											<th>Report Name</th>
+											<th>Description</th>
+											<th>Frequency</th>
+											<th>Reporting Date</th>
+											<th>Status</th>
+										</tr>
+									</thead>
+									<tbody id="reportTableBody">
+										<!-- Data will be populated dynamically here -->
+									</tbody>
+								</table>
+							</div>
+
+							<!-- Pagination Controls with < and > -->
+							<div id="paginationControls" class="text-center">
+								<span id="prevPage" onclick="changePage(-1)"
+									style="cursor: pointer; font-size: 20px; margin: 0 10px;">&lt;</span>
+								<span id="pageNumber">Page 1</span> <span id="nextPage" onclick="changePage(1)"
+									style="cursor: pointer; font-size: 20px; margin: 0 10px;">&gt;</span>
+							</div>
+
+						</div>
+					</div>
+
+				</fieldset>
+				<!----------------------------------End Tier values--------------------------------------------------->
+
+				<!----------------------------------Start  Graphs--------------------------------------------------->
+				<fieldset class="custom-fieldset">
+					<legend style="font-weight: 400; font-size: 1.3rem;">
+						Profit Analysis</legend>
+					<div class="row" style="background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
+						<div class="col-md-6">
+
+							<div class="text-center col-md-3">
+								<select id="year1" class="form-control year-select" style="background-color: #f0f0f0;"
+									onchange="get_year()">
+									<option value="">Select Year</option>
+								</select>
+							</div>
+							<canvas id="profitChart1"></canvas>
+							<h5 class="text-center" style="font-weight: 400; font-size: 1rem;">BRF004</h5>
+						</div>
+
+						<div class="col-md-6">
+							<div class="text-center col-md-3">
+								<select id="year2" class="form-control year-select" style="background-color: #f0f0f0;">
+									<option value="">Select Year</option>
+								</select>
+							</div>
+							<canvas id="profitChart2"></canvas>
+							<h5 class="text-center" style="font-weight: 400; font-size: 1rem;">BRF005</h5>
+						</div>
+					</div>
+
+					<div class="row" style="background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
+						<div class="col-md-6">
+							<div class="text-center col-md-3">
+								<select id="year3" class="form-control year-select" style="background-color: #f0f0f0;">
+									<option value="">Select Year</option>
+								</select>
+							</div>
+							<canvas id="profitChart3"></canvas>
+							<h5 class="text-center" style="font-weight: 400; font-size: 1rem;">BRF006</h5>
+
+						</div>
+
+						<div class="col-md-6">
+							<div class="text-center col-md-3">
+								<select id="year4" class="form-control year-select" style="background-color: #f0f0f0;">
+									<option value="">Select Year</option>
+								</select>
+							</div>
+							<canvas id="profitChart4"></canvas>
+							<h5 class="text-center" style="font-weight: 400; font-size: 1rem;">BRF007</h5>
+						</div>
+					</div>
+				</fieldset>
+
+			</div>
+			<!----------------------------------End  Graphs--------------------------------------------------->
+
+
+			<div class="card" th:if="${Dashboardpage=='DCD_BRANCH' or Dashboardpage=='DCD_BRANCH_MANAGER' or Dashboardpage=='DCD_ADMIN' or 
+				 Dashboardpage =='Superadmin'}">
+				<div class="custom-box bg-white shadow-sm p-4 rounded">
+					<div class="row" style="margin-left: 2px;">
+						<h4
+							style="font-weight: 900; font-family: verdana; letter-spacing: .1em; background-color: white;; color: orange; padding: 1em .05em; font: xx-large; text-decoration: underline;">
+							ECDD
+							/ CDD Dashboard</h4>
+
+					</div>
+					<!-- The following div row is used to display the Pending Individual count on the dashboard. -->
+					<div class="row">
+						<h5
+							style="font-weight: 300; font-family: verdana; letter-spacing: .1em; background-color: white;; color: black; padding: 0.5em .5em; font: xx-large; margin-bottom: -10px; text-decoration: underline;">
+							Individual
+							Pending</h5>
+					</div>
+					<div class="row">
+
+						<div class="col" th:if="${Dashboardpage=='DCD_ADMIN' or Branch_code == '9001'}">
+							<a th:href="@{/kyc}" style="text-decoration: none; color: inherit;">
+								<div class="card shadow-sm mt-3  fade-in-up animate-delay-2 summary-card"
+									style="background-color: #f7f7ff">
+									<div class="card-body st-current">
+										<div class="d-flex align-items-center">
+											<div class="">
+												<p class="mb-0 text-secondary st-hover">Dubai</p>
+
+												<p class="mb-0 font-13 text-danger">
+													<i class="bx bxs-up-arrow align-middle"></i><span
+														th:text="${DubaiPendIndividuals}"></span> Pending
+												</p>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+
+						<div class="col" th:if="${Dashboardpage=='DCD_ADMIN' or Branch_code == '9002'}">
+							<a th:href="@{/kyc}" style="text-decoration: none; color: inherit;">
+								<div class="card shadow-sm mt-3  fade-in-up animate-delay-2 summary-card"
+									style="background-color: #f7f7ff">
+									<div class="card-body st-current">
+										<div class="d-flex align-items-center">
+											<div class="">
+												<p class="mb-0 text-secondary st-hover">Abu Dhabi</p>
+
+												<p class="mb-0 font-13 text-danger">
+													<i class="bx bxs-up-arrow align-middle"></i><span
+														th:text="${AbudhabiPendIndividuals}"></span> Pending
+												</p>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+
+						<div class="col" th:if="${Dashboardpage=='DCD_ADMIN' or Branch_code == '9003'}">
+							<a th:href="@{/kyc}" style="text-decoration: none; color: inherit;">
+								<div class="card shadow-sm mt-3  fade-in-up animate-delay-2 summary-card"
+									style="background-color: #f7f7ff">
+									<div class="card-body st-current">
+										<div class="d-flex align-items-center">
+											<div class="">
+												<p class="mb-0 text-secondary st-hover">Deira</p>
+
+												<p class="mb-0 font-13 text-danger">
+													<i class="bx bxs-up-arrow align-middle"></i><span
+														th:text="${DeiraPendIndividuals}"></span> Pending
+												</p>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+
+						<div class="col" th:if="${Dashboardpage=='DCD_ADMIN' or Branch_code == '9004'}">
+							<a th:href="@{/kyc}" style="text-decoration: none; color: inherit;">
+								<div class="card shadow-sm mt-3  fade-in-up animate-delay-2 summary-card"
+									style="background-color: #f7f7ff">
+									<div class="card-body st-current">
+										<div class="d-flex align-items-center">
+											<div class="">
+												<p class="mb-0 text-secondary st-hover">Sharjha</p>
+
+												<p class="mb-0 font-13 text-danger">
+													<i class="bx bxs-up-arrow align-middle"></i><span
+														th:text="${SharjhaPendIndividuals}"></span> Pending
+												</p>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+
+						<div class="col" th:if="${Dashboardpage=='DCD_ADMIN' or Branch_code == '9005'}">
+							<a th:href="@{/kyc}" style="text-decoration: none; color: inherit;">
+								<div class="card shadow-sm mt-3  fade-in-up animate-delay-2 summary-card"
+									style="background-color: #f7f7ff">
+									<div class="card-body st-current">
+										<div class="d-flex align-items-center">
+											<div class="">
+												<p class="mb-0 text-secondary st-hover">Ras al Khaima</p>
+
+												<p class="mb-0 font-13 text-danger">
+													<i class="bx bxs-up-arrow align-middle"></i><span
+														th:text="${RasalkhaimaPendIndividuals}"></span> Pending
+												</p>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+
+						<div class="col" th:if="${Dashboardpage=='DCD_ADMIN' or Branch_code == '9008'}">
+							<a th:href="@{/kyc}" style="text-decoration: none; color: inherit;">
+								<div class="card shadow-sm mt-3  fade-in-up animate-delay-2 summary-card"
+									style="background-color: #f7f7ff">
+									<div class="card-body st-current">
+										<div class="d-flex align-items-center">
+											<div class="">
+												<p class="mb-0 text-secondary st-hover">Syndication</p>
+
+												<p class="mb-0 font-13 text-danger">
+													<i class="bx bxs-up-arrow align-middle"></i><span
+														th:text="${SyndPendIndividuals}"></span> Pending
+
+												</p>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+
+					<!-- The following div row is used to display the Pending Corporate count on the dashboard. -->
+					<div class="row">
+						<h5
+							style="font-weight: 300; font-family: verdana; letter-spacing: .1em; background-color: white;; color: black; padding: 0.5em .5em; font: xx-large; margin-bottom: -10px; text-decoration: underline;">
+							Corporate
+							Pending</h5>
+					</div>
+					<div class="row">
+
+						<div class="col" th:if="${Dashboardpage=='DCD_ADMIN' or Branch_code == '9001'}">
+							<a th:href="@{/kyc(formmode='corporate')}" style="text-decoration: none; color: inherit;">
+								<div class="card shadow-sm mt-3  fade-in-up animate-delay-2 summary-card"
+									style="background-color: #f7f7ff">
+									<div class="card-body st-current">
+										<div class="d-flex align-items-center">
+											<div class="">
+												<p class="mb-0 text-secondary st-hover">Dubai</p>
+
+												<p class="mb-0 font-13 text-danger">
+													<i class="bx bxs-up-arrow align-middle"></i><span
+														th:text="${DubaiPendCorporate}"></span> Pending
+												</p>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+
+						<div class="col" th:if="${Dashboardpage=='DCD_ADMIN' or Branch_code == '9002'}">
+							<a th:href="@{/kyc(formmode='corporate')}" style="text-decoration: none; color: inherit;">
+								<div class="card shadow-sm mt-3  fade-in-up animate-delay-2 summary-card"
+									style="background-color: #f7f7ff">
+									<div class="card-body st-current">
+										<div class="d-flex align-items-center">
+											<div class="">
+												<p class="mb-0 text-secondary st-hover">Abu Dhabi</p>
+
+												<p class="mb-0 font-13 text-danger">
+													<i class="bx bxs-up-arrow align-middle"></i><span
+														th:text="${AbudhabiPendCorporate}"></span> Pending
+												</p>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+
+						<div class="col" th:if="${Dashboardpage=='DCD_ADMIN' or Branch_code == '9003'}">
+							<a th:href="@{/kyc(formmode='corporate')}" style="text-decoration: none; color: inherit;">
+								<div class="card shadow-sm mt-3  fade-in-up animate-delay-2 summary-card"
+									style="background-color: #f7f7ff">
+									<div class="card-body st-current">
+										<div class="d-flex align-items-center">
+											<div class="">
+												<p class="mb-0 text-secondary st-hover">Deira</p>
+
+												<p class="mb-0 font-13 text-danger">
+													<i class="bx bxs-up-arrow align-middle"></i><span
+														th:text="${DeiraPendCorporate}"></span> Pending
+												</p>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+
+						<div class="col" th:if="${Dashboardpage=='DCD_ADMIN' or Branch_code == '9004'}">
+							<a th:href="@{/kyc(formmode='corporate')}" style="text-decoration: none; color: inherit;">
+								<div class="card shadow-sm mt-3  fade-in-up animate-delay-2 summary-card"
+									style="background-color: #f7f7ff">
+									<div class="card-body st-current">
+										<div class="d-flex align-items-center">
+											<div class="">
+												<p class="mb-0 text-secondary st-hover">Sharjha</p>
+
+												<p class="mb-0 font-13 text-danger">
+													<i class="bx bxs-up-arrow align-middle"></i><span
+														th:text="${SharjhaPendCorporate}"></span> Pending
+												</p>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+
+						<div class="col" th:if="${Dashboardpage=='DCD_ADMIN' or Branch_code == '9005'}">
+							<a th:href="@{/kyc(formmode='corporate')}" style="text-decoration: none; color: inherit;">
+								<div class="card shadow-sm mt-3  fade-in-up animate-delay-2 summary-card"
+									style="background-color: #f7f7ff">
+									<div class="card-body st-current">
+										<div class="d-flex align-items-center">
+											<div class="">
+												<p class="mb-0 text-secondary st-hover">Ras al Khaima</p>
+
+												<p class="mb-0 font-13 text-danger">
+													<i class="bx bxs-up-arrow align-middle"></i><span
+														th:text="${RasalkhaimaPendCorporate}"></span> Pending
+												</p>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+
+						<div class="col" th:if="${Dashboardpage=='DCD_ADMIN' or Branch_code == '9008'}">
+							<a th:href="@{/kyc(formmode='corporate')}" style="text-decoration: none; color: inherit;">
+								<div class="card shadow-sm mt-3  fade-in-up animate-delay-2 summary-card"
+									style="background-color: #f7f7ff">
+									<div class="card-body st-current">
+										<div class="d-flex align-items-center">
+											<div class="">
+												<p class="mb-0 text-secondary st-hover">Syndication</p>
+
+												<p class="mb-0 font-13 text-danger">
+													<i class="bx bxs-up-arrow align-middle"></i><span
+														th:text="${SyndPendCorporate}"></span> Pending
+
+												</p>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+
+					<div class="row"
+						style="margin-top: 20px; background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
+						<div class="col-md-6">
+							<canvas id="pieChart"></canvas>
+						</div>
+
+						<div class="col-md-6">
+							<canvas id="pieChart1"></canvas>
+						</div>
+					</div>
+					<!-- ECDD/CDD Data End Div -->
+				</div>
+			</div>
+
+			<div class="card" th:if="${Dashboardpage=='BRC'}" style="font-family: calibri; letter-spacing: 0.1em">
+
+				<div class="card-header card-header-custom d-flex justify-content-between align-items-center flex-wrap">
+					<h5 class="mb-0" style="font-family: verdana; letter-spacing: .1em">AANI
+						Payment Reconciliation Dashboard</h5>
+
+
+				</div>
+
+				<div class="row text-white">
+					<div class="col-md-3 mb-3">
+						<div class="card bg-success shadow">
+							<div class="card-body text-center">
+								<h6>Matched AANI Payment</h6>
+								<h4 th:text="${matchedCount}">0</h4>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3 mb-3">
+						<div class="card bg-danger shadow">
+							<div class="card-body text-center">
+								<h6>Unmatched CBS Records</h6>
+								<h4 th:text="${unmatchedSourceCount}">0</h4>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3 mb-3">
+						<div class="card bg-warning shadow">
+							<div class="card-body text-center">
+								<h6>Unmatched AANI Payment Records</h6>
+								<h4 th:text="${unmatchedDestinationCount}">0</h4>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3 mb-3">
+						<div class="card bg-info shadow">
+							<div class="card-body text-center">
+								<h6>Total Number of CBS Transactions</h6>
+								<h4 th:text="${totalTransactionCount}">0</h4>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<table class="styled-table" id="cbsTable">
+					<caption>Duplicate Record Summary - CBS</caption>
+					<thead>
+						<tr>
+							<th>Entry Value Date</th>
+							<th>Transaction Remarks</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<!-- Example row template -->
+						<tr style="letter-spacing: .1em" th:each="row : ${cbsduplicaterecord}">
+							<td th:text="${row[0]}"></td>
+							<td th:text="${row[1]}"></td>
+						</tr>
+					</tbody>
+				</table>
+
+				<table class="styled-table" id="aaniTable">
+					<caption>Duplicate Record Summary - AANI Payment</caption>
+					<thead>
+						<tr>
+							<th>Entry Value Date</th>
+							<th>Transaction Entry Clearing Reference</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- Example row template -->
+						<tr style="letter-spacing: .1em" th:each="row1 : ${aaniduplicaterecord}">
+							<td th:text="${row1[0]}"></td>
+							<td th:text="${row1[1]}"></td>
+
+						</tr>
+					</tbody>
+				</table>
+
+
+
+
+
+
+			</div>
+
+			<div class="card" th:if="${Dashboardpage=='Superadmin' or Dashboardpage=='BRF_SYSTEM'}"
+				style="background-color: #f8f9fa; border: 1px solid rgba(0, 0, 0, 1); border-radius: 0.25rem; box-shadow: 0 0 8px rgba(0, 0, 0, 1);">
+				<div class="card-header center" style="background-color: rgba(0, 0, 0, .07)">
+					<h4 style="font-size: 1.5rem;">DASHBOARD</h4>
+				</div>
+				<br>
+				<fieldset class="custom-fieldset" style="padding: 10px 15px; margin-bottom: 15px; border-radius: 6px;">
+					<legend style="font-size: 1.5rem; font-weight: 800; padding: 0 10px; margin-bottom: 0;">Summary
+						Reports</legend>
+
+					<div class="dashboard-container">
+
+						<!-- Left Panel -->
+						<div class="left-panel">
+
+							<!-- Tier1 / Tier2 / RWA Chart -->
+							<div class="chart-section">
+								<h4 style="margin-top: 5px; margin-bottom: 5px;">Analysis of Tier1/Tier2/Risk Weighted
+									Assets</h4>
+
+								<div class="d-flex align-items-center mb-2" style="gap: 10px;">
+									<label for="year" class="form-label mb-0">Select Year:</label>
+									<select name="year" id="year" class="form-control form-select"
+										onchange="searchh();">
+										<option value="">Select Year</option>
+										<option value="2023" selected>2023</option>
+									</select>
+								</div>
+
+								<div class="text-center">
+									<canvas id="bubbleChart" class="chart-canvas"></canvas>
+								</div>
+							</div>
+
+							<!-- Profit & Loss Chart -->
+							<div class="chart-section">
+								<h4>Profit/Loss Analysis</h4>
+
+								<div class="d-flex align-items-center mb-2" style="gap: 10px;">
+									<label for="year1" class="form-label mb-0">Select Year:</label>
+									<select id="year1" class="form-control form-select"
+										onchange="get_year_profit_data();">
+										<option value="">Select Year</option>
+										<option value="2023" selected>2023</option>
+									</select>
+								</div>
+
+								<div class="text-center">
+									<canvas id="plchart" class="chart-canvas"></canvas>
+								</div>
+
+								<h5 class="text-center mt-3 font-weight-bold">Income Statement (BRF4)</h5>
+							</div>
+
+						</div>
+
+						<!-- Right Panel - Report Master Table -->
+						<div class="right-panel">
+							<fieldset class="custom-fieldset">
+								<legend>Report Master</legend>
+
+								<div class="mb-3 d-flex align-items-center" style="gap: 10px;">
+									<label for="frequency" class="form-label mb-0">Frequency</label>
+									<select class="form-control form-select" id="frequency" onchange="getData();">
+										<option value="">--select--</option>
+										<option value="Monthly 1">Monthly 1</option>
+										<option value="Monthly 2">Monthly 2</option>
+										<option value="Monthly 3">Monthly 3</option>
+										<option value="Quarterly 1">Quarterly 1</option>
+										<option value="Quarterly 2">Quarterly 2</option>
+										<option value="Half Yearly 1">Half Yearly 1</option>
+										<option value="Half Yearly 2">Half Yearly 2</option>
+										<option value="Yearly">Yearly</option>
+										<option value="Fortnightly" selected>Fortnightly</option>
+									</select>
+									<!--  <div class="btn-group nav-buttons float-right">
+          
+          <button type="button" style="margin-left:300px;"   class="btn btn-xs btn-primary btns" id="btnInq"
+								onclick="add()">Add</button>
+		</div> -->
+								</div>
+
+
+
+								<div class="table-responsive table-scroll-wrapper">
+									<table class="table table-bordered table-sm">
+										<thead class="table-light">
+											<tr>
+												<th style="text-align: center;">
+													<i class="fa fa-plus-circle" style="cursor: pointer; color: white;"
+														title="Add" onclick="add()"></i>
+												</th>
+												<th style="text-align: left;">Report Code</th>
+												<th style="text-align: left;">Report Description</th>
+												<th style="text-align: left;">Reporting Date</th>
+												<th style="text-align: left;">Status</th>
+												<th style="min-width: 100px; text-align: center;">Enabled / Disabled
+												</th>
+
+
+											</tr>
+										</thead>
+										<tbody id="reportTableBody">
+											<!-- Populated by JS -->
+										</tbody>
+									</table>
+								</div>
+							</fieldset>
+						</div>
+
+					</div>
+				</fieldset>
+			</div>
+		</div>
+	</div>
+
+</body>
+<script>
+	/*
+	window.onload = function () {
+		 // This will trigger on initial page load with "Yearly" as default
+	};
+	*/
+	function getData() {
+		var frequency = document.getElementById('frequency').value;
+
+		$.ajax({
+			url: './getDashboardReport?frequency=' + frequency,
+			type: 'GET',
+			dataType: 'json',
+			success: function (response) {
+				const tableBody = document.getElementById('reportTableBody');
+				tableBody.innerHTML = ''; // Clear existing data
+
+				if (response.length === 0) {
+					tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: red;">No records found.</td></tr>`;
+				} else {
+					// ✅ Sort by rpt_code (BRF001, BRF002, ...)
+					response.sort((a, b) => {
+						const codeA = parseInt(a.rpt_code.replace(/[^\d]/g, ''));
+						const codeB = parseInt(b.rpt_code.replace(/[^\d]/g, ''));
+						return codeA - codeB;
+					});
+
+					response.forEach(item => {
+						let formattedDate = "";
+						if (item.end_date) {
+							const date = new Date(item.end_date);
+							formattedDate = date.toLocaleDateString('en-GB'); // dd-mm-yyyy
+						}
+
+						let status = item.remarks_3 === 'Y' ?
+							`<span class="status-completed">Completed</span>` :
+							`<span class="status-pending">Pending</span>`;
+
+						let row = `
+                    <tr>
+                        <td style="text-align: center;">
+                            <i class="fa fa-edit" 
+                               data-rptcode="${item.rpt_code}"
+                               style="cursor: pointer; color: blue;" 
+                               title="Edit"
+                               onclick="edit(this.getAttribute('data-rptcode'))">
+                            </i>
+                        </td>
+                        <td style="text-align: left;">${item.rpt_code}</td>
+                        <td style="text-align: left;">${item.rpt_description}</td>
+                        <td style="text-align: left;">${formattedDate}</td>
+                        <td style="text-align: center;">${status}</td>
+                        <td style="text-align: center;">
+                            <input type="checkbox" ${item.domain && item.domain.trim() === 'Y' ? 'checked' : ''}>
+                        </td>
+                    </tr>
+                `;
+
+						tableBody.innerHTML += row;
+					});
+				}
+			}
+			,
+			error: function (xhr, status, error) {
+				alert("Error: " + error);
+			}
+		});
+	}
+
+	//NAVIGATING TO ADD PAGE
+	function add(a) {
+
+
+		location.href = 'RRRptMast?formmode=add';
+
+	}
+
+	/* function edit(rptcode) {
+		console.log("Editing report with rptcode:", rptcode);
+		location.href = `RRRptMast?formmode=edit&rptcode=${encodeURIComponent(rptcode)}`;
+	}
+	 */
+	function edit(rptcode) {
+		const selectedFrequency = document.getElementById('frequency').value;
+		console.log("Editing report with rptcode:", rptcode);
+		location.href = `RRRptMast?formmode=edit&rptcode=${encodeURIComponent(rptcode)}&frequency=${encodeURIComponent(selectedFrequency)}`;
+	}
+
+
+</script>
+
+<script>
+	let cbsTable, aaniTable;
+
+	$(document).ready(function () {
+		cbsTable = $('#cbsTable').DataTable({
+			scrollY: 400,
+			paging: true,
+			autoWidth: false,
+			ordering: false,
+			searching: false,
+			scrollX: true,
+			pageLength: 100,
+			lengthChange: false
+		});
+
+		aaniTable = $('#aaniTable').DataTable({
+			scrollY: 400,
+			paging: true,
+			autoWidth: false,
+			ordering: false,
+			searching: false,
+			scrollX: true,
+			pageLength: 100,
+			lengthChange: false
+		});
+	});
+
+</script>
+
+<style>
+	.chart-canvas {
+		height: 150px !important;
+		width: 90% !important;
+		cursor: pointer;
+	}
+
+	.table-scroll-wrapper {
+		max-height: 400px;
+		/* Adjust height for approx. 5 rows */
+		overflow-y: auto;
+		position: relative;
+	}
+
+	.table thead th {
+		position: sticky;
+		top: 0;
+		/* Stick to the top of scroll area */
+		background-color: #f8f9fa;
+		z-index: 2;
+	}
+
+	/* Optional smooth sticky effect when halfway up the page */
+	@media (min-height: 600px) {
+		.table-scroll-wrapper {
+			scroll-margin-top: 50vh;
+			/* Sticky feel when scrolled to mid-page */
+		}
+	}
+
+	/* Add a box shadow when header sticks for better visibility */
+	.table-scroll-wrapper thead th {
+		box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+	}
+</style>
+
+</html>

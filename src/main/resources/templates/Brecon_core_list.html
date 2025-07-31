@@ -1,0 +1,3061 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+		th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/font-awesome/5.9.0/css/all.min.css"
+		th:href="@{/webjars/font-awesome/5.9.0/css/all.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"
+		th:href="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/datatables/1.10.19/css/jquery.dataTables.min.css"
+		th:href="@{/webjars/datatables/1.10.19/css/jquery.dataTables.min.css}">
+	<link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+	<link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon">
+
+	<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"
+		th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+	<script src="/webjars/popper.js/1.14.7/umd/popper.min.js"
+		th:src="@{/webjars/popper.js/1.14.7/umd/popper.min.js}"></script>
+	<script src="/webjars/jquery/3.4.1/jquery.min.js" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+	<script src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"
+		th:src="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.js}"></script>
+
+	<script src="/webjars/jquery-form/4.2.2/jquery.form.min.js"
+		th:src="@{/webjars/jquery-form/4.2.2/jquery.form.min.js}"></script>
+
+	<script src="/webjars/jquery-validation/1.19.0/jquery.validate.min.js"
+		th:src="@{/webjars/jquery-validation/1.19.0/jquery.validate.min.js}"></script>
+
+	<script src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/jquery.dataTables.min.js}"></script>
+	<script src="/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js}"></script>
+
+	<style>
+		.required-field::before {
+			content: "*";
+			color: red;
+			float: right;
+			margin-left: 5px;
+			/* Adjust the margin as needed */
+			font-size: 1.2em;
+			/* Adjust the font size as needed */
+		}
+
+		.spaceline {
+			/* Add your styling rules here */
+			margin-bottom: 10px;
+			/* Example: Adds 20 pixels of bottom margin */
+		}
+
+		label {
+			font-size: 16px;
+			/* Adjust the font size as needed */
+			overflow: hidden;
+			/* Hide overflow content if any */
+			text-overflow: ellipsis;
+			/* Show ellipsis (...) for overflow text */
+			display: inline-block;
+			/* Ensure the label stays on a single line */
+		}
+
+		.container-manager {
+			width: 83.5%;
+			padding-right: 15px;
+			padding-left: 15px;
+			margin-right: auto;
+			margin-left: 15.3%;
+			margin-top: 80px;
+			margin-top: 80px;
+		}
+	</style>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+
+		function filterfunc() {
+			var userdate = document.getElementById("datepickerInput").value;
+			alert(userdate);
+			$('#placelist').empty();
+
+			$
+				.ajax({
+					url: './filterrptdate',
+					type: 'POST',
+					data: {
+						report_date: userdate
+					},
+					success: function (data) {
+						var trHTML = '';
+						$
+							.each(
+								data,
+								function (key, value) {
+									trHTML += '<tr style="white-space: nowrap; overflow: hidden; text-align: center;">'
+										+ '<td>'
+										+ (value.srlno ? value.srlno : '')
+										+ '</td>'
+										+ '<td>'
+										+ (value.report_date ? formatDate(value.report_date) : '')
+										+ '</td>'
+										+ '<td>'
+										+ (value.unique_file_name ? value.unique_file_name : '')
+										+ '</td>'
+										+ '<td>'
+										+ (value.message_reason_code ? value.message_reason_code : '')
+										+ '</td>'
+										+ '<td>'
+										+ (value.member_message_text ? value.member_message_text : '')
+										+ '</td>'
+										+ '<td>'
+										+ (value.document_indicator ? value.document_indicator : '')
+										+ '</td>'
+										+ '<td>'
+										+ (value.full_partial_indicator ? value.full_partial_indicator : '')
+										+ '</td>'
+										+ '<td>'
+										+ (value.case_number ? value.case_number : '')
+										+ '</td>'
+										+ '<td>'
+										+ (value.original_settlement_date ? value.original_settlement_date : '')
+										+ '</td>'
+										+ '<td>'
+										+ (value.processing_status ? value.processing_status : '')
+										+ '</td>'
+										+ '<td>'
+										+ '<div class="dropdown">'
+										+ '<button class="btn btn-xs btn-info btns" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
+										+ 'Action</button>'
+										+ '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">'
+										+ '<button type="button" class="dropdown-item" id="btnmodify" data-attr="'
+										+ (value.srlno ? value.srlno : '')
+										+ '" onclick="modifyuser(this);" style="text-align:center;">Modify</button>'
+										+ '<div class="dropdown-divider"></div>'
+										+ '<button type="button" class="dropdown-item" id="btndelete" data-attr="'
+										+ (value.srlno ? value.srlno : '')
+										+ '" onclick="deleteuser(this);" style="text-align:center;">Delete</button>'
+										+ '<div class="dropdown-divider"></div>'
+										+ '<button type="button" class="dropdown-item" id="btnEnquiry" data-attr="'
+										+ (value.srlno ? value.srlno : '')
+										+ '" onclick="enquiryuser(this);" style="text-align:center;">Enquiry</button>'
+										+ '<div class="dropdown-divider"></div>'
+										+ '<button type="button" class="dropdown-item" id="btntstcase" data-attr="'
+										+ (value.srlno ? value.srlno : '')
+										+ '" onclick="testcases(this);" style="text-align:center;">Test Case</button>'
+										+ '<div class="dropdown-divider"></div>'
+										+ '</div>'
+										+ '</div>'
+										+ '</td>'
+										+ '</tr>';
+
+									function formatDate(date) {
+										var formattedDate = new Date(date);
+										var dd = String(formattedDate.getDate()).padStart(2, '0');
+										var mm = String(formattedDate.getMonth() + 1).padStart(2, '0');
+										var yyyy = formattedDate.getFullYear();
+										return dd + '-' + mm + '-' + yyyy;
+									}
+								});
+
+						$('#placelist').html(trHTML);
+					},
+					error: function (xhr, status, error) {
+						console.error(xhr.responseText);
+						showResponse("Report Date Not Matched", "Error", xhr, null);
+					}
+				});
+		}
+
+		function showResponse(responseText, statusText, xhr, $form) {
+			$("#alertmsg").text(responseText);
+			$('#alert').modal("toggle");
+		}
+		span.onclick = function () {
+			modal.style.display = "none";
+			location.reload();
+		}
+
+		$(function () {
+
+			var finusers = /*[[${FinUserProfiles}]]*/null;
+
+			console.log(finusers);
+
+			$("#usertable,#finusertb").DataTable({
+				"info": false,
+				"lengthChange": false
+
+			});
+
+			$("#expiryDate,#disableDate,#disableTilDate,#passExDate,#effectiveTill")
+				.datepicker({
+					minDate: new Date(),
+					changeMonth: true,
+					changeYear: true,
+					dateFormat: "dd-mm-yy"
+				});
+
+		});
+
+		function getUserlist(mode, num, maxpage) {
+
+			var n = parseInt(num);
+			var max = parseInt(maxpage);
+			var Callurl = 'UserProfile?formmode=list';
+
+			switch (mode) {
+				case "nextpage":
+					n = n + 1;
+					if (n > max) {
+						break;
+					}
+					Callurl = Callurl + "&page=" + n;
+					break;
+				case "prevpage":
+					n = n - 1;
+					if (n < 0) {
+						break;
+					}
+					Callurl = Callurl + "&page=" + n;
+					break;
+				case "givenpage":
+					n = parseInt($("#pageno").val()) - 1;
+					if (n > max || n < 0) {
+						break;
+					}
+					Callurl = Callurl + "&page=" + n;
+			}
+
+			location.href = Callurl;
+		}
+
+		function finuser(a) {
+
+			$
+
+				.ajax({
+					type: 'get',
+					url: './Finuserdata?userid=' + a.id,
+
+					success: function (data) {
+
+						/*<![CDATA[*/
+
+						$('.finuserapply').html(data);
+
+						$(
+							"#expiryDate,#disableDate,#disableTilDate,#passExDate,#effectiveTill")
+							.datepicker({
+								changeMonth: true,
+								changeYear: true,
+								dateFormat: "dd-mm-yy"
+							});
+
+						/*]]>*/
+
+						$("#finusers").modal("hide");
+					}
+
+				})
+
+		}
+
+		function home() {
+			location.href = 'Dashboard'
+		}
+
+		function back() {
+			history.back();
+		}
+
+		function downls() {
+			history.go(-2);
+		}
+
+		function back1() {
+			location.reload();
+		}
+
+		function fnClick(a) {
+			var userid = a.getAttribute("data-userid")
+			location.href = 'studentscreen?formmode=edit&userid=' + userid
+		}
+
+		function adduser(a) {
+
+			location.href = 'ChargeUpload?formmode=add';
+
+		}
+
+		function addDetails(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view2&srlno=' + srlno;
+
+		}
+
+		function testcases(a) {
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view3&srlno=' + srlno;
+		}
+
+		function retreqsubmit(a) {
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view4&srlno=' + srlno;
+		}
+
+		function retreqfullsubmit(a) {
+			var srlno = a.getAttribute("data-attr");
+			alert(srlno);
+			location.href = 'ChargeUpload?formmode=view5&srlno=' + srlno;
+		}
+
+		function retreqnonfullsubmit(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view6&srlno=' + srlno;
+		}
+
+		function chargebacks(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view7&srlno=' + srlno;
+		}
+
+		function representment(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view8&srlno=' + srlno;
+		}
+
+		function refund(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view9&srlno=' + srlno;
+		}
+
+		function refundcharg(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view10&srlno=' + srlno;
+		}
+
+		function memfuncoll(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view11&srlno=' + srlno;
+		}
+
+		function presreversal(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view12&srlno=' + srlno;
+		}
+
+		function memfundiscoll(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view13&srlno=' + srlno;
+		}
+
+		function npcifeecoll(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view14&srlno=' + srlno;
+		}
+		function npcifeedisb(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view15&srlno=' + srlno;
+		}
+		function presentment(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view16&srlno=' + srlno;
+		}
+		function header(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view17&srlno=' + srlno;
+		}
+		function trailer(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view18&srlno=' + srlno;
+		}
+		function voids(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view19&srlno=' + srlno;
+		}
+		function preatrb(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view20&srlno=' + srlno;
+		}
+		function atrbaccep(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view21&srlno=' + srlno;
+		}
+		function smstran(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view22&srlno=' + srlno;
+		}
+		function dmstran(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view23&srlno=' + srlno;
+		}
+
+		function modifyusers(a) {
+
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=edit3&srlno=' + srlno;
+
+		}
+
+		function uploaduser() {
+
+			location.href = 'ChargeUpload?formmode=view1';
+
+		}
+
+		function list() {
+			location.href = 'ChargeUpload?formmode=list';
+		}
+
+		function listusers() {
+			location.href = 'ChargeUpload?formmode=list2';
+		}
+
+		function modifyuser(a) {
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=edit3&srlno=' + srlno;
+		}
+
+		function enquiryuser(a) {
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=view&srlno=' + srlno;
+		}
+
+		function chargeback(a) {
+			var srlno = a.getAttribute("data-attr")
+			alert(srlno)
+			location.href = 'ChargeUpload?formmode=edit&srlno=' + srlno;
+		}
+
+
+
+		function passwordReset() {
+
+			var url = './passwordReset';
+			$("#userProfile").attr('action', url);
+
+			var options = {
+				success: showResponse
+				// post-submit callback 
+			};
+
+			$('#userProfile').ajaxSubmit(options);
+
+			function showResponse(responseText, statusText, xhr, $form) {
+
+				$("#alertmsg").text(responseText);
+
+				$('#alert').modal("toggle");
+
+			}
+			;
+		};
+
+		function roledesc() {
+
+			var roleid = $("#roleId").find(':selected').val();
+
+			if (roleid == 'ADM') {
+				$("#roleDesc").val("Admin");
+			} else if (roleid == 'ADT') {
+				$("#roleDesc").val("Audit");
+			} else if (roleid == 'GEN') {
+				$("#roleDesc").val("General User");
+			} else if (roleid == 'RECONADM') {
+				$("#roleDesc").val("Admin");
+			} else if (roleid == 'RECONGEN') {
+				$("#roleDesc").val("General User");
+			}
+			$(this).find(':selected').text();
+
+		}
+
+		function submitAddform() {
+
+			if ($("#userProfile").valid()) {
+
+				var url = "./adminUserProfileAdd?formmode=add";
+				$("#userProfile").attr('action', url);
+
+				var options = {
+					success: showResponse
+				};
+
+				$("#userProfile").ajaxSubmit(options);
+
+				function showResponse(responseText, statusText, xhr, $form) {
+					$("#alertmsg").text(responseText);
+					$('#alert').modal("toggle");
+
+				}
+				;
+			}
+		};
+
+		function deleteuser(a) {
+
+			var srlno = a.getAttribute("data-attribute");
+
+			alert(srlno);
+
+			$.ajax({
+				url: './deletescreen?mti=' + srlno,
+				data: $("#upon").serialize(),
+				type: 'POST',
+				success: function (data) {
+					$("#alertmsg").text(data);
+					$('#alert').modal("toggle");
+
+				}
+			});
+
+		};
+
+		function modifysubmit1(a) {
+			var srlno = document.getElementById("srlno56").value;
+			alert(srlno)
+			if ($("#crgbck1").valid()) {
+
+				var url = './modifyscreen?srlno=' + srlno;
+
+				$("#crgbck1").attr('action', url);
+
+				var options = {
+					success: showResponse
+				};
+
+				$("#crgbck1").ajaxSubmit(options);
+
+				function showResponse(responseText, statusText, xhr, $form) {
+					$("#alertmsg").text(responseText);
+					$('#alert').modal("toggle");
+
+				}
+				;
+			}
+		};
+
+		function modifysubmit1(a) {
+			var srlno = document.getElementById("srlno").value;
+			alert(srlno)
+			if ($("#srlno").valid()) {
+
+				var url = './submit?srlno=' + srlno;
+
+				$("#srlno").attr('action', url);
+
+				var options = {
+					success: showResponse
+				};
+
+				$("#srlno").ajaxSubmit(options);
+
+				function showResponse(responseText, statusText, xhr, $form) {
+					$("#alertmsg").text(responseText);
+					$('#alert').modal("toggle");
+
+				}
+				;
+			}
+		};
+
+		function chargebck(a) {
+			var srlno = document.getElementById("srlno56").value;
+			alert(srlno)
+			if ($("#crgbck1").valid()) {
+
+				var url = './chargebckscreen?srlno=' + srlno;
+
+				$("#crgbck1").attr('action', url);
+				$("#crgbck1")
+					.append(
+						'<input type="hidden" name="formId" value="' + formId + '">');
+
+				var options = {
+					success: showResponse
+				};
+
+				$("#crgbck1").ajaxSubmit(options);
+
+				function showResponse(responseText, statusText, xhr, $form) {
+					$("#alertmsg").text(responseText);
+					$('#alert').modal("toggle");
+
+				}
+				;
+			}
+		};
+
+		function downloads(a) {
+			var srlno = a.getAttribute("data-attribute");
+
+			if (validateRequiredFields($('#reportforms')[0])) {
+				var formmode1 = a.getAttribute("data-formmode1");
+
+				if (formmode1 == "view4" ||
+					formmode1 == "view5" ||
+					formmode1 == "view6" ||
+					formmode1 == "view7" ||
+					formmode1 == "view8" ||
+					formmode1 == "view9" ||
+					formmode1 == "view10" ||
+					formmode1 == "view11" ||
+					formmode1 == "view12" ||
+					formmode1 == "view13" ||
+					formmode1 == "view14" ||
+					formmode1 == "view15" ||
+					formmode1 == "view16" ||
+					formmode1 == "view17" ||
+					formmode1 == "view18" ||
+					formmode1 == "view19" ||
+					formmode1 == "view20" ||
+					formmode1 == "view21" ||
+					formmode1 == "view22" ||
+					formmode1 == "view23"
+				) {
+					if ($("#reportforms").valid()) {
+						var formData = new FormData($("#reportforms")[0]);
+						fetch("exportxml?srlno=" + srlno + "&formmode1=" + formmode1, {
+							method: "POST",
+							body: formData,
+						}).then(response => {
+							if (response.ok) {
+								var contentDisposition = response.headers.get('Content-Disposition');
+								var filename = contentDisposition.split('filename=')[1].trim();
+
+								response.blob().then(blob => {
+									var link = document.createElement('a');
+									link.href = window.URL.createObjectURL(blob);
+									link.download = filename;
+									document.body.appendChild(link);
+									link.click();
+									document.body.removeChild(link);
+								});
+								alert2('Download Successfully');
+							} else {
+								console.error('Download failed:', response);
+							}
+						})
+							.catch(error => {
+								console.error('Error during download:', error);
+							});
+					}
+				} else {
+				}
+			} else {
+				alert1("Please fill in all required fields.");
+			}
+			function alert1(responseText) {
+				$("#alertmsg").text(responseText);
+				$('#alert').modal("toggle");
+			}
+			function alert2(responseText) {
+				$("#alertmsg2").text(responseText);
+				$('#alert2').modal("toggle");
+			}
+			function validateRequiredFields(form) {
+				var requiredFields = form.querySelectorAll('[required]');
+				var isValid = true;
+
+				for (var i = 0; i < requiredFields.length; i++) {
+					if (!requiredFields[i].value.trim()) {
+						isValid = false;
+						highlightField(requiredFields[i]);
+					} else {
+						removeHighlight(requiredFields[i]);
+					}
+				}
+
+				return isValid;
+			}
+			function highlightField(field) {
+				field.style.border = "1px solid red";
+			}
+			function removeHighlight(field) {
+				field.style.border = "";
+			}
+		}
+	</script>
+	<SCRIPT>
+		$(function () {
+			$("#datepickerInput").datepicker({
+				dateFormat: "dd-mm-yy",
+				changeMonth: true,
+				numberOfMonths: 1,
+				gotoCurrent: true,
+				yearRange: '-80:+1000'
+
+			});
+		})
+		$("#datepicker").datepicker({
+			dateFormat: "dd/mm/yy"
+		});
+	</SCRIPT>
+
+
+	<script>
+		function modifysubmit() {
+			alert("hihi");
+
+			var srlno = document.getElementById("srlno").value;
+			alert(srlno);
+
+			$.ajax({
+				url: './breconmodifysubmit', // Ensure this URL is correct for your server setup
+				data: $("#coreForm").serialize(),
+				type: 'POST',
+
+				success: function (response) {
+					showResponse(response);
+				},
+				error: function (xhr, status, error) {  // Added better error handling
+					showResponse("Error: " + xhr.responseText);
+				}
+			});
+		}
+
+		function showResponse(responseText) {
+			$("#alertmsg").text(responseText);  // Display the response inside the alert message element
+			$('#alert').modal("toggle");        // Toggle the alert modal
+		}
+	</script>
+	<script>
+		function verifysubmit() {
+			alert("hihi");
+
+			var srlno = document.getElementById("srlno").value;
+			alert(srlno);
+
+			$.ajax({
+				url: './breconverifysubmit',  // Ensure this URL is correct for your server setup
+				data: $("#coreForm").serialize(),
+				type: 'POST',
+
+				success: function (response) {
+					showResponse(response);
+				},
+				error: function (xhr, status, error) {
+					showResponse("Error: " + xhr.responseText);
+				}
+			});
+		}
+
+		function showResponse(responseText) {
+			$("#alertmsg").text(responseText);
+			$('#alert').modal("toggle");
+		}
+	</script>
+	<script>
+		function addsubmit() {
+			alert("hihi");
+			var srlno = document.getElementById("srlno").value;
+			alert(srlno);
+
+			$.ajax({
+				url: './breconaddsubmit',
+				data: $("#coreForm").serialize(),
+
+
+				type: 'POST',
+
+				success: function (response) {
+					showResponse(response);
+				},
+				error: function (xhr, status, error) {
+					showResponse("Error: " + xhr.responseText);
+				}
+			});
+		}
+
+		function showResponse(responseText) {
+			$("#alertmsg").text(responseText);
+			$('#alert').modal("toggle");
+		}
+	</script>
+
+</head>
+<title>XBRL</title>
+
+<div class="container-fluid">
+
+
+	<div class="col-sm-2 ml-5">
+		<div th:insert="XBRLHeaderMenu :: header"></div>
+	</div>
+	<div class="container-fluid content">
+
+		<div th:if="${formmode}=='srlno'">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="card" style="margin-left: 260px; margin-top: 110px;">
+						<div class="card-header">
+							<div class="float-left">
+								<h4>Core Account - Details</h4>
+							</div>
+						</div>
+						<form method="post" id="coreForm">
+							<!-- First Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Solution ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="sol_id" th:value="${srlno?.sol_id}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Customer ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="cust_id" th:value="${srlno?.cust_id}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+
+							<!-- Second Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Bank Code</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="bank_code" th:value="${srlno?.bank_code}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Bank ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="bank_id" th:value="${srlno?.bank_id}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+
+							<!-- Third Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Branch Code</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="br_code" th:value="${srlno?.br_code}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Acid</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="acid" th:value="${srlno?.acid}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+
+							<!-- Fourth Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Entry Date</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="date" name="entry_date"
+										th:value="${#dates.format(srlno?.entry_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Entry User ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="entry_user_id" th:value="${srlno?.entry_user_id}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Part Transaction Serial Number</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="part_tran_srl_num" th:value="${srlno?.part_tran_srl_num}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Part Transaction Type</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="part_tran_type" th:value="${srlno?.part_tran_type}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Amount</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="number" name="tran_amt" th:value="${srlno?.tran_amt}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Currency Code</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_crncy_code" th:value="${srlno?.tran_crncy_code}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+
+							<!-- Thirty-Sixth Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Date</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="date" name="tran_date"
+										th:value="${#dates.format(srlno?.tran_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Free Code 1</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_free_code1" th:value="${srlno?.tran_free_code1}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+
+							<!-- Thirty-Seventh Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Free Code 2</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_free_code2" th:value="${srlno?.tran_free_code2}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_id" th:value="${srlno?.tran_id}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+
+							<!-- Thirty-Eighth Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Particular</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_particular" th:value="${srlno?.tran_particular}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Particular 2 </label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_particular_2" th:value="${srlno?.tran_particular_2}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Sub Type</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_sub_type" th:value="${srlno?.tran_sub_type}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Type</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_type" th:value="${srlno?.tran_type}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Remarks</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_rmks" th:value="${srlno?.tran_rmks}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Status</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tr_status" th:value="${srlno?.tr_status}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Record Time</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="date" name="rcre_time"
+										th:value="${#dates.format(srlno?.rcre_time, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Record User ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="rcre_user_id" th:value="${srlno?.rcre_user_id}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Last Change Time</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="date" name="lchg_time"
+										th:value="${#dates.format(srlno?.lchg_time, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Last Change User ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="lchg_user_id" th:value="${srlno?.lchg_user_id}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Posted Date</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="date" name="pstd_date"
+										th:value="${#dates.format(srlno?.pstd_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Posted User ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="pstd_user_id" th:value="${srlno?.pstd_user_id}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Posted Flag</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="pstd_flg" th:value="${srlno?.pstd_flg}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Delete Flag</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="del_flg" th:value="${srlno?.del_flg}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Entity Flag</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="entity_flg" th:value="${srlno?.entity_flg}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Serial Number</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" id="srlno" name="srlno" th:value="${srlno?.srlno}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+									<input type="text" id="acid" name="acid" th:value="${srlno?.acid}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="amt_reservation_ind" name="amt_reservation_ind"
+										th:value="${srlno?.amt_reservation_ind}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="bkdt_tran_flg" name="bkdt_tran_flg"
+										th:value="${srlno?.bkdt_tran_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="crncy_hol_chk_done_flg" name="crncy_hol_chk_done_flg"
+										th:value="${srlno?.crncy_hol_chk_done_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="del_memo_pad" name="del_memo_pad"
+										th:value="${srlno?.del_memo_pad}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="dth_init_sol_id" name="dth_init_sol_id"
+										th:value="${srlno?.dth_init_sol_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="eabfab_upd_flg" name="eabfab_upd_flg"
+										th:value="${srlno?.eabfab_upd_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="fx_tran_amt" name="fx_tran_amt"
+										th:value="${srlno?.fx_tran_amt}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="date" id="gl_date" name="gl_date"
+										th:value="${#dates.format(srlno?.gl_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="gl_segment_string" name="gl_segment_string"
+										th:value="${srlno?.gl_segment_string}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="gl_sub_head_code" name="gl_sub_head_code"
+										th:value="${srlno?.gl_sub_head_code}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="gst_upd_flg" name="gst_upd_flg"
+										th:value="${srlno?.gst_upd_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="impl_cash_part_tran_flg" name="impl_cash_part_tran_flg"
+										th:value="${srlno?.impl_cash_part_tran_flg}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="instrmnt_alpha" name="instrmnt_alpha"
+										th:value="${srlno?.instrmnt_alpha}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="date" id="instrmnt_date" name="instrmnt_date"
+										th:value="${#dates.format(srlno?.instrmnt_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="instrmnt_num" name="instrmnt_num"
+										th:value="${srlno?.instrmnt_num}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="instrmnt_type" name="instrmnt_type"
+										th:value="${srlno?.instrmnt_type}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="iso_flg" name="iso_flg" th:value="${srlno?.iso_flg}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="lift_lien_flg" name="lift_lien_flg"
+										th:value="${srlno?.lift_lien_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="module_id" name="module_id" th:value="${srlno?.module_id}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="mud_pool_bal_build_flg" name="mud_pool_bal_build_flg"
+										th:value="${srlno?.mud_pool_bal_build_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="navigation_flg" name="navigation_flg"
+										th:value="${srlno?.navigation_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="party_code" name="party_code" th:value="${srlno?.party_code}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="number" id="principal_portion_amt" name="principal_portion_amt"
+										th:value="${srlno?.principal_portion_amt}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="prnt_advc_ind" name="prnt_advc_ind"
+										th:value="${srlno?.prnt_advc_ind}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="proxy_acid" name="proxy_acid" th:value="${srlno?.proxy_acid}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="proxy_post_ind" name="proxy_post_ind"
+										th:value="${srlno?.proxy_post_ind}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="pr_srl_num" name="pr_srl_num" th:value="${srlno?.pr_srl_num}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="ptran_chrg_exists_flg" name="ptran_chrg_exists_flg"
+										th:value="${srlno?.ptran_chrg_exists_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="pttm_event_type" name="pttm_event_type"
+										th:value="${srlno?.pttm_event_type}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="rate" name="rate" th:value="${srlno?.rate}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="rate_code" name="rate_code" th:value="${srlno?.rate_code}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="referral_id" name="referral_id"
+										th:value="${srlno?.referral_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="ref_amt" name="ref_amt" th:value="${srlno?.ref_amt}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="ref_crncy_code" name="ref_crncy_code"
+										th:value="${srlno?.ref_crncy_code}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="ref_num" name="ref_num" th:value="${srlno?.ref_num}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="number" id="regularization_amt" name="regularization_amt"
+										th:value="${srlno?.regularization_amt}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="reservation_amt" name="reservation_amt"
+										th:value="${srlno?.reservation_amt}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="restrict_modify_ind" name="restrict_modify_ind"
+										th:value="${srlno?.restrict_modify_ind}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="date" id="reversal_date" name="reversal_date"
+										th:value="${#dates.format(srlno?.reversal_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="reversal_value_date" name="reversal_value_date"
+										th:value="${#dates.format(srlno?.reversal_value_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="rpt_code" name="rpt_code" th:value="${srlno?.rpt_code}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="serial_num" name="serial_num" th:value="${srlno?.serial_num}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="si_org_exec_date" name="si_org_exec_date"
+										th:value="${#dates.format(srlno?.si_org_exec_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="si_srl_num" name="si_srl_num" th:value="${srlno?.si_srl_num}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="svs_tran_id" name="svs_tran_id"
+										th:value="${srlno?.svs_tran_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="sys_part_tran_code" name="sys_part_tran_code"
+										th:value="${srlno?.sys_part_tran_code}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="tf_entity_sol_id" name="tf_entity_sol_id"
+										th:value="${srlno?.tf_entity_sol_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="tod_entity_type" name="tod_entity_type"
+										th:value="${srlno?.tod_entity_type}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="tod_entity_id" name="tod_entity_id"
+										th:value="${srlno?.tod_entity_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="tran_particular_code" name="tran_particular_code"
+										th:value="${srlno?.tran_particular_code}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="trea_rate" name="trea_rate" th:value="${srlno?.trea_rate}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="trea_ref_num" name="trea_ref_num"
+										th:value="${srlno?.trea_ref_num}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="ts_cnt" name="ts_cnt" th:value="${srlno?.ts_cnt}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="uad_module_id" name="uad_module_id"
+										th:value="${srlno?.uad_module_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="uad_module_key" name="uad_module_key"
+										th:value="${srlno?.uad_module_key}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="user_part_tran_code" name="user_part_tran_code"
+										th:value="${srlno?.user_part_tran_code}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="date" id="value_date" name="value_date"
+										th:value="${#dates.format(srlno?.value_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="vfd_date" name="vfd_date"
+										th:value="${#dates.format(srlno?.vfd_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="vfd_user_id" name="vfd_user_id"
+										th:value="${srlno?.vfd_user_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="voucher_print_flg" name="voucher_print_flg"
+										th:value="${srlno?.voucher_print_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="date" id="report_date" name="report_date"
+										th:value="${#dates.format(srlno?.report_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="recon_date" name="recon_date"
+										th:value="${#dates.format(srlno?.recon_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="recon_flag" name="recon_flag" th:value="${srlno?.recon_flag}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+
+
+
+								</div>
+							</div>
+
+
+
+
+
+						</form>
+
+						<div class="card-footer text-center border-top-0" style="background-color: #e9ecef">
+
+							<button type="button" class="btn btn-xs btn-primary ml-2" id="btnBack"
+								onclick="back();">Back</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div th:if="${formmode}=='modify'">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="card" style="margin-left: 260px; margin-top: 110px;">
+						<div class="card-header">
+							<div class="float-left">
+								<h4>Core Account - Details</h4>
+							</div>
+						</div>
+						<form method="post" id="coreForm">
+							<!-- First Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Solution ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="sol_id" th:value="${srlno?.sol_id}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Customer ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="cust_id" th:value="${srlno?.cust_id}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+							</div>
+
+							<!-- Second Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Bank Code</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="bank_code" th:value="${srlno?.bank_code}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Bank ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="bank_id" th:value="${srlno?.bank_id}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+							</div>
+
+							<!-- Third Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Branch Code</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="br_code" th:value="${srlno?.br_code}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Acid</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="acid" th:value="${srlno?.acid}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+							</div>
+
+							<!-- Fourth Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Entry Date</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="date" name="entry_date"
+										th:value="${#dates.format(srlno?.entry_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Entry User ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="entry_user_id" th:value="${srlno?.entry_user_id}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Part Transaction Serial Number</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="part_tran_srl_num" th:value="${srlno?.part_tran_srl_num}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Part Transaction Type</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="part_tran_type" th:value="${srlno?.part_tran_type}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Amount</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="number" name="tran_amt" th:value="${srlno?.tran_amt}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Currency Code</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_crncy_code" th:value="${srlno?.tran_crncy_code}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+							</div>
+
+							<!-- Thirty-Sixth Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Date</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="date" name="tran_date"
+										th:value="${#dates.format(srlno?.tran_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Free Code 1</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_free_code1" th:value="${srlno?.tran_free_code1}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+							</div>
+
+							<!-- Thirty-Seventh Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Free Code 2</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_free_code2" th:value="${srlno?.tran_free_code2}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_id" th:value="${srlno?.tran_id}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+							</div>
+
+							<!-- Thirty-Eighth Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Particular</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_particular" th:value="${srlno?.tran_particular}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Particular 2 </label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_particular_2" th:value="${srlno?.tran_particular_2}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Sub Type</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_sub_type" th:value="${srlno?.tran_sub_type}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Type</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_type" th:value="${srlno?.tran_type}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Remarks</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_rmks" th:value="${srlno?.tran_rmks}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Status</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tr_status" th:value="${srlno?.tr_status}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Record Time</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="date" name="rcre_time"
+										th:value="${#dates.format(srlno?.rcre_time, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Record User ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="rcre_user_id" th:value="${srlno?.rcre_user_id}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Last Change Time</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="date" name="lchg_time"
+										th:value="${#dates.format(srlno?.lchg_time, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Last Change User ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="lchg_user_id" th:value="${srlno?.lchg_user_id}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Posted Date</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="date" name="pstd_date"
+										th:value="${#dates.format(srlno?.pstd_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Posted User ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="pstd_user_id" th:value="${srlno?.pstd_user_id}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+							</div>
+
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Posted Flag</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="pstd_flg" th:value="${srlno?.pstd_flg}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Delete Flag</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="del_flg" th:value="${srlno?.del_flg}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Entity Flag</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="entity_flg" th:value="${srlno?.entity_flg}"
+										class="form-control form-control-sm" autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Serial Number</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" id="srlno" name="srlno" th:value="${srlno?.srlno}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+									<input type="text" id="acid" name="acid" th:value="${srlno?.acid}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="amt_reservation_ind" name="amt_reservation_ind"
+										th:value="${srlno?.amt_reservation_ind}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="bkdt_tran_flg" name="bkdt_tran_flg"
+										th:value="${srlno?.bkdt_tran_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="crncy_hol_chk_done_flg" name="crncy_hol_chk_done_flg"
+										th:value="${srlno?.crncy_hol_chk_done_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="del_memo_pad" name="del_memo_pad"
+										th:value="${srlno?.del_memo_pad}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="dth_init_sol_id" name="dth_init_sol_id"
+										th:value="${srlno?.dth_init_sol_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="eabfab_upd_flg" name="eabfab_upd_flg"
+										th:value="${srlno?.eabfab_upd_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="fx_tran_amt" name="fx_tran_amt"
+										th:value="${srlno?.fx_tran_amt}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="date" id="gl_date" name="gl_date"
+										th:value="${#dates.format(srlno?.gl_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="gl_segment_string" name="gl_segment_string"
+										th:value="${srlno?.gl_segment_string}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="gl_sub_head_code" name="gl_sub_head_code"
+										th:value="${srlno?.gl_sub_head_code}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="gst_upd_flg" name="gst_upd_flg"
+										th:value="${srlno?.gst_upd_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="impl_cash_part_tran_flg" name="impl_cash_part_tran_flg"
+										th:value="${srlno?.impl_cash_part_tran_flg}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="instrmnt_alpha" name="instrmnt_alpha"
+										th:value="${srlno?.instrmnt_alpha}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="date" id="instrmnt_date" name="instrmnt_date"
+										th:value="${#dates.format(srlno?.instrmnt_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="instrmnt_num" name="instrmnt_num"
+										th:value="${srlno?.instrmnt_num}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="instrmnt_type" name="instrmnt_type"
+										th:value="${srlno?.instrmnt_type}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="iso_flg" name="iso_flg" th:value="${srlno?.iso_flg}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="lift_lien_flg" name="lift_lien_flg"
+										th:value="${srlno?.lift_lien_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="module_id" name="module_id" th:value="${srlno?.module_id}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="mud_pool_bal_build_flg" name="mud_pool_bal_build_flg"
+										th:value="${srlno?.mud_pool_bal_build_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="navigation_flg" name="navigation_flg"
+										th:value="${srlno?.navigation_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="party_code" name="party_code" th:value="${srlno?.party_code}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="number" id="principal_portion_amt" name="principal_portion_amt"
+										th:value="${srlno?.principal_portion_amt}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="prnt_advc_ind" name="prnt_advc_ind"
+										th:value="${srlno?.prnt_advc_ind}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="proxy_acid" name="proxy_acid" th:value="${srlno?.proxy_acid}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="proxy_post_ind" name="proxy_post_ind"
+										th:value="${srlno?.proxy_post_ind}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="pr_srl_num" name="pr_srl_num" th:value="${srlno?.pr_srl_num}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="ptran_chrg_exists_flg" name="ptran_chrg_exists_flg"
+										th:value="${srlno?.ptran_chrg_exists_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="pttm_event_type" name="pttm_event_type"
+										th:value="${srlno?.pttm_event_type}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="rate" name="rate" th:value="${srlno?.rate}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="rate_code" name="rate_code" th:value="${srlno?.rate_code}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="referral_id" name="referral_id"
+										th:value="${srlno?.referral_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="ref_amt" name="ref_amt" th:value="${srlno?.ref_amt}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="ref_crncy_code" name="ref_crncy_code"
+										th:value="${srlno?.ref_crncy_code}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="ref_num" name="ref_num" th:value="${srlno?.ref_num}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="number" id="regularization_amt" name="regularization_amt"
+										th:value="${srlno?.regularization_amt}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="reservation_amt" name="reservation_amt"
+										th:value="${srlno?.reservation_amt}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="restrict_modify_ind" name="restrict_modify_ind"
+										th:value="${srlno?.restrict_modify_ind}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="date" id="reversal_date" name="reversal_date"
+										th:value="${#dates.format(srlno?.reversal_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="reversal_value_date" name="reversal_value_date"
+										th:value="${#dates.format(srlno?.reversal_value_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="rpt_code" name="rpt_code" th:value="${srlno?.rpt_code}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="serial_num" name="serial_num" th:value="${srlno?.serial_num}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="si_org_exec_date" name="si_org_exec_date"
+										th:value="${#dates.format(srlno?.si_org_exec_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="si_srl_num" name="si_srl_num" th:value="${srlno?.si_srl_num}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="svs_tran_id" name="svs_tran_id"
+										th:value="${srlno?.svs_tran_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="sys_part_tran_code" name="sys_part_tran_code"
+										th:value="${srlno?.sys_part_tran_code}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="tf_entity_sol_id" name="tf_entity_sol_id"
+										th:value="${srlno?.tf_entity_sol_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="tod_entity_type" name="tod_entity_type"
+										th:value="${srlno?.tod_entity_type}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="tod_entity_id" name="tod_entity_id"
+										th:value="${srlno?.tod_entity_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="tran_particular_code" name="tran_particular_code"
+										th:value="${srlno?.tran_particular_code}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="trea_rate" name="trea_rate" th:value="${srlno?.trea_rate}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="trea_ref_num" name="trea_ref_num"
+										th:value="${srlno?.trea_ref_num}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="ts_cnt" name="ts_cnt" th:value="${srlno?.ts_cnt}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="uad_module_id" name="uad_module_id"
+										th:value="${srlno?.uad_module_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="uad_module_key" name="uad_module_key"
+										th:value="${srlno?.uad_module_key}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="user_part_tran_code" name="user_part_tran_code"
+										th:value="${srlno?.user_part_tran_code}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="date" id="value_date" name="value_date"
+										th:value="${#dates.format(srlno?.value_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="vfd_date" name="vfd_date"
+										th:value="${#dates.format(srlno?.vfd_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="vfd_user_id" name="vfd_user_id"
+										th:value="${srlno?.vfd_user_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="voucher_print_flg" name="voucher_print_flg"
+										th:value="${srlno?.voucher_print_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="date" id="report_date" name="report_date"
+										th:value="${#dates.format(srlno?.report_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="recon_date" name="recon_date"
+										th:value="${#dates.format(srlno?.recon_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="recon_flag" name="recon_flag" th:value="${srlno?.recon_flag}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+
+
+
+								</div>
+							</div>
+
+
+						</form>
+
+						<div class="card-footer text-center border-top-0" style="background-color: #e9ecef">
+							<button type="button" onclick="modifysubmit()"
+								class="btn btn-xs btn-primary ml-2">Submit</button>
+
+							<button type="button" class="btn btn-xs btn-primary ml-2" id="btnBack"
+								onclick="back();">Back</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div th:if="${formmode}=='verify'">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="card" style="margin-left: 260px; margin-top: 110px;">
+						<div class="card-header">
+							<div class="float-left">
+								<h4>Core Account - Details</h4>
+							</div>
+						</div>
+						<form method="post" id="coreForm">
+							<!-- First Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Solution ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="sol_id" th:value="${srlno?.sol_id}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Customer ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="cust_id" th:value="${srlno?.cust_id}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+
+							<!-- Second Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Bank Code</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="bank_code" th:value="${srlno?.bank_code}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Bank ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="bank_id" th:value="${srlno?.bank_id}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+
+							<!-- Third Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Branch Code</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="br_code" th:value="${srlno?.br_code}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Acid</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="acid" th:value="${srlno?.acid}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+
+							<!-- Fourth Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Entry Date</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="date" name="entry_date"
+										th:value="${#dates.format(srlno?.entry_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Entry User ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="entry_user_id" th:value="${srlno?.entry_user_id}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Part Transaction Serial Number</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="part_tran_srl_num" th:value="${srlno?.part_tran_srl_num}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Part Transaction Type</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="part_tran_type" th:value="${srlno?.part_tran_type}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Amount</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="number" name="tran_amt" th:value="${srlno?.tran_amt}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Currency Code</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_crncy_code" th:value="${srlno?.tran_crncy_code}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+
+							<!-- Thirty-Sixth Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Date</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="date" name="tran_date"
+										th:value="${#dates.format(srlno?.tran_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Free Code 1</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_free_code1" th:value="${srlno?.tran_free_code1}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+
+							<!-- Thirty-Seventh Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Free Code 2</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_free_code2" th:value="${srlno?.tran_free_code2}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_id" th:value="${srlno?.tran_id}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+
+							<!-- Thirty-Eighth Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Particular</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_particular" th:value="${srlno?.tran_particular}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Particular 2 </label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_particular_2" th:value="${srlno?.tran_particular_2}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Sub Type</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_sub_type" th:value="${srlno?.tran_sub_type}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Type</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_type" th:value="${srlno?.tran_type}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Remarks</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_rmks" th:value="${srlno?.tran_rmks}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Status</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tr_status" th:value="${srlno?.tr_status}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Record Time</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="date" name="rcre_time"
+										th:value="${#dates.format(srlno?.rcre_time, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Record User ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="rcre_user_id" th:value="${srlno?.rcre_user_id}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Last Change Time</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="date" name="lchg_time"
+										th:value="${#dates.format(srlno?.lchg_time, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Last Change User ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="lchg_user_id" th:value="${srlno?.lchg_user_id}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Posted Date</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="date" name="pstd_date"
+										th:value="${#dates.format(srlno?.pstd_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Posted User ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="pstd_user_id" th:value="${srlno?.pstd_user_id}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Posted Flag</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="pstd_flg" th:value="${srlno?.pstd_flg}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Delete Flag</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="del_flg" th:value="${srlno?.del_flg}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Entity Flag</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="entity_flg" th:value="${srlno?.entity_flg}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Serial Number</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" id="srlno" name="srlno" th:value="${srlno?.srlno}"
+										class="form-control form-control-sm" autocomplete="off" readonly />
+									<input type="text" id="acid" name="acid" th:value="${srlno?.acid}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="amt_reservation_ind" name="amt_reservation_ind"
+										th:value="${srlno?.amt_reservation_ind}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="bkdt_tran_flg" name="bkdt_tran_flg"
+										th:value="${srlno?.bkdt_tran_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="crncy_hol_chk_done_flg" name="crncy_hol_chk_done_flg"
+										th:value="${srlno?.crncy_hol_chk_done_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="del_memo_pad" name="del_memo_pad"
+										th:value="${srlno?.del_memo_pad}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="dth_init_sol_id" name="dth_init_sol_id"
+										th:value="${srlno?.dth_init_sol_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="eabfab_upd_flg" name="eabfab_upd_flg"
+										th:value="${srlno?.eabfab_upd_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="fx_tran_amt" name="fx_tran_amt"
+										th:value="${srlno?.fx_tran_amt}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="date" id="gl_date" name="gl_date"
+										th:value="${#dates.format(srlno?.gl_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="gl_segment_string" name="gl_segment_string"
+										th:value="${srlno?.gl_segment_string}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="gl_sub_head_code" name="gl_sub_head_code"
+										th:value="${srlno?.gl_sub_head_code}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="gst_upd_flg" name="gst_upd_flg"
+										th:value="${srlno?.gst_upd_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="impl_cash_part_tran_flg" name="impl_cash_part_tran_flg"
+										th:value="${srlno?.impl_cash_part_tran_flg}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="instrmnt_alpha" name="instrmnt_alpha"
+										th:value="${srlno?.instrmnt_alpha}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="date" id="instrmnt_date" name="instrmnt_date"
+										th:value="${#dates.format(srlno?.instrmnt_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="instrmnt_num" name="instrmnt_num"
+										th:value="${srlno?.instrmnt_num}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="instrmnt_type" name="instrmnt_type"
+										th:value="${srlno?.instrmnt_type}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="iso_flg" name="iso_flg" th:value="${srlno?.iso_flg}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="lift_lien_flg" name="lift_lien_flg"
+										th:value="${srlno?.lift_lien_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="module_id" name="module_id" th:value="${srlno?.module_id}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="mud_pool_bal_build_flg" name="mud_pool_bal_build_flg"
+										th:value="${srlno?.mud_pool_bal_build_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="navigation_flg" name="navigation_flg"
+										th:value="${srlno?.navigation_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="party_code" name="party_code" th:value="${srlno?.party_code}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="number" id="principal_portion_amt" name="principal_portion_amt"
+										th:value="${srlno?.principal_portion_amt}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="prnt_advc_ind" name="prnt_advc_ind"
+										th:value="${srlno?.prnt_advc_ind}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="proxy_acid" name="proxy_acid" th:value="${srlno?.proxy_acid}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="proxy_post_ind" name="proxy_post_ind"
+										th:value="${srlno?.proxy_post_ind}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="pr_srl_num" name="pr_srl_num" th:value="${srlno?.pr_srl_num}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="ptran_chrg_exists_flg" name="ptran_chrg_exists_flg"
+										th:value="${srlno?.ptran_chrg_exists_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="pttm_event_type" name="pttm_event_type"
+										th:value="${srlno?.pttm_event_type}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="rate" name="rate" th:value="${srlno?.rate}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="rate_code" name="rate_code" th:value="${srlno?.rate_code}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="referral_id" name="referral_id"
+										th:value="${srlno?.referral_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="ref_amt" name="ref_amt" th:value="${srlno?.ref_amt}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="ref_crncy_code" name="ref_crncy_code"
+										th:value="${srlno?.ref_crncy_code}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="ref_num" name="ref_num" th:value="${srlno?.ref_num}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="number" id="regularization_amt" name="regularization_amt"
+										th:value="${srlno?.regularization_amt}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="reservation_amt" name="reservation_amt"
+										th:value="${srlno?.reservation_amt}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="restrict_modify_ind" name="restrict_modify_ind"
+										th:value="${srlno?.restrict_modify_ind}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="date" id="reversal_date" name="reversal_date"
+										th:value="${#dates.format(srlno?.reversal_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="reversal_value_date" name="reversal_value_date"
+										th:value="${#dates.format(srlno?.reversal_value_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="rpt_code" name="rpt_code" th:value="${srlno?.rpt_code}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="serial_num" name="serial_num" th:value="${srlno?.serial_num}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="si_org_exec_date" name="si_org_exec_date"
+										th:value="${#dates.format(srlno?.si_org_exec_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="si_srl_num" name="si_srl_num" th:value="${srlno?.si_srl_num}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="svs_tran_id" name="svs_tran_id"
+										th:value="${srlno?.svs_tran_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="sys_part_tran_code" name="sys_part_tran_code"
+										th:value="${srlno?.sys_part_tran_code}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="tf_entity_sol_id" name="tf_entity_sol_id"
+										th:value="${srlno?.tf_entity_sol_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="tod_entity_type" name="tod_entity_type"
+										th:value="${srlno?.tod_entity_type}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="tod_entity_id" name="tod_entity_id"
+										th:value="${srlno?.tod_entity_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="tran_particular_code" name="tran_particular_code"
+										th:value="${srlno?.tran_particular_code}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="trea_rate" name="trea_rate" th:value="${srlno?.trea_rate}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="trea_ref_num" name="trea_ref_num"
+										th:value="${srlno?.trea_ref_num}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="ts_cnt" name="ts_cnt" th:value="${srlno?.ts_cnt}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="uad_module_id" name="uad_module_id"
+										th:value="${srlno?.uad_module_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="uad_module_key" name="uad_module_key"
+										th:value="${srlno?.uad_module_key}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="user_part_tran_code" name="user_part_tran_code"
+										th:value="${srlno?.user_part_tran_code}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="date" id="value_date" name="value_date"
+										th:value="${#dates.format(srlno?.value_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="vfd_date" name="vfd_date"
+										th:value="${#dates.format(srlno?.vfd_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="vfd_user_id" name="vfd_user_id"
+										th:value="${srlno?.vfd_user_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="voucher_print_flg" name="voucher_print_flg"
+										th:value="${srlno?.voucher_print_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="date" id="report_date" name="report_date"
+										th:value="${#dates.format(srlno?.report_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="recon_date" name="recon_date"
+										th:value="${#dates.format(srlno?.recon_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="recon_flag" name="recon_flag" th:value="${srlno?.recon_flag}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+
+
+
+								</div>
+							</div>
+
+
+						</form>
+
+						<div class="card-footer text-center border-top-0" style="background-color: #e9ecef">
+							<button type="button" onclick="verifysubmit()"
+								class="btn btn-xs btn-primary ml-2">Submit</button>
+
+							<button type="button" class="btn btn-xs btn-primary ml-2" id="btnBack"
+								onclick="back();">Back</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div th:if="${formmode}=='add'">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="card" style="margin-left: 260px; margin-top: 110px;">
+						<div class="card-header">
+							<div class="float-left">
+								<h4>Core Account - Details</h4>
+							</div>
+						</div>
+						<form method="post" id="coreForm">
+							<!-- First Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Solution ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="sol_id" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+
+
+								<div class="col-sm-2 ml-5">
+									<label>Customer ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="cust_id" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+							</div>
+
+							<!-- Second Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Bank Code</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="bank_code" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+
+
+								<div class="col-sm-2 ml-5">
+									<label>Bank ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="bank_id" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+							</div>
+
+							<!-- Third Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Branch Code</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="br_code" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Acid</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="acid" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+							</div>
+
+							<!-- Fourth Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Entry Date</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="date" name="entry_date" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Entry User ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="entry_user_id" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Part Transaction Serial Number</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="part_tran_srl_num" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Part Transaction Type</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="part_tran_type" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Amount</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="number" name="tran_amt" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Currency Code</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_crncy_code" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+							</div>
+
+							<!-- Thirty-Sixth Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Date</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="date" name="tran_date" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Free Code 1</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_free_code1" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+							</div>
+
+							<!-- Thirty-Seventh Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Free Code 2</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_free_code2" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_id" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+							</div>
+
+							<!-- Thirty-Eighth Row -->
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Particular</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_particular" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Particular 2 </label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_particular_2" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Sub Type</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_sub_type" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Type</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_type" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Remarks</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tran_rmks" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Transaction Status</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="tr_status" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Record Time</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="date" name="rcre_time" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Record User ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="rcre_user_id" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Last Change Time</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="date" name="lchg_time" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Last Change User ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="lchg_user_id" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Posted Date</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="date" name="pstd_date" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Posted User ID</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="pstd_user_id" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+							</div>
+
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Posted Flag</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="pstd_flg" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Delete Flag</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="del_flg" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+							</div>
+							<div class="row formline mt-3">
+
+								<div class="col-sm-2 ml-5">
+									<label>Entity Flag</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" name="entity_flg" class="form-control form-control-sm"
+										autocomplete="off" required />
+								</div>
+
+								<div class="col-sm-2 ml-5">
+									<label>Serial Number</label>
+								</div>
+								<div class="col-sm-2 ml-5">
+									<input type="text" id="srlno" name="srlno" class="form-control form-control-sm"
+										autocomplete="off" readonly />
+									<input type="text" id="acid" name="acid" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="amt_reservation_ind" name="amt_reservation_ind"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="bkdt_tran_flg" name="bkdt_tran_flg"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="crncy_hol_chk_done_flg" name="crncy_hol_chk_done_flg"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="del_memo_pad" name="del_memo_pad"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="dth_init_sol_id" name="dth_init_sol_id"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="eabfab_upd_flg" name="eabfab_upd_flg"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="number" id="fx_tran_amt" name="fx_tran_amt"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="gl_date" name="gl_date" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="gl_segment_string" name="gl_segment_string"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="gl_sub_head_code" name="gl_sub_head_code"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="gst_upd_flg" name="gst_upd_flg"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="impl_cash_part_tran_flg" name="impl_cash_part_tran_flg"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="instrmnt_alpha" name="instrmnt_alpha"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="instrmnt_date" name="instrmnt_date"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="instrmnt_num" name="instrmnt_num"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="instrmnt_type" name="instrmnt_type"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="iso_flg" name="iso_flg" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="lift_lien_flg" name="lift_lien_flg"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="module_id" name="module_id"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="mud_pool_bal_build_flg" name="mud_pool_bal_build_flg"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="navigation_flg" name="navigation_flg"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="party_code" name="party_code"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="number" id="principal_portion_amt" name="principal_portion_amt"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="prnt_advc_ind" name="prnt_advc_ind"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="proxy_acid" name="proxy_acid"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="proxy_post_ind" name="proxy_post_ind"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="pr_srl_num" name="pr_srl_num"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="ptran_chrg_exists_flg" name="ptran_chrg_exists_flg"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="pttm_event_type" name="pttm_event_type"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="number" id="rate" name="rate" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="rate_code" name="rate_code"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="referral_id" name="referral_id"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="number" id="ref_amt" name="ref_amt"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="ref_crncy_code" name="ref_crncy_code"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="ref_num" name="ref_num" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="regularization_amt" name="regularization_amt"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="number" id="reservation_amt" name="reservation_amt"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="restrict_modify_ind" name="restrict_modify_ind"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="reversal_date" name="reversal_date"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="reversal_value_date" name="reversal_value_date"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="rpt_code" name="rpt_code"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="serial_num" name="serial_num"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="si_org_exec_date" name="si_org_exec_date"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="si_srl_num" name="si_srl_num"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="svs_tran_id" name="svs_tran_id"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="sys_part_tran_code" name="sys_part_tran_code"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="tf_entity_sol_id" name="tf_entity_sol_id"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="tod_entity_type" name="tod_entity_type"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="tod_entity_id" name="tod_entity_id"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="tran_particular_code" name="tran_particular_code"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="number" id="trea_rate" name="trea_rate"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="trea_ref_num" name="trea_ref_num"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="number" id="ts_cnt" name="ts_cnt" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="uad_module_id" name="uad_module_id"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="uad_module_key" name="uad_module_key"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="user_part_tran_code" name="user_part_tran_code"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="value_date" name="value_date"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="vfd_date" name="vfd_date"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="vfd_user_id" name="vfd_user_id"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="voucher_print_flg" name="voucher_print_flg"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="report_date" name="report_date"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="recon_date" name="recon_date"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+
+									<!--<input type="text" id="acid" name="acid" th:value="${srlno?.acid}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="amt_reservation_ind" name="amt_reservation_ind"
+										th:value="${srlno?.amt_reservation_ind}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="bkdt_tran_flg" name="bkdt_tran_flg"
+										th:value="${srlno?.bkdt_tran_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="crncy_hol_chk_done_flg" name="crncy_hol_chk_done_flg"
+										th:value="${srlno?.crncy_hol_chk_done_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="del_memo_pad" name="del_memo_pad"
+										th:value="${srlno?.del_memo_pad}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="dth_init_sol_id" name="dth_init_sol_id"
+										th:value="${srlno?.dth_init_sol_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="eabfab_upd_flg" name="eabfab_upd_flg"
+										th:value="${srlno?.eabfab_upd_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="fx_tran_amt" name="fx_tran_amt"
+										th:value="${srlno?.fx_tran_amt}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="date" id="gl_date" name="gl_date"
+										th:value="${#dates.format(srlno?.gl_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="gl_segment_string" name="gl_segment_string"
+										th:value="${srlno?.gl_segment_string}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="gl_sub_head_code" name="gl_sub_head_code"
+										th:value="${srlno?.gl_sub_head_code}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="gst_upd_flg" name="gst_upd_flg"
+										th:value="${srlno?.gst_upd_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="impl_cash_part_tran_flg" name="impl_cash_part_tran_flg"
+										th:value="${srlno?.impl_cash_part_tran_flg}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="instrmnt_alpha" name="instrmnt_alpha"
+										th:value="${srlno?.instrmnt_alpha}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="date" id="instrmnt_date" name="instrmnt_date"
+										th:value="${#dates.format(srlno?.instrmnt_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="instrmnt_num" name="instrmnt_num"
+										th:value="${srlno?.instrmnt_num}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="instrmnt_type" name="instrmnt_type"
+										th:value="${srlno?.instrmnt_type}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="iso_flg" name="iso_flg" th:value="${srlno?.iso_flg}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="lift_lien_flg" name="lift_lien_flg"
+										th:value="${srlno?.lift_lien_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="module_id" name="module_id" th:value="${srlno?.module_id}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="mud_pool_bal_build_flg" name="mud_pool_bal_build_flg"
+										th:value="${srlno?.mud_pool_bal_build_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="navigation_flg" name="navigation_flg"
+										th:value="${srlno?.navigation_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="party_code" name="party_code" th:value="${srlno?.party_code}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="number" id="principal_portion_amt" name="principal_portion_amt"
+										th:value="${srlno?.principal_portion_amt}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="prnt_advc_ind" name="prnt_advc_ind"
+										th:value="${srlno?.prnt_advc_ind}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="proxy_acid" name="proxy_acid" th:value="${srlno?.proxy_acid}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="proxy_post_ind" name="proxy_post_ind"
+										th:value="${srlno?.proxy_post_ind}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="pr_srl_num" name="pr_srl_num" th:value="${srlno?.pr_srl_num}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="ptran_chrg_exists_flg" name="ptran_chrg_exists_flg"
+										th:value="${srlno?.ptran_chrg_exists_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="pttm_event_type" name="pttm_event_type"
+										th:value="${srlno?.pttm_event_type}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="rate" name="rate" th:value="${srlno?.rate}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="rate_code" name="rate_code" th:value="${srlno?.rate_code}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="referral_id" name="referral_id"
+										th:value="${srlno?.referral_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="ref_amt" name="ref_amt" th:value="${srlno?.ref_amt}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="ref_crncy_code" name="ref_crncy_code"
+										th:value="${srlno?.ref_crncy_code}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="ref_num" name="ref_num" th:value="${srlno?.ref_num}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="number" id="regularization_amt" name="regularization_amt"
+										th:value="${srlno?.regularization_amt}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="reservation_amt" name="reservation_amt"
+										th:value="${srlno?.reservation_amt}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="restrict_modify_ind" name="restrict_modify_ind"
+										th:value="${srlno?.restrict_modify_ind}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="date" id="reversal_date" name="reversal_date"
+										th:value="${#dates.format(srlno?.reversal_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="reversal_value_date" name="reversal_value_date"
+										th:value="${#dates.format(srlno?.reversal_value_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="rpt_code" name="rpt_code" th:value="${srlno?.rpt_code}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="serial_num" name="serial_num" th:value="${srlno?.serial_num}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="si_org_exec_date" name="si_org_exec_date"
+										th:value="${#dates.format(srlno?.si_org_exec_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="si_srl_num" name="si_srl_num" th:value="${srlno?.si_srl_num}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="svs_tran_id" name="svs_tran_id"
+										th:value="${srlno?.svs_tran_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="sys_part_tran_code" name="sys_part_tran_code"
+										th:value="${srlno?.sys_part_tran_code}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="tf_entity_sol_id" name="tf_entity_sol_id"
+										th:value="${srlno?.tf_entity_sol_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="tod_entity_type" name="tod_entity_type"
+										th:value="${srlno?.tod_entity_type}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="tod_entity_id" name="tod_entity_id"
+										th:value="${srlno?.tod_entity_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="tran_particular_code" name="tran_particular_code"
+										th:value="${srlno?.tran_particular_code}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="trea_rate" name="trea_rate" th:value="${srlno?.trea_rate}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="trea_ref_num" name="trea_ref_num"
+										th:value="${srlno?.trea_ref_num}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="number" id="ts_cnt" name="ts_cnt" th:value="${srlno?.ts_cnt}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="uad_module_id" name="uad_module_id"
+										th:value="${srlno?.uad_module_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="uad_module_key" name="uad_module_key"
+										th:value="${srlno?.uad_module_key}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="user_part_tran_code" name="user_part_tran_code"
+										th:value="${srlno?.user_part_tran_code}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="date" id="value_date" name="value_date"
+										th:value="${#dates.format(srlno?.value_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="vfd_date" name="vfd_date"
+										th:value="${#dates.format(srlno?.vfd_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="vfd_user_id" name="vfd_user_id"
+										th:value="${srlno?.vfd_user_id}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="text" id="voucher_print_flg" name="voucher_print_flg"
+										th:value="${srlno?.voucher_print_flg}" class="form-control form-control-sm"
+										autocomplete="off" hidden />
+									<input type="date" id="report_date" name="report_date"
+										th:value="${#dates.format(srlno?.report_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="date" id="recon_date" name="recon_date"
+										th:value="${#dates.format(srlno?.recon_date, 'yyyy-MM-dd')}"
+										class="form-control form-control-sm" autocomplete="off" hidden />
+									<input type="text" id="recon_flag" name="recon_flag" th:value="${srlno?.recon_flag}"
+										class="form-control form-control-sm" autocomplete="off" hidden />-->
+
+
+
+								</div>
+							</div>
+
+
+						</form>
+
+						<div class="card-footer text-center border-top-0" style="background-color: #e9ecef">
+							<button type="button" onclick="addsubmit()"
+								class="btn btn-xs btn-primary ml-2">Submit</button>
+
+							<button type="button" class="btn btn-xs btn-primary ml-2" id="btnBack"
+								onclick="back();">Back</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="modal fade" id="alert">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		<div class="modal-content">
+			<div class="menu-title-header">
+				<div class="modal-title" id="exampleModalLabel" style="text-align: center; color: white;">
+					CIM
+					FINANCE</div>
+			</div>
+			<div class="modal-body" style="text-align: center; background-color: #c6ccd2">
+				<p id="alertmsg" style="font-size: 16px;"></p>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="back1();"
+					style="width: 120px">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="alert2">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		<div class="modal-content">
+			<div class="menu-title-header">
+				<div class="modal-title" id="exampleModalLabel" style="text-align: center; color: white;">
+					CIM
+					FINANCE</div>
+			</div>
+			<div class="modal-body" style="text-align: center; background-color: #c6ccd2">
+				<p id="alertmsg2" style="font-size: 16px;"></p>
+
+				<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="downls();"
+					style="width: 120px">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+</body>
+
+</html>

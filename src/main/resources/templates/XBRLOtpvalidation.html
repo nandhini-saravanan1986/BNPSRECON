@@ -1,0 +1,186 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>BRBS - OTP Verification</title>
+
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
+	<link rel="stylesheet" th:href="@{/webjars/font-awesome/5.9.0/css/all.min.css}" />
+	<link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon" />
+
+	<style>
+		body {
+			background-image: url("images/bg_2_brb.png");
+			background-size: cover;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			animation: fadeIn 1s ease-in-out;
+		}
+
+		.card-container {
+			max-width: 400px;
+			margin: 80px auto;
+			padding: 30px;
+			background: #fff;
+			border-radius: 10px;
+			box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+		}
+
+		.profile-img-card {
+			max-height: 60px;
+			display: block;
+			margin: 0 auto 20px;
+		}
+
+		.otp-box {
+			display: flex;
+			justify-content: space-between;
+			gap: 5px;
+			margin-bottom: 15px;
+		}
+
+		.otp-box input {
+			width: 48px;
+			height: 50px;
+			font-size: 20px;
+			text-align: center;
+			border-radius: 5px;
+			border: 1px solid #ccc;
+			transition: border-color 0.3s;
+		}
+
+		.otp-box input:focus {
+			border-color: rgb(104, 145, 162);
+			outline: none;
+		}
+
+		.timer {
+			text-align: center;
+			font-weight: bold;
+			margin-bottom: 10px;
+			color: #444;
+		}
+
+		.btn-signin {
+			background-color: rgb(104, 145, 162);
+			font-weight: 700;
+			font-size: 14px;
+			border-radius: 3px;
+			border: none;
+			transition: background-color 0.3s;
+		}
+
+		.btn-signin:hover {
+			background-color: rgb(12, 97, 33);
+		}
+
+		.alert-msg {
+			text-align: center;
+			margin-bottom: 10px;
+			font-size: 14px;
+		}
+
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+				transform: translateY(15px);
+			}
+
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="card card-container">
+			<img class="profile-img-card" th:src="@{/images/Bornfire_header_BCDRS.png}" alt="Logo" />
+			<p class="text-center font-weight-bold" style="letter-spacing: 1px;">OTP Verification</p>
+
+			<form th:action="@{/verify-otp}" method="post" class="form-signin" onsubmit="combineOTP()">
+				<div class="otp-box">
+					<input type="text" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+						inputmode="numeric" required />
+					<input type="text" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+						inputmode="numeric" required />
+					<input type="text" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+						inputmode="numeric" required />
+					<input type="text" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+						inputmode="numeric" required />
+					<input type="text" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+						inputmode="numeric" required />
+					<input type="text" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+						inputmode="numeric" required />
+				</div>
+
+				<input type="hidden" name="otp" id="otpHidden" />
+
+				<div class="timer">Time remaining: <span id="countdown">120</span>s</div>
+
+				<div class="alert-msg">
+					<span th:if="${param.error}" style="color: #cd103c;">Invalid OTP. Please try again.</span>
+					<span th:if="${param.success}" style="color: green;">OTP Verified Successfully.</span>
+				</div>
+
+				<button type="submit" class="btn btn-block btn-primary btn-signin">
+					<i class='fas fa-key'></i>
+				</button>
+			</form>
+		</div>
+	</div>
+
+	<script th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
+	<script>
+		// Redirect on F5 or Back/Forward cache restore
+		if (performance.navigation.type === 1) {
+			window.location.href = "/BRBS/login";
+		}
+		window.addEventListener("pageshow", function (event) {
+			if (event.persisted) {
+				window.location.href = "/BRBS/login";
+			}
+		});
+
+		// Timer
+		let timer = 120;
+		const countdownElement = document.getElementById("countdown");
+		const interval = setInterval(() => {
+			timer--;
+			countdownElement.textContent = timer;
+			if (timer <= 0) {
+				clearInterval(interval);
+				window.location.href = "/BRBS/login";
+			}
+		}, 1000);
+
+		// Auto-move to next input
+		document.querySelectorAll('.otp-box input').forEach((input, index, inputs) => {
+			input.addEventListener('input', function () {
+				if (this.value.length === 1 && index < inputs.length - 1) {
+					inputs[index + 1].focus();
+				}
+			});
+
+			input.addEventListener('keydown', function (e) {
+				if (e.key === "Backspace" && !this.value && index > 0) {
+					inputs[index - 1].focus();
+				}
+			});
+		});
+
+		// Combine input to hidden field
+		function combineOTP() {
+			const inputs = document.querySelectorAll('.otp-box input');
+			let otp = "";
+			inputs.forEach(input => otp += input.value);
+			document.getElementById("otpHidden").value = otp;
+		}
+	</script>
+</body>
+
+</html>

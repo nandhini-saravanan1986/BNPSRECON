@@ -1,0 +1,476 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+		th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/font-awesome/5.9.0/css/all.min.css"
+		th:href="@{/webjars/font-awesome/5.9.0/css/all.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"
+		th:href="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/datatables/1.10.19/css/dataTables.bootstrap4.min.css"
+		th:href="@{/webjars/datatables/1.10.19/css/dataTables.bootstrap4.min.css}">
+	<link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+	<link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon">
+
+	<!-- Scripts should be loaded in order: jQuery -> Popper -> Bootstrap -> Others -->
+	<script src="/webjars/jquery/3.4.1/jquery.min.js" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+	<script src="/webjars/popper.js/1.14.7/umd/popper.min.js"
+		th:src="@{/webjars/popper.js/1.14.7/umd/popper.min.js}"></script>
+	<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"
+		th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+	<script src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"
+		th:src="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.js}"></script>
+	<script src="/webjars/jquery-form/4.2.2/jquery.form.min.js"
+		th:src="@{/webjars/jquery-form/4.2.2/jquery.form.min.js}"></script>
+	<script src="/webjars/jquery-validation/1.19.0/jquery.validate.min.js"
+		th:src="@{/webjars/jquery-validation/1.19.0/jquery.validate.min.js}"></script>
+	<script src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/jquery.dataTables.min.js}"></script>
+	<script src="/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js}"></script>
+
+	<script src="js/bootstrap411.js"></script>
+	<link rel="stylesheet" href="css/spur.css">
+	<title>XBRL - ECDD Customers</title>
+</head>
+
+<style>
+	.container-manager {
+		width: 90.2%;
+		padding-left: 128px;
+		margin-right: 0;
+		margin-left: 8%;
+		margin-top: 100px;
+		padding-bottom: 40px;
+	}
+
+	.redcolor {
+		color: red;
+	}
+
+	/* Button styling for Individual/Corporate toggle */
+	.btn-outline-primary,
+	.btn-outline-primary2 {
+		border-radius: 50px;
+		padding: 12px 24px;
+		min-width: 160px;
+		font-size: 16px;
+		font-weight: 600;
+		text-align: center;
+		cursor: pointer;
+		letter-spacing: 0.1em;
+		transition: all 0.3s ease-in-out;
+	}
+
+	/* Default button (outline) */
+	.btn-outline-primary {
+		border: 2px solid #007bff;
+		background-color: white;
+		color: #007bff;
+	}
+
+	.btn-outline-primary:hover {
+		background-color: #007bff;
+		color: white;
+	}
+
+	/* Active button */
+	.btn-outline-primary2 {
+		background-color: #007bff;
+		color: white;
+		border: 2px solid #007bff;
+	}
+
+	.btn-outline-primary2:hover {
+		background-color: red;
+		border-color: #0056b3;
+	}
+
+	/* Remove number input spinners */
+	input[type="number"]::-webkit-outer-spin-button,
+	input[type="number"]::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	input[type="number"] {
+		-moz-appearance: textfield;
+		/* Firefox */
+	}
+
+	/* Ensure DataTable cells don't wrap and have ellipsis for overflow */
+	table.dataTable th,
+	table.dataTable td {
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+
+	.headderbutton {
+		font-weight: bold;
+		font-size: large;
+		color: #007bff;
+	}
+</style>
+
+<script>
+	// --- Page Navigation and Loader ---
+
+	// Show loader and navigate to a new form mode (Individual/Corporate)
+	function submitForm(mode) {
+		
+		const newUrl = `?formmode=${mode}`;
+		const currentUrl = window.location.href;
+		const baseUrl = currentUrl.split('?')[0];
+
+		// Navigate only if the mode is different to prevent unnecessary reloads
+		if (!currentUrl.includes(`formmode=${mode}`)) {
+			window.location.href = baseUrl + newUrl;
+		} else {
+			 // Hide loader if already on the page
+		}
+	}
+
+	// Show loader and navigate to the detail/verify form
+	function navigateToForm(element, action, type) {
+		
+		const srlno = element.getAttribute('data-srlno');
+		const baseUrl = `/BRBS/kyc/${type}`;
+		let url = "";
+
+		if (action === 'view') {
+			url = `${baseUrl}?srlno=${srlno}&formmode=modify`;
+		} else if (action === 'verify') {
+			url = `${baseUrl}?srlno=${srlno}&formmode=verify`;
+		}
+		
+		if(url) {
+			window.location.href = url;
+		}
+	}
+
+	// Hide loader on page load
+	window.addEventListener('load', () => $('#loader1').modal('hide'));
+
+	// Hide loader when navigating back (handles bfcache)
+	window.addEventListener('pageshow', (event) => {
+		if (event.persisted) {
+			$('#loader1').modal('hide');
+		}
+	});
+	function navigateToForm1(element, action, type) {
+			
+			const srl_no = element.getAttribute('data-srl_no');
+			const baseUrl = `/BRBS/kyc/${type}`;
+			let url = "";
+
+			if (action === 'view') {
+				url = `${baseUrl}?srl_no=${srl_no}&formmode=modify`;
+			} else if (action === 'verify') {
+				url = `${baseUrl}?srl_no=${srl_no}&formmode=verify`;
+			}
+			
+			if(url) {
+				window.location.href = url;
+			}
+		}
+
+		// Hide loader on page load
+		window.addEventListener('load', () => $('#loader1').modal('hide'));
+
+		// Hide loader when navigating back (handles bfcache)
+		window.addEventListener('pageshow', (event) => {
+			if (event.persisted) {
+				$('#loader1').modal('hide');
+			}
+		});
+
+	// --- General Navigation ---
+	function goHome() {
+		window.location.href = '/BRBS/';
+	}
+
+	function goBack() {
+		window.history.back();
+	}
+	
+	function Downloadstatus() {
+	       
+	       fetch(`./kyc/Reportstatus/Download`)
+	           .then(response => {
+	               if (!response.ok) {
+	                   throw new Error("No transaction file found or server error.");
+	               }
+	               return response.blob();
+	           })
+	           .then(blob => {
+	               const fileName = "Ecdd_report" + ".xlsx";
+	               const link = document.createElement('a');
+	               link.href = URL.createObjectURL(blob);
+	               link.download = fileName;
+	               document.body.appendChild(link);
+	               link.click();
+	               link.remove();
+	           })
+	           .catch(error => {
+	               console.error("Download failed:", error);
+	               alert("Download failed: " + error.message);
+	           });
+	   }
+
+	// --- Filter Modal Logic ---
+	function updateDropdownValue(element) {
+		const selectedValue = element.textContent;
+		document.getElementById('dropdownTrigger').textContent = selectedValue;
+		document.getElementById('customerRisk').value = selectedValue;
+		document.getElementById('customerRiskError').style.display = 'none';
+	}
+	
+	function validateForm() {
+		let isValid = true;
+
+		const customerRisk = document.getElementById('customerRisk').value;
+		const age = document.getElementById('age').value;
+		
+		// Validate Customer Risk
+		if (!customerRisk) {
+			document.getElementById('customerRiskError').style.display = 'block';
+			isValid = false;
+		} else {
+			document.getElementById('customerRiskError').style.display = 'none';
+		}
+
+		// Validate Age
+		if (!age) {
+			document.getElementById('ageError').style.display = 'block';
+			isValid = false;
+		} else {
+			document.getElementById('ageError').style.display = 'none';
+		}
+
+		// If valid, reload the page with filter parameters
+		if (isValid) {
+			const currentUrl = new URL(window.location.href);
+			const formmode = currentUrl.searchParams.get('formmode') || 'individual';
+			location.href = `kyc?formmode=${formmode}&age=${age}&customerRisk=${customerRisk}`;
+		}
+	}
+
+	// --- DataTable Initialization ---
+	$(document).ready(function () {
+		// Determine which table is present and initialize DataTable for it.
+		// Using unique IDs is better practice than reusing 'usertable'.
+		let tableSelector = '';
+		if ($('#usertableInd').length) {
+			tableSelector = '#usertableInd';
+		} else if ($('#usertableCorp').length) {
+			tableSelector = '#usertableCorp';
+		}
+
+		if (tableSelector) {
+			$(tableSelector).DataTable({
+				"destroy": true,
+				"scrollY": "400px",
+				"scrollCollapse": true,
+				"paging": true,
+				"autoWidth": false,
+				"ordering": true,
+				"searching": true,
+				"scrollX": true,
+				"pageLength": 100,
+				"lengthChange": false,
+				"initComplete": function () {
+					// Position and style the search input
+					const searchContainer = $(`${tableSelector}_filter`);
+					searchContainer.css({
+						'text-align': 'left',
+						'margin-bottom': '-5px',
+						'margin-right': '22px'
+					});
+				}
+			});
+		}
+	});
+</script>
+
+<body>
+
+	<div th:insert="XBRLHeaderMenu :: header"></div>
+
+	<div class="container-manager">
+		<div class="card">
+			<div class="card-header" style="background: linear-gradient(115deg, #6495ED, white);">
+				<div class="float-left">
+					<h6 style="letter-spacing: 0.1em; font-weight: bold; font-family: 'verdana', sans-serif; font-size: 2.0rem; color: white;">ECDD Customers</h6>
+				</div>
+				<div class="float-right">
+					<div class="row formline">
+						<div class="btn-group">
+							<button type="button" class="btn" th:classappend="${formmode == 'individual'} ? 'btn-outline-primary2' : 'btn-outline-primary'" id="individual" onclick="submitForm(this.id)">CDD Individual</button>
+							<button type="button" class="btn" th:classappend="${formmode == 'corporate'} ? 'btn-outline-primary2' : 'btn-outline-primary'" id="corporate" onclick="submitForm(this.id)">CDD Corporate</button>
+						</div>
+						<div class="btn-group">
+							<button type="button" class="btn-outline-primary" onclick="Downloadstatus()" 
+							th:if="${#session.getAttribute('ROLEID') == 'Superadmin' or #session.getAttribute('ROLEID') == 'DCD_ADMIN'}">
+								<i class="fa fa-download" aria-hidden="true"></i> Report</button>
+						
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="card-body p-0">
+				<!-- Individual Customer Table -->
+				<div th:if="${formmode == 'individual'}" class="p-3">
+					<table class="table table-striped table-bordered table-hover nowrap" id="usertableInd" style="width:100%">
+						<thead class="thead-light">
+							<tr style="letter-spacing: .1em;">
+								<th>Customer ID</th>
+								<th>Account Title</th>
+								<!--<th>Account Number</th>-->
+								<th>Account Opening Date</th>
+								<th>Risk Category</th>
+								<th>Last ECDD Review Date</th>
+								<th>Next Review Date</th>
+								<!-- <th>Pending Due Days</th> -->
+								<th>Application Status</th>
+							</tr>
+							
+						</thead>
+						<tbody>
+							<tr style="letter-spacing: .1em;" th:each="row : ${reportlist}">
+								<td>
+									<a href="javascript:void(0)" th:attr="data-srlno=${row[5]}" onclick="navigateToForm(this, 'view', 'individual')" th:text="${row[0]}"></a>
+								</td>
+								<td th:text="${row[8]}"></td>
+								<!--<td th:text="${row[10]"></td>-->
+								<td th:text="${row[9] != null ? #dates.format(row[9], 'dd-MM-yyyy') : ''}"></td>
+								<td th:text="${row[1]}"></td>
+								<td th:text="${row[2] != null ? #dates.format(row[2], 'dd-MM-yyyy') : 'N/A'}"></td>
+								<td th:text="${row[3] != null ? #dates.format(row[3], 'dd-MM-yyyy') : 'N/A'}" style="font-weight: bold;"></td>
+								<!-- <td th:text="${row[4]}" th:style="${row[4] != null and row[4] < 30 ? 'color: red; font-weight: bold;' : ''}"></td> -->
+								<td th:text="*{ row[7] == 'N' and row[6] == 'N' ? 'System Entry' : (row[7] == 'Y' and row[6] == 'N' ? 'Modified' : (row[7] == 'N' and row[6] == 'Y' ? 'Verified' : 'Unknown')) }"
+									th:classappend="*{ row[7] == 'N' and row[6] == 'N' ? 'bg-danger text-white' : (row[7] == 'Y' and row[6] == 'N' ? 'bg-warning text-dark' : (row[7] == 'N' and row[6] == 'Y' ? 'bg-success text-white' : 'bg-info text-dark')) }"
+									class="rounded border text-center" style="font-weight: bold; border-radius: 10px;">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<!-- Corporate Customer Table -->
+				<div th:if="${formmode == 'corporate'}" class="p-3">
+					<table class="table table-striped table-bordered table-hover nowrap" id="usertableCorp" style="width:100%">
+						<thead class="thead-light">
+							<tr style="letter-spacing: .1em">
+								<th>Customer ID</th>
+								<th>Company Name</th>
+								<th>Account Number</th>
+								<th>Trade License No</th>
+								<th>Trade License Expiry Date</th>
+								<th>System Risk</th>
+								<th>Latest Risk</th>
+								<th>Last ECDD Date</th>
+								<th>Next Review Date</th>
+								<!-- <th>Pending Due Days</th> -->
+								<th>Application Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr style="letter-spacing: .1em" th:each="row : ${kycData}" th:attr="data-srl_no=${row[10]}">
+								<td>
+									<a href="javascript:void(0)" th:attr="data-srl_no=${row[10]}" onclick="navigateToForm1(this, 'view', 'corporate')" th:text="${row[0]}"></a>
+								</td>
+								<td th:text="${row[1]}"></td>
+								<td th:text="${row[2]}"></td>
+								<td th:text="${row[3]}"></td>
+								<td th:text="${row[4] != null ? #dates.format(row[4], 'dd-MM-yyyy') : ''}"></td>
+								<td th:text="${row[5]}"></td>
+								<td th:text="${row[6]}"></td>
+								<td th:text="${row[7] != null ? #dates.format(row[7], 'dd-MM-yyyy') : ''}"></td>
+								<td th:text="${row[9] != null ? #dates.format(row[9], 'dd-MM-yyyy') : ''}" style="color: red; font-weight: bold;"></td>
+								<!-- <td th:text="${row[8]}" style="color: red; font-weight: bold;"></td> -->
+								<!-- FIX: Corrected row[10] to row[11] in the condition -->
+								<td th:text="*{ row[11] == 'N' and row[12] == 'N' ? 'System Entry' : (row[11] == 'Y' and row[12] == 'N' ? 'Modified' : (row[11] == 'N' and row[12] == 'Y' ? 'Verified' : 'Unknown')) }"
+									th:classappend="*{ row[11] == 'N' and row[12] == 'N' ? 'bg-danger text-white' : (row[11] == 'Y' and row[12] == 'N' ? 'bg-warning text-dark' : (row[11] == 'N' and row[12] == 'Y' ? 'bg-success text-white' : 'bg-info text-dark')) }"
+									class="rounded border text-center" style="font-weight: bold; border-radius: 10px;">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="card-footer text-center">
+				<button type="button" class="btn btn-xs headderbutton" onclick="goHome();">Home</button>
+				<button type="button" class="btn btn-xs headderbutton" onclick="goBack();">Back</button>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Filter Modal -->
+	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Filter</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="filterForm" onsubmit="return false;">
+						<table style="width: 100%; table-layout: fixed;">
+							<tr>
+								<td style="width: 30%;">Customer Risk</td>
+								<td>
+									<div class="dropdown">
+										<span id="dropdownTrigger" class="dropdown-toggle" style="cursor: pointer;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Category</span>
+										<div class="dropdown-menu">
+											<button class="dropdown-item" type="button" onclick="updateDropdownValue(this)">High</button>
+											<button class="dropdown-item" type="button" onclick="updateDropdownValue(this)">Medium</button>
+											<button class="dropdown-item" type="button" onclick="updateDropdownValue(this)">Low</button>
+										</div>
+										<input type="hidden" id="customerRisk" name="customerRisk" required />
+									</div>
+									<!-- FIX: Changed non-standard <zsmall> to <small> -->
+									<small id="customerRiskError" class="text-danger" style="display: none;">Please select a risk category.</small>
+								</td>
+							</tr>
+							<tr>
+								<td>Age</td>
+								<td>
+									<div>
+										<input type="number" id="age" name="age" class="form-control" required />
+									</div>
+									<small id="ageError" class="text-danger" style="display: none;">Please enter the age.</small>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn headderbutton" data-dismiss="modal">Close</button>
+					<button type="button" class="btn headderbutton" onclick="validateForm()">Filter</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Loader Modal -->
+	<div class="modal fade" id="loader1" data-backdrop="static" data-keyboard="false" tabindex="-1">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content border-0 shadow-none bg-transparent">
+				<div class="modal-body text-center p-0">
+					<img th:src="@{/images/kycloader.gif}" style="width: 50px; height: auto;" alt="Loading...">
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
