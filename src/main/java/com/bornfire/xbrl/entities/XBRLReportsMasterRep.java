@@ -29,9 +29,6 @@ public interface XBRLReportsMasterRep extends CrudRepository<XBRLReportsMaster,S
 	@Query("from XBRLReportsMaster a where a.report_validity='Y' and a.archive_enable_flg='Y' and a.domain_id in ?1")
 	public Iterable<XBRLReportsMaster> getArchReportList(List<String> domainid);
 	
-	@Query("from MISReportMasterList")
-	public Iterable<MISReportMasterList> getMISReportList();
-	
 	@Query("select distinct a.domain_id from XBRLReportsMaster a where domain_id is not null")
 	public List<String> getDomainList();
 	

@@ -471,7 +471,7 @@
 				<div id="adminsubmenu" class="collapse submenu1 ">
 					<ul class="nav flex-column">
 						<li class="nav-item"
-							th:if="${session.ROLEID == 'Superadmin' or session.ROLEID == 'RBR_ADMIN' or session.ROLEID == 'DCD_ADMIN'}">
+							th:if="${session.ROLEID == 'Superadmin' or session.ROLEID == 'RBR_ADMIN' or session.ROLEID == 'DCD_ADMIN' or session.ROLEID == 'BRC' or session.ROLEID == 'RBR'}">
 							<a class="nav-link" id="UserProfile" style="padding-left: 30px;" href="#"
 								onclick="contentLoad(this)">User
 								Profile </a>
@@ -484,7 +484,8 @@
 								Roles</a></li>
 						<li class="nav-item">
 							<a class="nav-link" id="Audittrailvalue" style="padding-left: 30px;" href="#"
-								onclick="contentLoad(this)" th:if="${session.ROLEID == 'Superadmin'}">Audit
+								onclick="contentLoad(this)"
+								th:if="${session.ROLEID == 'Superadmin'or session.ROLEID == 'BRC'}">Audit
 								Service</a>
 						</li>
 						<li><a class="nav-link" id="auditlogs" style="padding-left: 30px;" href="#"
@@ -519,7 +520,7 @@
 th:if="${session.ROLEID == 'ADM' or session.ROLEID == 'RBR'  or session.ROLEID == 'RBR_BRANCH'}" -->
 
 			<li class="nav-item"
-				th:if="${session.ROLEID == 'RBR_ADMIN'  or session.ROLEID == 'RBR_BRANCH' or session.ROLEID == 'Superadmin' }">
+				th:if="${session.ROLEID == 'RBR_ADMIN'  or session.ROLEID == 'RBR_BRANCH' or session.ROLEID == 'Superadmin' or session.ROLEID == 'RBR'}">
 				<a class="nav-link" data-toggle="collapse" href="#rbrmenu">
 					<i class="fa fa-file-contract mr-2"></i>RBR
 					Reports<i id="dropico" class="fa fa-caret-down" aria-hidden="true"></i>

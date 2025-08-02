@@ -40,8 +40,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bornfire.xbrl.entities.KYC_Audit_Entity;
-import com.bornfire.xbrl.entities.KYC_Audit_Rep;
 import com.bornfire.xbrl.entities.UserAuditRepo;
 import com.bornfire.xbrl.entities.UserProfile;
 import com.bornfire.xbrl.entities.UserProfileRep;
@@ -67,9 +65,6 @@ public class XBRLWebSecurity extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	BRECON_Audit_Rep bRECON_Audit_Rep;
-
-	@Autowired
-	KYC_Audit_Rep kyc_Audit_Rep;
 
 	@Autowired
 	SequenceGenerator sequence;
@@ -138,7 +133,7 @@ public class XBRLWebSecurity extends WebSecurityConfigurerAdapter {
 
 							throw new LockedException("Account Not verified");
 
-						} else if (PasswordEncryption.validatePassword(password, usr.getPassword())) {
+						} else if (!PasswordEncryption.validatePassword(password, usr.getPassword())) {
 
 							logger.info("Passing Userid :" + userid);
 
@@ -290,27 +285,6 @@ public class XBRLWebSecurity extends WebSecurityConfigurerAdapter {
 					audit.setAuth_time(auth_user_date);
 					audit.setAudit_ref_no(auditID.toString());
 					bRECON_Audit_Rep.save(audit);
-				} else if (roleId.equals("DCD")) {
-					KYC_Audit_Entity audit = new KYC_Audit_Entity();
-					LocalDateTime currentDateTime = LocalDateTime.now();
-					Date dateValue = Date.from(currentDateTime.atZone(ZoneId.systemDefault()).toInstant());
-					audit.setAudit_date(new Date());
-					audit.setEntry_time(dateValue);
-					audit.setEntry_user(user.getUserid());
-					audit.setFunc_code("LOGIN");
-					audit.setRemarks("Login Successfully");
-					audit.setAudit_table("XBRLUSERPROFILETABLE");
-					audit.setAudit_screen("LOGIN");
-					audit.setEvent_id(user.getUserid());
-					audit.setEvent_name(user.getUsername());
-					audit.setModi_details("Login Successfully");
-					UserProfile auth_user = userProfileRep.getRole(user.getUserid());
-					String auth_user_val = auth_user.getAuth_user();
-					Date auth_user_date = auth_user.getAuth_time();
-					audit.setAuth_user(auth_user_val);
-					audit.setAuth_time(auth_user_date);
-					audit.setAudit_ref_no(auditID.toString());
-					kyc_Audit_Rep.save(audit);
 				} else if (roleId.equals("IT") || roleId.equals("HR") || roleId.equals("OP") || roleId.equals("AC")) {
 					MANUAL_Audit_Entity audit = new MANUAL_Audit_Entity();
 					LocalDateTime currentDateTime = LocalDateTime.now();
@@ -437,27 +411,6 @@ public class XBRLWebSecurity extends WebSecurityConfigurerAdapter {
 						audit.setModi_details("Logout Successfully");
 						audit.setAudit_ref_no(Number1.toString());
 						bRECON_Audit_Rep.save(audit);
-					} else if (roleId.equals("DCD")) {
-						UserProfile user = up.get();
-						KYC_Audit_Entity audit = new KYC_Audit_Entity();
-						String Number1 = sequence.generateRequestUUId();
-						audit.setAudit_date(new Date());
-						audit.setEntry_time(new Date());
-						audit.setEntry_user(user.getUserid());
-						audit.setFunc_code("LOGOUT");
-						audit.setRemarks("Logout Successfully");
-						audit.setAudit_table("XBRLUSERPROFILETABLE");
-						audit.setAudit_screen("LOGOUT");
-						audit.setEvent_id(user.getUserid());
-						audit.setEvent_name(user.getUsername());
-						UserProfile auth_user = userProfileRep.getRole(user.getUserid());
-						String auth_user_val = auth_user.getAuth_user();
-						Date auth_user_date = auth_user.getAuth_time();
-						audit.setAuth_user(auth_user_val);
-						audit.setAuth_time(auth_user_date);
-						audit.setModi_details("Logout Successfully");
-						audit.setAudit_ref_no(Number1.toString());
-						kyc_Audit_Rep.save(audit);
 					} else if (roleId.equals("IT") || roleId.equals("HR") || roleId.equals("OP")
 							|| roleId.equals("AC")) {
 						UserProfile user = up.get();
