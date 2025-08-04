@@ -6,7 +6,7 @@ public class UserAuditLevel_Entity {
 
 
 
-package com.bornfire.xbrl.entities.BRBS;
+package com.bornfire.xbrl.entities.BNPSRECON;
 
 
 

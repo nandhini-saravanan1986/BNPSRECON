@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bornfire.xbrl.entities.BRBS.BRECON_DESTINATION_ENTITY;
+import com.bornfire.xbrl.entities.BNPSRECON.BRECON_DESTINATION_ENTITY;
 
 @Repository
 @Transactional

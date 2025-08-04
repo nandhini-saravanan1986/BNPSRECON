@@ -7,7 +7,7 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.bornfire.xbrl.entities.BRBS.BRECON_Audit_Rep;
+import com.bornfire.xbrl.entities.BNPSRECON.BRECON_Audit_Rep;
 
 @Component
 public class SequenceGenerator {

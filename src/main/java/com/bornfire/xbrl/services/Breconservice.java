@@ -13,9 +13,9 @@ import com.bornfire.xbrl.entities.BRECON_TTUM_TRANSACTION_ENTITY;
 import com.bornfire.xbrl.entities.BRECON_TTUM_TRANSACTION_REP;
 import com.bornfire.xbrl.entities.Brecon_Aani_payment_dup_rep;
 import com.bornfire.xbrl.entities.Brecon_aani_payment_duplicate_entity;
-import com.bornfire.xbrl.entities.BRBS.BRECON_Audit_Rep;
-import com.bornfire.xbrl.entities.BRBS.BRECON_DESTINATION_ENTITY;
-import com.bornfire.xbrl.entities.BRBS.BRECON_DESTINATION_REPO;
+import com.bornfire.xbrl.entities.BNPSRECON.BRECON_Audit_Rep;
+import com.bornfire.xbrl.entities.BNPSRECON.BRECON_DESTINATION_ENTITY;
+import com.bornfire.xbrl.entities.BNPSRECON.BRECON_DESTINATION_REPO;
 
 import FYItransactions.Balance;
 import FYItransactions.Entry;

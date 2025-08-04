@@ -45,7 +45,7 @@ spring.jpa.properties.hibernate.format_sql=true
 
 
 #Server
-server.servlet.context-path=/BRBS
+server.servlet.context-path=/BNPSRECON
 
 
 

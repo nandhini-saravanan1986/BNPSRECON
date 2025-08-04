@@ -31,10 +31,9 @@ import com.bornfire.xbrl.entities.XBRLAudit;
 import com.bornfire.xbrl.entities.XBRLProceduresRep;
 import com.bornfire.xbrl.entities.XBRLReportsMaster;
 import com.bornfire.xbrl.entities.XBRLReportsMasterRep;
-//import com.bornfire.xbrl.entities.BRBS.BRF2_MAPPING_REPO;
-import com.bornfire.xbrl.entities.BRBS.AuditServicesEntity;
-import com.bornfire.xbrl.entities.BRBS.AuditServicesRep;
-import com.bornfire.xbrl.entities.BRBS.UserAuditLevel_Entity;
+import com.bornfire.xbrl.entities.BNPSRECON.AuditServicesEntity;
+import com.bornfire.xbrl.entities.BNPSRECON.AuditServicesRep;
+import com.bornfire.xbrl.entities.BNPSRECON.UserAuditLevel_Entity;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;

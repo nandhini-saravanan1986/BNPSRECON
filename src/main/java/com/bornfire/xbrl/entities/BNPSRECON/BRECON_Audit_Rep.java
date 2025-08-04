@@ -1,4 +1,4 @@
-package com.bornfire.xbrl.entities.BRBS;
+package com.bornfire.xbrl.entities.BNPSRECON;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Date;
 import java.util.List;

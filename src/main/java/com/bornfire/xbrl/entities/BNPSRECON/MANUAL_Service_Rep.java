@@ -1,4 +1,4 @@
-package com.bornfire.xbrl.entities.BRBS;
+package com.bornfire.xbrl.entities.BNPSRECON;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -51,7 +51,7 @@ import com.bornfire.xbrl.entities.Smsserviceotp;
 import com.bornfire.xbrl.entities.UserProfile;
 import com.bornfire.xbrl.entities.UserProfileRep;
 import com.bornfire.xbrl.entities.XBRLSession;
-import com.bornfire.xbrl.entities.BRBS.AuditServicesRep;
+import com.bornfire.xbrl.entities.BNPSRECON.AuditServicesRep;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;

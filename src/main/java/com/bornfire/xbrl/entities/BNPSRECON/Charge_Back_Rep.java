@@ -1,5 +1,5 @@
 
-package com.bornfire.xbrl.entities.BRBS;
+package com.bornfire.xbrl.entities.BNPSRECON;
 
 import java.math.BigDecimal;
 import java.util.List;

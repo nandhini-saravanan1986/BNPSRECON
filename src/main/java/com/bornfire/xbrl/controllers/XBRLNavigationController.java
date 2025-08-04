@@ -67,19 +67,19 @@ import com.bornfire.xbrl.entities.Brecon_Aani_payment_dup_rep;
 import com.bornfire.xbrl.entities.UserProfile;
 import com.bornfire.xbrl.entities.UserProfileRep;
 import com.bornfire.xbrl.entities.XBRLReportsMasterRep;
-import com.bornfire.xbrl.entities.BRBS.BRECON_Audit_Entity;
-import com.bornfire.xbrl.entities.BRBS.BRECON_Audit_Rep;
-import com.bornfire.xbrl.entities.BRBS.BRECON_Common_Table_Entity;
-import com.bornfire.xbrl.entities.BRBS.BRECON_Common_Table_Rep;
-import com.bornfire.xbrl.entities.BRBS.BRECON_DESTINATION_ENTITY;
-import com.bornfire.xbrl.entities.BRBS.BRECON_DESTINATION_REPO;
-import com.bornfire.xbrl.entities.BRBS.BRFValidationsRepo;
-import com.bornfire.xbrl.entities.BRBS.Brecon_core_entity;
-import com.bornfire.xbrl.entities.BRBS.Brecon_core_rep;
-import com.bornfire.xbrl.entities.BRBS.Charge_Back_Rep;
-import com.bornfire.xbrl.entities.BRBS.MANUAL_Audit_Rep;
-import com.bornfire.xbrl.entities.BRBS.MANUAL_Service_Entity;
-import com.bornfire.xbrl.entities.BRBS.MANUAL_Service_Rep;
+import com.bornfire.xbrl.entities.BNPSRECON.BRECON_Audit_Entity;
+import com.bornfire.xbrl.entities.BNPSRECON.BRECON_Audit_Rep;
+import com.bornfire.xbrl.entities.BNPSRECON.BRECON_Common_Table_Entity;
+import com.bornfire.xbrl.entities.BNPSRECON.BRECON_Common_Table_Rep;
+import com.bornfire.xbrl.entities.BNPSRECON.BRECON_DESTINATION_ENTITY;
+import com.bornfire.xbrl.entities.BNPSRECON.BRECON_DESTINATION_REPO;
+import com.bornfire.xbrl.entities.BNPSRECON.BRFValidationsRepo;
+import com.bornfire.xbrl.entities.BNPSRECON.Brecon_core_entity;
+import com.bornfire.xbrl.entities.BNPSRECON.Brecon_core_rep;
+import com.bornfire.xbrl.entities.BNPSRECON.Charge_Back_Rep;
+import com.bornfire.xbrl.entities.BNPSRECON.MANUAL_Audit_Rep;
+import com.bornfire.xbrl.entities.BNPSRECON.MANUAL_Service_Entity;
+import com.bornfire.xbrl.entities.BNPSRECON.MANUAL_Service_Rep;
 import com.bornfire.xbrl.services.AccessAndRolesServices;
 import com.bornfire.xbrl.services.AlertManagementServices;
 import com.bornfire.xbrl.services.LoginServices;
@@ -124,7 +124,7 @@ public class XBRLNavigationController {
 	AlertManagementServices alertservices;
 
 	@Autowired
-	com.bornfire.xbrl.entities.BRBS.AUD_SERVICE_REPO AUD_SERVICE_REPO;
+	com.bornfire.xbrl.entities.BNPSRECON.AUD_SERVICE_REPO AUD_SERVICE_REPO;
 
 	@Autowired
 	UserProfileRep userProfileRep;

@@ -1,4 +1,4 @@
-package com.bornfire.xbrl.entities.BRBS;
+package com.bornfire.xbrl.entities.BNPSRECON;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;

@@ -1,4 +1,4 @@
-package com.bornfire.xbrl.entities.BRBS;
+package com.bornfire.xbrl.entities.BNPSRECON;
 
 import java.util.Date;
 import java.util.List;
