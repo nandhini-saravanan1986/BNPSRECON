@@ -5,7 +5,7 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>BRBS - OTP Verification</title>
+	<title>BNPSRECON - OTP Verification</title>
 
 	<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
 	<link rel="stylesheet" th:href="@{/webjars/font-awesome/5.9.0/css/all.min.css}" />
@@ -138,11 +138,11 @@
 	<script>
 		// Redirect on F5 or Back/Forward cache restore
 		if (performance.navigation.type === 1) {
-			window.location.href = "/BRBS/login";
+			window.location.href = "/BNPSRECON/login";
 		}
 		window.addEventListener("pageshow", function (event) {
 			if (event.persisted) {
-				window.location.href = "/BRBS/login";
+				window.location.href = "/BNPSRECON/login";
 			}
 		});
 
@@ -154,7 +154,7 @@
 			countdownElement.textContent = timer;
 			if (timer <= 0) {
 				clearInterval(interval);
-				window.location.href = "/BRBS/login";
+				window.location.href = "/BNPSRECON/login";
 			}
 		}, 1000);
 

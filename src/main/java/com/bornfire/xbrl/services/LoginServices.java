@@ -51,7 +51,6 @@ import com.bornfire.xbrl.entities.Smsserviceotp;
 import com.bornfire.xbrl.entities.UserProfile;
 import com.bornfire.xbrl.entities.UserProfileRep;
 import com.bornfire.xbrl.entities.XBRLSession;
-import com.bornfire.xbrl.entities.BRBS.AuditServicesEntity;
 import com.bornfire.xbrl.entities.BRBS.AuditServicesRep;
 
 import net.sf.jasperreports.engine.JRException;
@@ -762,12 +761,12 @@ public class LoginServices {
 		Smsserviceotp.setSmssenderid("BOBAlert");
 		Smsserviceotp.setSmsmobilenumber(UserProfile.getMob_number());
 		Smsserviceotp.setSmstext(
-				"BRBS Login OTP: " + otp + " . Please do not share this with anyone. Valid for one-time use only.");
+				"BNPSRECON Login OTP: " + otp + " . Please do not share this with anyone. Valid for one-time use only.");
 		Smsserviceotp.setToemail(UserProfile.getEmail_id());
 		Smsserviceotp.setEmailsubject("ECDD OTP");
 		Smsserviceotp.setEmailtemplateid("BOBAlert");
 		Smsserviceotp.setEmailtext(
-				"BRBS Login OTP: " + otp + " . Please do not share this with anyone. Valid for one-time use only.");
+				"BNPSRECON Login OTP: " + otp + " . Please do not share this with anyone. Valid for one-time use only.");
 		HttpEntity<Smsserviceotp> entity = new HttpEntity<>(Smsserviceotp, httpHeaders);
 
 		// logger.info(entity.toString());

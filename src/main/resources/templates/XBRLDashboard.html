@@ -611,7 +611,7 @@
 			}
 
 
-			fetch(`/BRBS/profit-data?year=${year}`) // Ensure this endpoint is correct
+			fetch(`/BNPSRECON/profit-data?year=${year}`) // Ensure this endpoint is correct
 				.then(response => response.json())
 				.then(data => {
 					const monthlyValues = [];
@@ -775,7 +775,7 @@
 		height: 200px !important;
 	}
 </style>
-<title>BCDRS</title>
+<title>BNPSRECON</title>
 
 <body>
 	<div th:insert="XBRLHeaderMenu :: header"></div>

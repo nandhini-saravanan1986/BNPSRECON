@@ -27,24 +27,23 @@
 <script src="/webjars/jquery/3.6.0/jquery.min.js" th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
 <script src="/webjars/bootstrap/4.6.0/js/bootstrap.bundle.min.js"
 	th:src="@{/webjars/bootstrap/4.6.0/js/bootstrap.bundle.min.js}"></script>
-	<script src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"
-		th:src="@{/webjars/datatables/1.10.19/js/jquery.dataTables.min.js}"></script>
-	<script
-		src="/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js"
-		th:src="@{/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js}"></script>
+<script src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"
+	th:src="@{/webjars/datatables/1.10.19/js/jquery.dataTables.min.js}"></script>
+<script src="/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js"
+	th:src="@{/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js}"></script>
 <script th:inline="javascript">
-/* 	$(document).ready(function () {
-		$('#usertable').DataTable({
-			scrollX: true,
-			autoWidth: false,
-			paging: true,
-			lengthChange: false,
-			ordering: true,
-			pageLength: 20,
-			fixedHeader: true,
-			searching: false // 
-		});
-	}); */
+	/* 	$(document).ready(function () {
+			$('#usertable').DataTable({
+				scrollX: true,
+				autoWidth: false,
+				paging: true,
+				lengthChange: false,
+				ordering: true,
+				pageLength: 20,
+				fixedHeader: true,
+				searching: false // 
+			});
+		}); */
 
 	/*<![CDATA[*/
 	$(document).ready(function () {
@@ -402,7 +401,7 @@
 
 	function goHome() {
 		// Redirect to the home page (adjust the URL as needed)
-		window.location.href = '/BRBS/Dashboard'; // Replace with your actual home page URL
+		window.location.href = '/BNPSRECON/Dashboard'; // Replace with your actual home page URL
 	}
 	function goBack() {
 		window.history.back();
@@ -535,93 +534,60 @@
 		/* You can adjust this height */
 		overflow-y: auto;
 	}
-	
+
 	.dataTables_filter {
-    display: none;
-}
-	
+		display: none;
+	}
 </style>
-<script>
-
-/* document.addEventListener("DOMContentLoaded", function () {
-	const dateInput = document.getElementById("searchDate");
-	const table = document.getElementById("usertable");
-	const rows = table.querySelector("tbody").getElementsByTagName("tr");
-
-	dateInput.addEventListener("input", function () {
-		const selectedDate = this.value; // Format: yyyy-mm-dd
-
-		for (let row of rows) {
-			const entryDateCell = row.cells[4]; // 5th column (Entry Date)
-			const cellText = entryDateCell.textContent.trim(); // Format: dd-MM-yyyy
-
-			if (!selectedDate) {
-				row.style.display = ""; // Show all rows
-				continue;
-			}
-
-			// Convert selectedDate (yyyy-mm-dd) to dd-MM-yyyy
-			const [year, month, day] = selectedDate.split("-");
-			const formattedSelectedDate = `${day}-${month}-${year}`;
-
-			if (cellText === formattedSelectedDate) {
-				row.style.display = "";
-			} else {
-				row.style.display = "none";
-			}
-		}
-	});
-}); */
-
 
 
 <script th:inline="javascript">
-/*<![CDATA[*/
-var serviceAuditLevelData = /*[[${audits}]]*/[];
-/*]]>*/
+	/*<![CDATA[*/
+	var serviceAuditLevelData = /*[[${audits}]]*/[];
+	/*]]>*/
 </script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const tableElement = $('#usertable');
+	document.addEventListener("DOMContentLoaded", function () {
+		const tableElement = $('#usertable');
 
-    if (!$.fn.DataTable.isDataTable(tableElement)) {
-        var table = tableElement.DataTable({
-            scrollX: true,
-            autoWidth: false,
-            paging: true,
-            lengthChange: false,
-            ordering: true,
-            pageLength: 20,
-            fixedHeader: true,
-            searching: true, // must be true for custom filter
-            columnDefs: [
-                { targets: '_all', defaultContent: '-' }
-            ]
-        });
+		if (!$.fn.DataTable.isDataTable(tableElement)) {
+			var table = tableElement.DataTable({
+				scrollX: true,
+				autoWidth: false,
+				paging: true,
+				lengthChange: false,
+				ordering: true,
+				pageLength: 20,
+				fixedHeader: true,
+				searching: true, // must be true for custom filter
+				columnDefs: [
+					{targets: '_all', defaultContent: '-'}
+				]
+			});
 
-        $('#searchDate').on('change', function () {
-            const selectedDate = this.value; // yyyy-MM-dd
-            $.fn.dataTable.ext.search = [];
+			$('#searchDate').on('change', function () {
+				const selectedDate = this.value; // yyyy-MM-dd
+				$.fn.dataTable.ext.search = [];
 
-            if (selectedDate) {
-                const [yyyy, mm, dd] = selectedDate.split("-");
-                const formatted = `${dd}-${mm}-${yyyy}`;
+				if (selectedDate) {
+					const [yyyy, mm, dd] = selectedDate.split("-");
+					const formatted = `${dd}-${mm}-${yyyy}`;
 
-                $.fn.dataTable.ext.search.push(function (settings, data) {
-                    return data[4] === formatted; // 5th column is Entry Date
-                });
-            }
+					$.fn.dataTable.ext.search.push(function (settings, data) {
+						return data[4] === formatted; // 5th column is Entry Date
+					});
+				}
 
-            table.draw();
-        });
-    }
-});
+				table.draw();
+			});
+		}
+	});
 
 </script>
 
 </head>
-<title>BCDRS</title>
+<title>BNPSRECON</title>
 
 <body>
 	<div th:insert="XBRLHeaderMenu :: header"></div>
@@ -633,10 +599,10 @@ document.addEventListener("DOMContentLoaded", function () {
 				<div class="form-inline">
 					<!-- <label for="searchDate" class="mr-2 mb-0" style="color:white">Search records By Date:</label>
 					<input type="date" id="searchDate" class="form-control form-control-sm" /> -->
-					
+
 					<label for="searchDate" class="mr-2 mb-0" style="color:white">Search records By Date:</label>
-<input type="date" id="searchDate" class="form-control form-control-sm" />
-					
+					<input type="date" id="searchDate" class="form-control form-control-sm" />
+
 				</div>
 			</div>
 
@@ -668,7 +634,9 @@ document.addEventListener("DOMContentLoaded", function () {
 							<td th:text="${auditdata.audit_table}"></td>
 							<td th:text="${auditdata.func_code}"></td>
 							<td th:text="${auditdata.entry_user}"></td>
-							<td th:text="${auditdata.entry_time != null ? #dates.format(auditdata.entry_time, 'dd-MM-yyyy') : 'N/A'}"></td>
+							<td
+								th:text="${auditdata.entry_time != null ? #dates.format(auditdata.entry_time, 'dd-MM-yyyy') : 'N/A'}">
+							</td>
 
 							<td
 								th:text="${auditdata.entry_time != null ? #dates.format(auditdata.entry_time, 'hh:mm a') : 'N/A'}">
