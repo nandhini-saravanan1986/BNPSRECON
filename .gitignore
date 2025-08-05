@@ -33,5 +33,4 @@ local.properties
 *.launch
 
 .sts4-cache/classpath-data.json
-src/main/resources/application.properties
-src/main/java/com/bornfire/xbrl/controllers/XBRLReportsController.java
+
