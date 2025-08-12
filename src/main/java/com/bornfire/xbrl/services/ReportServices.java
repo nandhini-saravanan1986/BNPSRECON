@@ -28,7 +28,6 @@ import org.springframework.util.ResourceUtils;
 
 import com.bornfire.xbrl.entities.UserAuditRepo;
 import com.bornfire.xbrl.entities.XBRLAudit;
-import com.bornfire.xbrl.entities.XBRLProceduresRep;
 import com.bornfire.xbrl.entities.XBRLReportsMaster;
 import com.bornfire.xbrl.entities.XBRLReportsMasterRep;
 import com.bornfire.xbrl.entities.BNPSRECON.AuditServicesEntity;
@@ -67,9 +66,6 @@ public class ReportServices {
 
 	@Autowired
 	XBRLReportsMasterRep xbrlReportsMasterRep;
-
-	@Autowired
-	XBRLProceduresRep xbrlProceduresRep;
 
 	@Autowired
 	DataSource srcdataSource;
@@ -269,47 +265,7 @@ public class ReportServices {
 		this.exportpath = exportpath;
 	}
 
-	public String saveReport(String reportId, String asondate, String fromdate, String todate, String currency) {
-
-		String msg = null;
-
-		logger.info("Saving the Report : " + reportId);
-
-		try {
-
-			xbrlProceduresRep.ReportSaveSp(reportId, "0", asondate, fromdate, todate, currency);
-
-			logger.info("ReportServices->saveReport()->inside try{}");
-			msg = "success";
-
-		} catch (Exception e) {
-			logger.info("ReportServices->saveReport()->inside catch{}");
-			msg = "failed";
-		}
-
-		return msg;
-	}
-
-	public String saveFIM0500Report(String reportId, String asondate, String fromdate, String todate, String currency,
-			String reportingTime) {
-
-		String msg = null;
-
-		logger.info("Saving the Report : " + reportId);
-
-		try {
-			xbrlProceduresRep.ReportSaveSp(reportId, reportingTime, asondate, fromdate, todate, currency);
-
-			logger.info("ReportServices->saveFIM0500Report()->inside try{}");
-			msg = "success";
-
-		} catch (Exception e) {
-			logger.info("ReportServices->saveFIM0500Report()->inside catch{}");
-			msg = "failed";
-		}
-
-		return msg;
-	}
+	
 
 	public List<String> getDomainList() {
 

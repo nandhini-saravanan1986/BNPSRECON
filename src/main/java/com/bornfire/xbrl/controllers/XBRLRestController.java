@@ -65,7 +65,6 @@ import com.bornfire.xbrl.entities.BRECON_TTUM_TRANSACTION_REP;
 import com.bornfire.xbrl.entities.UserProfile;
 import com.bornfire.xbrl.entities.UserProfileRep;
 import com.bornfire.xbrl.entities.XBRLAudit;
-import com.bornfire.xbrl.entities.XBRLProceduresRep;
 import com.bornfire.xbrl.entities.XBRLSession;
 import com.bornfire.xbrl.entities.BNPSRECON.AuditTablePojo;
 import com.bornfire.xbrl.entities.BNPSRECON.BRECON_Audit_Entity;
@@ -96,9 +95,6 @@ public class XBRLRestController {
 
 	@Autowired
 	AlertManagementServices alertManagementServices;
-
-	@Autowired
-	XBRLProceduresRep xbrlProceduresRep;
 
 	@Autowired
 	ReportServices reportServices;
@@ -492,8 +488,8 @@ public class XBRLRestController {
 					String tranindic = entry.getNtryCreditDebitIndicator();
 
 					Entry key = new Entry(refval, tranamt, tranindic);
-					logger.info("Existing Data to Check : " + existingRefs);
-					logger.info("Key Value to check : " + key.toString());
+					// logger.info("Existing Data to Check : " + existingRefs);
+					// logger.info("Key Value to check : " + key.toString());
 					if (existingRefs.contains(key)) {
 
 						duplicateEntries.add(entry);

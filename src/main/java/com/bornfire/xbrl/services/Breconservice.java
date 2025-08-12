@@ -23,23 +23,22 @@ import FYItransactions.Entry;
 @Service
 public class Breconservice {
 	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Breconservice.class);
-	
+
 	@Autowired
 	BRECON_TTUM_TRANSACTION_REP brecon_ttum_transaction_rep;
-	
+
 	@Autowired
 	BRECON_DESTINATION_REPO bRECON_DESTINATION_REPO;
 
 	@Autowired
 	BRECON_Audit_Rep bRECON_Audit_Rep;
-	
+
 	@Autowired
 	Brecon_Aani_payment_dup_rep Brecon_Aani_payment_dup_rep;
-	
-	
-	public String StoreAANIPaymentstatementdetails(String grphdr_message_identifier,
-			Date grphdr_creation_date_time, String grphdr_name, String grphdr_bank_identifier_code,
-			BigDecimal grphdr_page_number, String grphdr_last_page_indicator, String stmt_statement_identifier,
+
+	public String StoreAANIPaymentstatementdetails(String grphdr_message_identifier, Date grphdr_creation_date_time,
+			String grphdr_name, String grphdr_bank_identifier_code, BigDecimal grphdr_page_number,
+			String grphdr_last_page_indicator, String stmt_statement_identifier,
 			BigDecimal stmt_electronic_sequence_number, Date stmt_creation_date_time, Date stmt_from_date_time,
 			Date stmt_to_date_time, String stmt_account_identifier, String stmt_related_account_identifier,
 			String stmt_bal_code_or_proprietary, BigDecimal stmt_bal_amount, String stmt_bal_credit_debit_indicator,
@@ -51,25 +50,24 @@ public class Breconservice {
 			Date ntry_booking_date, Date ntry_booking_date_time, Date ntry_value_date, String ntry_value_date_time,
 			String ntry_account_servicer_reference, String ntry_proprietary_code, BigDecimal ntry_instructed_amount,
 			BigDecimal ntry_transaction_amount, String ntry_refs_message_identifier,
-			String ntry_refs_account_servicer_reference,
-			String ntry_refs_end_to_end_identification, String ntry_refs_transaction_id,
-			String ntry_refs_clearing_system_reference, BigDecimal ntry_txdtls_amount_currency,
-			String ntry_txdtls_credit_debit_indicator, String ntry_fininstnid_bicfi, String ntry_dbtragt_bicfi_debit,
-			String ntry_cdtragt_bicfi_credit, String signature_signedinfo_digest_value,
-			String signature_signedinfo_signature_value, String signature_keyinfo_x509_subject_name,
-			String signature_keyinfo_x509_certificate, String canonicalizationmethod_algorithm,
-			String signaturemethod_algorithm, String transform_algorithm, String digestmethod_algorithm,
-			String report_name, String ntry_refs_pmtinfid, String ntry_refs_uetr,
+			String ntry_refs_account_servicer_reference, String ntry_refs_end_to_end_identification,
+			String ntry_refs_transaction_id, String ntry_refs_clearing_system_reference,
+			BigDecimal ntry_txdtls_amount_currency, String ntry_txdtls_credit_debit_indicator,
+			String ntry_fininstnid_bicfi, String ntry_dbtragt_bicfi_debit, String ntry_cdtragt_bicfi_credit,
+			String signature_signedinfo_digest_value, String signature_signedinfo_signature_value,
+			String signature_keyinfo_x509_subject_name, String signature_keyinfo_x509_certificate,
+			String canonicalizationmethod_algorithm, String signaturemethod_algorithm, String transform_algorithm,
+			String digestmethod_algorithm, String report_name, String ntry_refs_pmtinfid, String ntry_refs_uetr,
 			String stmt_bal1_code_or_proprietary, BigDecimal stmt_bal1_amount, String stmt_bal1_credit_debit_indicator,
 			Date stmt_bal1_date, Date stmt_bal1_date_time, String transaction_currency) {
-		
+
 		BRECON_DESTINATION_ENTITY Destinationdet = new BRECON_DESTINATION_ENTITY();
-		
-		String Msg= null; 
-		
-		logger.info("Data Stored start for "+ ntry_refs_clearing_system_reference);
-		
-	//	Destinationdet.setAccount_no();
+
+		String Msg = null;
+
+		logger.info("Data Stored start for " + ntry_refs_clearing_system_reference);
+
+		// Destinationdet.setAccount_no();
 		Destinationdet.setGrphdr_message_identifier(grphdr_message_identifier);
 		Destinationdet.setGrphdr_creation_date_time(grphdr_creation_date_time);
 		Destinationdet.setGrphdr_name(grphdr_name);
@@ -127,10 +125,10 @@ public class Breconservice {
 		Destinationdet.setTransform_algorithm(transform_algorithm);
 		Destinationdet.setDigestmethod_algorithm(digestmethod_algorithm);
 		Destinationdet.setReport_name(report_name);
-	//	Destinationdet.setNtry_btch_msg_id("");
-	//	Destinationdet.setNtry_btch_numoftxs();
-	//	Destinationdet.setNtry_btch_ttlamt(ntry_btch_ttlamt);
-	//	Destinationdet.setNtry_brch_cdtdbtint(ntry_brch_cdtdbtint);
+		// Destinationdet.setNtry_btch_msg_id("");
+		// Destinationdet.setNtry_btch_numoftxs();
+		// Destinationdet.setNtry_btch_ttlamt(ntry_btch_ttlamt);
+		// Destinationdet.setNtry_brch_cdtdbtint(ntry_brch_cdtdbtint);
 		Destinationdet.setNtry_refs_pmtinfid(ntry_refs_pmtinfid);
 		Destinationdet.setNtry_refs_uetr(ntry_refs_uetr);
 		Destinationdet.setEntity_flg("Y");
@@ -143,46 +141,43 @@ public class Breconservice {
 		Destinationdet.setStmt_bal1_credit_debit_indicator(stmt_bal1_credit_debit_indicator);
 		Destinationdet.setStmt_bal1_date(stmt_bal1_date);
 		Destinationdet.setStmt_bal1_date_time(stmt_bal1_date_time);
-		
+
 		bRECON_DESTINATION_REPO.save(Destinationdet);
 		return Msg;
-		
-		
+
 	}
 
-	public String StoreAanipaymentduplicates(String grphdr_message_identifier,
-		Date grphdr_creation_date_time, String grphdr_name, String grphdr_bank_identifier_code,
-		BigDecimal grphdr_page_number, String grphdr_last_page_indicator, String stmt_statement_identifier,
-		BigDecimal stmt_electronic_sequence_number, Date stmt_creation_date_time, Date stmt_from_date_time,
-		Date stmt_to_date_time, String stmt_account_identifier, String stmt_related_account_identifier,
-		String stmt_bal_code_or_proprietary, BigDecimal stmt_bal_amount, String stmt_bal_credit_debit_indicator,
-		Date stmt_bal_date, Date stmt_bal_date_time, BigDecimal txssummry_number_of_entries,
-		BigDecimal txssummry_sum, BigDecimal txssummry_amount, String txssummry_credit_debit_indicator,
-		BigDecimal txssummry_credit_number_of_entries, BigDecimal txssummry_credit_sum,
-		BigDecimal txssummry_debit_number_of_entries, BigDecimal txssummry_debit_sum, String ntry_entry_reference,
-		BigDecimal ntry_amount_currency, String ntry_credit_debit_indicator, String ntry_code,
-		Date ntry_booking_date, Date ntry_booking_date_time, Date ntry_value_date, String ntry_value_date_time,
-		String ntry_account_servicer_reference, String ntry_proprietary_code, BigDecimal ntry_instructed_amount,
-		BigDecimal ntry_transaction_amount, String ntry_refs_message_identifier,
-		String ntry_refs_account_servicer_reference,
-		String ntry_refs_end_to_end_identification, String ntry_refs_transaction_id,
-		String ntry_refs_clearing_system_reference, BigDecimal ntry_txdtls_amount_currency,
-		String ntry_txdtls_credit_debit_indicator, String ntry_fininstnid_bicfi, String ntry_dbtragt_bicfi_debit,
-		String ntry_cdtragt_bicfi_credit, String signature_signedinfo_digest_value,
-		String signature_signedinfo_signature_value, String signature_keyinfo_x509_subject_name,
-		String signature_keyinfo_x509_certificate, String canonicalizationmethod_algorithm,
-		String signaturemethod_algorithm, String transform_algorithm, String digestmethod_algorithm,
-		String report_name, String ntry_refs_pmtinfid, String ntry_refs_uetr,
-		String stmt_bal1_code_or_proprietary, BigDecimal stmt_bal1_amount, String stmt_bal1_credit_debit_indicator,
-		Date stmt_bal1_date, Date stmt_bal1_date_time, String transaction_currency) {
-		
+	public String StoreAanipaymentduplicates(String grphdr_message_identifier, Date grphdr_creation_date_time,
+			String grphdr_name, String grphdr_bank_identifier_code, BigDecimal grphdr_page_number,
+			String grphdr_last_page_indicator, String stmt_statement_identifier,
+			BigDecimal stmt_electronic_sequence_number, Date stmt_creation_date_time, Date stmt_from_date_time,
+			Date stmt_to_date_time, String stmt_account_identifier, String stmt_related_account_identifier,
+			String stmt_bal_code_or_proprietary, BigDecimal stmt_bal_amount, String stmt_bal_credit_debit_indicator,
+			Date stmt_bal_date, Date stmt_bal_date_time, BigDecimal txssummry_number_of_entries,
+			BigDecimal txssummry_sum, BigDecimal txssummry_amount, String txssummry_credit_debit_indicator,
+			BigDecimal txssummry_credit_number_of_entries, BigDecimal txssummry_credit_sum,
+			BigDecimal txssummry_debit_number_of_entries, BigDecimal txssummry_debit_sum, String ntry_entry_reference,
+			BigDecimal ntry_amount_currency, String ntry_credit_debit_indicator, String ntry_code,
+			Date ntry_booking_date, Date ntry_booking_date_time, Date ntry_value_date, String ntry_value_date_time,
+			String ntry_account_servicer_reference, String ntry_proprietary_code, BigDecimal ntry_instructed_amount,
+			BigDecimal ntry_transaction_amount, String ntry_refs_message_identifier,
+			String ntry_refs_account_servicer_reference, String ntry_refs_end_to_end_identification,
+			String ntry_refs_transaction_id, String ntry_refs_clearing_system_reference,
+			BigDecimal ntry_txdtls_amount_currency, String ntry_txdtls_credit_debit_indicator,
+			String ntry_fininstnid_bicfi, String ntry_dbtragt_bicfi_debit, String ntry_cdtragt_bicfi_credit,
+			String signature_signedinfo_digest_value, String signature_signedinfo_signature_value,
+			String signature_keyinfo_x509_subject_name, String signature_keyinfo_x509_certificate,
+			String canonicalizationmethod_algorithm, String signaturemethod_algorithm, String transform_algorithm,
+			String digestmethod_algorithm, String report_name, String ntry_refs_pmtinfid, String ntry_refs_uetr,
+			String stmt_bal1_code_or_proprietary, BigDecimal stmt_bal1_amount, String stmt_bal1_credit_debit_indicator,
+			Date stmt_bal1_date, Date stmt_bal1_date_time, String transaction_currency) {
 
 		String Msg = null;
-		
-		logger.info("Duplicate data found store in duplicate table - "+ntry_refs_clearing_system_reference);
-		
+
+		logger.info("Duplicate data found store in duplicate table - " + ntry_refs_clearing_system_reference);
+
 		Brecon_aani_payment_duplicate_entity AaniPaymentdupli = new Brecon_aani_payment_duplicate_entity();
-		
+
 		AaniPaymentdupli.setGrphdr_message_identifier(grphdr_message_identifier);
 		AaniPaymentdupli.setGrphdr_creation_date_time(grphdr_creation_date_time);
 		AaniPaymentdupli.setGrphdr_name(grphdr_name);
@@ -240,10 +235,10 @@ public class Breconservice {
 		AaniPaymentdupli.setTransform_algorithm(transform_algorithm);
 		AaniPaymentdupli.setDigestmethod_algorithm(digestmethod_algorithm);
 		AaniPaymentdupli.setReport_name(report_name);
-	//	AaniPaymentdupli.setNtry_btch_msg_id("");
-	//	AaniPaymentdupli.setNtry_btch_numoftxs();
-	//	AaniPaymentdupli.setNtry_btch_ttlamt(ntry_btch_ttlamt);
-	//	AaniPaymentdupli.setNtry_brch_cdtdbtint(ntry_brch_cdtdbtint);
+		// AaniPaymentdupli.setNtry_btch_msg_id("");
+		// AaniPaymentdupli.setNtry_btch_numoftxs();
+		// AaniPaymentdupli.setNtry_btch_ttlamt(ntry_btch_ttlamt);
+		// AaniPaymentdupli.setNtry_brch_cdtdbtint(ntry_brch_cdtdbtint);
 		AaniPaymentdupli.setNtry_refs_pmtinfid(ntry_refs_pmtinfid);
 		AaniPaymentdupli.setNtry_refs_uetr(ntry_refs_uetr);
 		AaniPaymentdupli.setEntity_flg("Y");
@@ -256,19 +251,15 @@ public class Breconservice {
 		AaniPaymentdupli.setStmt_bal1_credit_debit_indicator(stmt_bal1_credit_debit_indicator);
 		AaniPaymentdupli.setStmt_bal1_date(stmt_bal1_date);
 		AaniPaymentdupli.setStmt_bal1_date_time(stmt_bal1_date_time);
-		
+
 		Brecon_Aani_payment_dup_rep.save(AaniPaymentdupli);
 		return Msg;
-		
-		
-		
-	
-		
+
 	}
-	
-	public String StoreTtumTransactiondetails(String grphdr_message_identifier,
-			Date grphdr_creation_date_time, String grphdr_name, String grphdr_bank_identifier_code,
-			BigDecimal grphdr_page_number, String grphdr_last_page_indicator, String stmt_statement_identifier,
+
+	public String StoreTtumTransactiondetails(String grphdr_message_identifier, Date grphdr_creation_date_time,
+			String grphdr_name, String grphdr_bank_identifier_code, BigDecimal grphdr_page_number,
+			String grphdr_last_page_indicator, String stmt_statement_identifier,
 			BigDecimal stmt_electronic_sequence_number, Date stmt_creation_date_time, Date stmt_from_date_time,
 			Date stmt_to_date_time, String stmt_account_identifier, String stmt_related_account_identifier,
 			String stmt_bal_code_or_proprietary, BigDecimal stmt_bal_amount, String stmt_bal_credit_debit_indicator,
@@ -280,23 +271,22 @@ public class Breconservice {
 			Date ntry_booking_date, Date ntry_booking_date_time, Date ntry_value_date, String ntry_value_date_time,
 			String ntry_account_servicer_reference, String ntry_proprietary_code, BigDecimal ntry_instructed_amount,
 			BigDecimal ntry_transaction_amount, String ntry_refs_message_identifier,
-			String ntry_refs_account_servicer_reference,
-			String ntry_refs_end_to_end_identification, String ntry_refs_transaction_id,
-			String ntry_refs_clearing_system_reference, BigDecimal ntry_txdtls_amount_currency,
-			String ntry_txdtls_credit_debit_indicator, String ntry_fininstnid_bicfi, String ntry_dbtragt_bicfi_debit,
-			String ntry_cdtragt_bicfi_credit, String signature_signedinfo_digest_value,
-			String signature_signedinfo_signature_value, String signature_keyinfo_x509_subject_name,
-			String signature_keyinfo_x509_certificate, String canonicalizationmethod_algorithm,
-			String signaturemethod_algorithm, String transform_algorithm, String digestmethod_algorithm,
-			String report_name, String ntry_refs_pmtinfid, String ntry_refs_uetr,
+			String ntry_refs_account_servicer_reference, String ntry_refs_end_to_end_identification,
+			String ntry_refs_transaction_id, String ntry_refs_clearing_system_reference,
+			BigDecimal ntry_txdtls_amount_currency, String ntry_txdtls_credit_debit_indicator,
+			String ntry_fininstnid_bicfi, String ntry_dbtragt_bicfi_debit, String ntry_cdtragt_bicfi_credit,
+			String signature_signedinfo_digest_value, String signature_signedinfo_signature_value,
+			String signature_keyinfo_x509_subject_name, String signature_keyinfo_x509_certificate,
+			String canonicalizationmethod_algorithm, String signaturemethod_algorithm, String transform_algorithm,
+			String digestmethod_algorithm, String report_name, String ntry_refs_pmtinfid, String ntry_refs_uetr,
 			String stmt_bal1_code_or_proprietary, BigDecimal stmt_bal1_amount, String stmt_bal1_credit_debit_indicator,
 			Date stmt_bal1_date, Date stmt_bal1_date_time, String transaction_currency) {
 		String Msg = null;
-		
+
 		BRECON_TTUM_TRANSACTION_ENTITY TtumTransaction = new BRECON_TTUM_TRANSACTION_ENTITY();
-		
-		logger.info("Start Saving TTUM Transaction Detail  -"+ntry_refs_clearing_system_reference);
-		
+
+		logger.info("Start Saving TTUM Transaction Detail  -" + ntry_refs_clearing_system_reference);
+
 		TtumTransaction.setGrphdr_message_identifier(grphdr_message_identifier);
 		TtumTransaction.setGrphdr_creation_date_time(grphdr_creation_date_time);
 		TtumTransaction.setGrphdr_name(grphdr_name);
@@ -354,10 +344,10 @@ public class Breconservice {
 		TtumTransaction.setTransform_algorithm(transform_algorithm);
 		TtumTransaction.setDigestmethod_algorithm(digestmethod_algorithm);
 		TtumTransaction.setReport_name(report_name);
-	//	TtumTransaction.setNtry_btch_msg_id("");
-	//	TtumTransaction.setNtry_btch_numoftxs();
-	//	TtumTransaction.setNtry_btch_ttlamt(ntry_btch_ttlamt);
-	//	TtumTransaction.setNtry_brch_cdtdbtint(ntry_brch_cdtdbtint);
+		// TtumTransaction.setNtry_btch_msg_id("");
+		// TtumTransaction.setNtry_btch_numoftxs();
+		// TtumTransaction.setNtry_btch_ttlamt(ntry_btch_ttlamt);
+		// TtumTransaction.setNtry_brch_cdtdbtint(ntry_brch_cdtdbtint);
 		TtumTransaction.setNtry_refs_pmtinfid(ntry_refs_pmtinfid);
 		TtumTransaction.setNtry_refs_uetr(ntry_refs_uetr);
 		TtumTransaction.setEntity_flg("Y");
@@ -370,647 +360,623 @@ public class Breconservice {
 		TtumTransaction.setStmt_bal1_credit_debit_indicator(stmt_bal1_credit_debit_indicator);
 		TtumTransaction.setStmt_bal1_date(stmt_bal1_date);
 		TtumTransaction.setStmt_bal1_date_time(stmt_bal1_date_time);
-		
+
 		brecon_ttum_transaction_rep.save(TtumTransaction);
 		return Msg;
-		
-		
+
 	}
-	
-	
-	public void batchInsertAANI(FYItransactions.Document docValue, List<FYItransactions.Entry> entries, String reportName,String stmtIdentifier) {
-		
-		
-		String GrpHdrMessageIdentifier = docValue.getBkToCstmrStmt().getGrpHdr().getGrpHdrMessageIdentifier();
-		
-		Date GrpHdrCreationDateTime = docValue.getBkToCstmrStmt().getGrpHdr().getGrpHdrCreationDateTime();
-		
-		String GrpHdrName = docValue.getBkToCstmrStmt().getGrpHdr().getMsgRcpt().getGrpHdrName();
-		
-		String GrpHdrBankIdentifierCode = docValue.getBkToCstmrStmt().getGrpHdr().getMsgRcpt().getId().getOrgId()
-				.getGrpHdrBankIdentifierCode();
-		
-		BigDecimal GrpHdrPageNumber = docValue.getBkToCstmrStmt().getGrpHdr().getMsgPgntn().getGrpHdrPageNumber();
-		
-		String GrpHdrLastPageIndicator = docValue.getBkToCstmrStmt().getGrpHdr().getMsgPgntn()
-				.getGrpHdrLastPageIndicator();
-		
-		String StmtStatementIdentifier = docValue.getBkToCstmrStmt().getStmt().getStmtStatementIdentifier();
-		
-		BigDecimal StmtElectronicSequenceNumber = docValue.getBkToCstmrStmt().getStmt().getStmtElectronicSequenceNumber();
-		
-		Date StmtCreationDateTime = docValue.getBkToCstmrStmt().getStmt().getStmtCreationDateTime();
-		
-		Date StmtFromDateTime = docValue.getBkToCstmrStmt().getStmt().getFrToDt().getStmtFromDateTime();
-		
-		Date StmtToDateTime = docValue.getBkToCstmrStmt().getStmt().getFrToDt().getStmtToDateTime();
-		
-		String StmtRelatedAccountIdentifier = docValue.getBkToCstmrStmt().getStmt().getRltdAcct().getId().getOthr()
-				.getStmtRelatedAccountIdentifier();
-		
-		BigDecimal TxsSummryNumberOfEntries = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlNtries()
-				.getTxsSummryNumberOfEntries();
-		
-		BigDecimal getTxsSummrySum = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlNtries()
-				.getTxsSummrySum();
-		
-		BigDecimal getTxsSummryAmount = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlNtries()
-				.getTtlNetNtry().getTxsSummryAmount();
-		
-		String getTxsSummryCreditDebitIndicator = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlNtries()
-				.getTtlNetNtry().getTxsSummryCreditDebitIndicator();
-		
-		BigDecimal getTxsSummryCreditNumberOfEntries = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlCdtNtries()
-				.getTxsSummryCreditNumberOfEntries();
-		
-		BigDecimal getTxsSummryCreditSum = docValue.getBkToCstmrStmt().getStmt().getTxsSummry()
-				.getTtlCdtNtries().getTxsSummryCreditSum();
-		
-		BigDecimal getTxsSummryDebitNumberOfEntries = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlDbtNtries()
-				.getTxsSummryDebitNumberOfEntries();
-		
-		BigDecimal getTxsSummryDebitSum = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlDbtNtries()
-				.getTxsSummryDebitSum();
-		
-		String getCanonicalizationMethod = docValue.getSignature().getSignedInfo().getCanonicalizationMethod()
-				.getAlgorithm();
-		
-		String getSignatureMethod = docValue.getSignature().getSignedInfo().getSignatureMethod().getAlgorithm();
-		
-		String getTransform = docValue.getSignature().getSignedInfo().getReference().getTransforms()
-				.getTransform().getAlgorithm();
-		
-		String getDigestMethod = docValue.getSignature().getSignedInfo().getReference().getDigestMethod()
-				.getAlgorithm();
-		
-		String getSignature_signedinfo_digest_value = docValue.getSignature().getSignedInfo().getReference()
-				.getSignature_signedinfo_digest_value();
-		
-		String getSignature_signedinfo_signature_value = docValue.getSignature().getSignature_signedinfo_signature_value();
-		
-		String getSignature_keyinfo_x509_subject_name = docValue.getSignature().getKeyInfo().getX509Data()
-				.getSignature_keyinfo_x509_subject_name();
-		
-		String getSignature_keyinfo_x509_certificate = docValue.getSignature().getKeyInfo().getX509Data()
-				.getSignature_keyinfo_x509_certificate();
-		
+
+	public void batchInsertAANI(FYItransactions.Document docValue, List<FYItransactions.Entry> entries,
+			String reportName, String stmtIdentifier) {
+
+		List<BRECON_DESTINATION_ENTITY> BRECON_DESTINATION_ENTITY_LIST = new ArrayList<BRECON_DESTINATION_ENTITY>();
+
 		List<Balance> balances = docValue.getBkToCstmrStmt().getStmt().getBal();
-		
-		String StmtBalCodeOrProprietary ="";
-		
-		BigDecimal StmtBalAmount = null ;
-		
+
+		String StmtBalCodeOrProprietary = "";
+
+		BigDecimal StmtBalAmount = null;
+
 		String StmtBalCreditDebitIndicator = "";
-		
+
 		Date StmtBalDate = null;
-		
+
 		Date StmtBalDateTime = null;
-		
-		String SecStmtBalCodeOrProprietary ="";
-		
-		BigDecimal SecStmtBalAmount = null ;
-		
+
+		String SecStmtBalCodeOrProprietary = "";
+
+		BigDecimal SecStmtBalAmount = null;
+
 		String SecStmtBalCreditDebitIndicator = "";
-		
+
 		Date SecStmtBalDate = null;
-		
+
 		Date SecStmtBalDateTime = null;
-		
+
 		for (int j = 0; j < balances.size(); j++) {
 
-		    if (j == 0) {
+			if (j == 0) {
 
-		        StmtBalCodeOrProprietary = balances.get(j).getTp().getCdOrPrtry().getStmtBalCodeOrProprietary();
+				StmtBalCodeOrProprietary = balances.get(j).getTp().getCdOrPrtry().getStmtBalCodeOrProprietary();
 
-		        StmtBalAmount = balances.get(j).getStmtBalAmount();
+				StmtBalAmount = balances.get(j).getStmtBalAmount();
 
-		        logger.info(StmtBalAmount + " First Bal amount");
+				logger.info(StmtBalAmount + " First Bal amount");
 
-		        StmtBalCreditDebitIndicator = balances.get(j).getStmtBalCreditDebitIndicator();
+				StmtBalCreditDebitIndicator = balances.get(j).getStmtBalCreditDebitIndicator();
 
-		        StmtBalDate = balances.get(j).getDt().getStmtBalDate();
+				StmtBalDate = balances.get(j).getDt().getStmtBalDate();
 
-		        StmtBalDateTime = balances.get(j).getDt().getStmtBalDateTime();
+				StmtBalDateTime = balances.get(j).getDt().getStmtBalDateTime();
 
-		    } else if (j == 1) {
+			} else if (j == 1) {
 
-		        SecStmtBalCodeOrProprietary = balances.get(j).getTp().getCdOrPrtry().getStmtBalCodeOrProprietary();
+				SecStmtBalCodeOrProprietary = balances.get(j).getTp().getCdOrPrtry().getStmtBalCodeOrProprietary();
 
-		        SecStmtBalAmount = balances.get(j).getStmtBalAmount();
+				SecStmtBalAmount = balances.get(j).getStmtBalAmount();
 
-		        logger.info(SecStmtBalAmount + " Sec Bal amount");
+				logger.info(SecStmtBalAmount + " Sec Bal amount");
 
-		        SecStmtBalCreditDebitIndicator = balances.get(j).getStmtBalCreditDebitIndicator();
+				SecStmtBalCreditDebitIndicator = balances.get(j).getStmtBalCreditDebitIndicator();
 
-		        SecStmtBalDate = balances.get(j).getDt().getStmtBalDate();
+				SecStmtBalDate = balances.get(j).getDt().getStmtBalDate();
 
-		        SecStmtBalDateTime = balances.get(j).getDt().getStmtBalDateTime();
+				SecStmtBalDateTime = balances.get(j).getDt().getStmtBalDateTime();
 
-		    }
+			}
 
 		}
-		
-		
-		
+
 		List<Entry> Transactionentries = docValue.getBkToCstmrStmt().getStmt().getNtry();
-		
+
 		logger.info(String.valueOf(Transactionentries.size()));
-		
+
 		for (int k = 0; k < Transactionentries.size(); k++) {
-			
-			String getNtryEntryReference = Transactionentries.get(k).getNtryEntryReference();
-			
-			BigDecimal getNtryAmountCurrency = Transactionentries.get(k).getNtryAmountCurrency();
-			
-			String getNtryCreditDebitIndicator = Transactionentries.get(k).getNtryCreditDebitIndicator();
-			
-			String getNtryCode = Transactionentries.get(k).getSts().getNtryCode();
-			
-			Date getNtryBookingDate = Transactionentries.get(k).getBookgDt().getNtryBookingDate();
-			
-			Date getNtryBookingDateTime = Transactionentries.get(k).getBookgDt().getNtryBookingDateTime();
-			
-			Date getNtryValueDate = Transactionentries.get(k).getValDt().getNtryValueDate();
-			
-			String getNtryValueDateTime = Transactionentries.get(k).getValDt().getNtryValueDateTime();
-			
-			String getNtry_account_servicer_reference = Transactionentries.get(k).getNtry_account_servicer_reference();
-			
-			String getNtryProprietaryCode = Transactionentries.get(k).getBkTxCd().getPrtry().getNtryProprietaryCode();
-			
-			BigDecimal getNtryInstructedAmount = Transactionentries.get(k).getAmtDtls().getInstdAmt().getNtryInstructedAmount();
-			
-			BigDecimal getNtry_transaction_amount = Transactionentries.get(k).getAmtDtls().getTxAmt().getCurrency_values().getNtry_transaction_amount();
-			
-			String getNtryRefsMessageIdentifier = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsMessageIdentifier();
-			
-			String getNtryRefsAccountServicerReference = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsAccountServicerReference();
-			
-			String getNtry_refs_pmtinfid = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtry_refs_pmtinfid();
-			
-			String getNtryRefsEndToEndIdentification = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsEndToEndIdentification();
-			
-			String getNtry_refs_uetr = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtry_refs_uetr();
-			
-			String getNtryRefsTransactionId = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsTransactionId();
-			
-			String getNtryRefsClearingSystemReference = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsClearingSystemReference();
-			
-			BigDecimal getNtryTxDtlsAmountCurrency = Transactionentries.get(k).getNtryDtls().getTxDtls().getNtryTxDtlsAmountCurrency();
-			
-			String getNtryTxDtlsCreditDebitIndicator = Transactionentries.get(k).getNtryDtls().getTxDtls().getNtryTxDtlsCreditDebitIndicator();
-			
-			String getNtry_fininstnid_bicfi = Transactionentries.get(k).getNtryDtls().getTxDtls().getMsgRcpt().getInstgAgt().getFinInstnId().getNtry_fininstnid_bicfi();
-			
-			String getNtry_dbtragt_bicfi_debit = Transactionentries.get(k).getNtryDtls().getTxDtls().getMsgRcpt().getDbtrAgt().getFinInstnId().getNtry_dbtragt_bicfi_debit();
-			
-			String getNtry_cdtragt_bicfi_credit = Transactionentries.get(k).getNtryDtls().getTxDtls().getMsgRcpt().getCdtrAgt().getFinInstnId().getNtry_cdtragt_bicfi_credit();
-			
-			String Transaction_currency = Transactionentries.get(k).getAmtDtls().getTxAmt().getCurrency_values().getTransaction_currency();
-			
-			StoreAANIPaymentstatementdetails(GrpHdrMessageIdentifier, GrpHdrCreationDateTime, GrpHdrName, GrpHdrBankIdentifierCode,
-					GrpHdrPageNumber, GrpHdrLastPageIndicator, StmtStatementIdentifier, StmtElectronicSequenceNumber, StmtCreationDateTime,
-					StmtFromDateTime, StmtToDateTime, stmtIdentifier, StmtRelatedAccountIdentifier, StmtBalCodeOrProprietary,
-					StmtBalAmount, StmtBalCreditDebitIndicator, StmtBalDate, StmtBalDateTime, TxsSummryNumberOfEntries, getTxsSummrySum,
-					getTxsSummryAmount, getTxsSummryCreditDebitIndicator, getTxsSummryCreditNumberOfEntries, getTxsSummryCreditSum,
-					getTxsSummryDebitNumberOfEntries, getTxsSummryDebitSum, getNtryEntryReference, getNtryAmountCurrency, getNtryCreditDebitIndicator, 
-					getNtryCode, getNtryBookingDate, getNtryBookingDateTime, getNtryValueDate, getNtryValueDateTime, getNtry_account_servicer_reference,
-					getNtryProprietaryCode, getNtryInstructedAmount, getNtry_transaction_amount, getNtryRefsMessageIdentifier, getNtryRefsAccountServicerReference,
-					getNtryRefsEndToEndIdentification, getNtryRefsTransactionId, getNtryRefsClearingSystemReference, 
-					getNtryTxDtlsAmountCurrency, getNtryTxDtlsCreditDebitIndicator, getNtry_fininstnid_bicfi, getNtry_dbtragt_bicfi_debit,
-					getNtry_cdtragt_bicfi_credit, getSignature_signedinfo_digest_value, getSignature_signedinfo_signature_value,
-					getSignature_keyinfo_x509_subject_name, getSignature_keyinfo_x509_certificate, getCanonicalizationMethod, getSignatureMethod,
-					getTransform, getDigestMethod, reportName,
-					getNtry_refs_pmtinfid, getNtry_refs_uetr, SecStmtBalCodeOrProprietary, SecStmtBalAmount,
-					StmtBalCreditDebitIndicator, StmtBalDate, StmtBalDateTime, Transaction_currency);
-			
+			BRECON_DESTINATION_ENTITY BRECON_DESTINATION_ENTITY = new BRECON_DESTINATION_ENTITY();
+			logger.info("Entry refs data store : " + Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs()
+					.getNtryRefsClearingSystemReference());
+
+			BRECON_DESTINATION_ENTITY
+					.setGrphdr_message_identifier(docValue.getBkToCstmrStmt().getGrpHdr().getGrpHdrMessageIdentifier());
+
+			BRECON_DESTINATION_ENTITY
+					.setGrphdr_creation_date_time(docValue.getBkToCstmrStmt().getGrpHdr().getGrpHdrCreationDateTime());
+
+			BRECON_DESTINATION_ENTITY
+					.setGrphdr_name(docValue.getBkToCstmrStmt().getGrpHdr().getMsgRcpt().getGrpHdrName());
+
+			BRECON_DESTINATION_ENTITY.setGrphdr_bank_identifier_code(docValue.getBkToCstmrStmt().getGrpHdr()
+					.getMsgRcpt().getId().getOrgId().getGrpHdrBankIdentifierCode());
+
+			BRECON_DESTINATION_ENTITY
+					.setGrphdr_page_number(docValue.getBkToCstmrStmt().getGrpHdr().getMsgPgntn().getGrpHdrPageNumber());
+
+			BRECON_DESTINATION_ENTITY.setGrphdr_last_page_indicator(
+					docValue.getBkToCstmrStmt().getGrpHdr().getMsgPgntn().getGrpHdrLastPageIndicator());
+			BRECON_DESTINATION_ENTITY
+					.setStmt_statement_identifier(docValue.getBkToCstmrStmt().getStmt().getStmtStatementIdentifier());
+			BRECON_DESTINATION_ENTITY.setStmt_electronic_sequence_number(
+					docValue.getBkToCstmrStmt().getStmt().getStmtElectronicSequenceNumber());
+			BRECON_DESTINATION_ENTITY
+					.setStmt_creation_date_time(docValue.getBkToCstmrStmt().getStmt().getStmtCreationDateTime());
+			BRECON_DESTINATION_ENTITY
+					.setStmt_from_date_time(docValue.getBkToCstmrStmt().getStmt().getFrToDt().getStmtFromDateTime());
+			BRECON_DESTINATION_ENTITY
+					.setStmt_to_date_time(docValue.getBkToCstmrStmt().getStmt().getFrToDt().getStmtToDateTime());
+			BRECON_DESTINATION_ENTITY.setStmt_related_account_identifier(docValue.getBkToCstmrStmt().getStmt()
+					.getRltdAcct().getId().getOthr().getStmtRelatedAccountIdentifier());
+			BRECON_DESTINATION_ENTITY.setTxssummry_number_of_entries(
+					docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlNtries().getTxsSummryNumberOfEntries());
+			BRECON_DESTINATION_ENTITY.setTxssummry_sum(
+					docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlNtries().getTxsSummrySum());
+			BRECON_DESTINATION_ENTITY.setTxssummry_amount(docValue.getBkToCstmrStmt().getStmt().getTxsSummry()
+					.getTtlNtries().getTtlNetNtry().getTxsSummryAmount());
+			BRECON_DESTINATION_ENTITY.setTxssummry_credit_debit_indicator(docValue.getBkToCstmrStmt().getStmt()
+					.getTxsSummry().getTtlNtries().getTtlNetNtry().getTxsSummryCreditDebitIndicator());
+			BRECON_DESTINATION_ENTITY.setTxssummry_credit_number_of_entries(docValue.getBkToCstmrStmt().getStmt()
+					.getTxsSummry().getTtlCdtNtries().getTxsSummryCreditNumberOfEntries());
+			BRECON_DESTINATION_ENTITY.setTxssummry_credit_sum(
+					docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlCdtNtries().getTxsSummryCreditSum());
+			BRECON_DESTINATION_ENTITY.setTxssummry_debit_number_of_entries(docValue.getBkToCstmrStmt().getStmt()
+					.getTxsSummry().getTtlDbtNtries().getTxsSummryDebitNumberOfEntries());
+			BRECON_DESTINATION_ENTITY.setTxssummry_debit_sum(
+					docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlDbtNtries().getTxsSummryDebitSum());
+			BRECON_DESTINATION_ENTITY.setCanonicalizationmethod_algorithm(
+					docValue.getSignature().getSignedInfo().getCanonicalizationMethod().getAlgorithm());
+			BRECON_DESTINATION_ENTITY.setSignaturemethod_algorithm(
+					docValue.getSignature().getSignedInfo().getSignatureMethod().getAlgorithm());
+			BRECON_DESTINATION_ENTITY.setTransform_algorithm(docValue.getSignature().getSignedInfo().getReference()
+					.getTransforms().getTransform().getAlgorithm());
+			BRECON_DESTINATION_ENTITY.setDigestmethod_algorithm(
+					docValue.getSignature().getSignedInfo().getReference().getDigestMethod().getAlgorithm());
+			BRECON_DESTINATION_ENTITY.setSignature_signedinfo_digest_value(
+					docValue.getSignature().getSignedInfo().getReference().getSignature_signedinfo_digest_value());
+			BRECON_DESTINATION_ENTITY.setSignature_signedinfo_signature_value(
+					docValue.getSignature().getSignature_signedinfo_signature_value());
+			BRECON_DESTINATION_ENTITY.setSignature_keyinfo_x509_subject_name(
+					docValue.getSignature().getKeyInfo().getX509Data().getSignature_keyinfo_x509_subject_name());
+			BRECON_DESTINATION_ENTITY.setSignature_keyinfo_x509_certificate(
+					docValue.getSignature().getKeyInfo().getX509Data().getSignature_keyinfo_x509_certificate());
+			BRECON_DESTINATION_ENTITY.setStmt_account_identifier(stmtIdentifier);
+			BRECON_DESTINATION_ENTITY.setStmt_bal_code_or_proprietary(StmtBalCodeOrProprietary);
+			BRECON_DESTINATION_ENTITY.setStmt_bal_amount(StmtBalAmount);
+			BRECON_DESTINATION_ENTITY.setStmt_bal_credit_debit_indicator(StmtBalCreditDebitIndicator);
+			BRECON_DESTINATION_ENTITY.setStmt_bal_date(StmtBalDate);
+			BRECON_DESTINATION_ENTITY.setStmt_bal_date_time(StmtBalDateTime);
+			BRECON_DESTINATION_ENTITY.setStmt_bal1_code_or_proprietary(SecStmtBalCodeOrProprietary);
+			BRECON_DESTINATION_ENTITY.setStmt_bal1_amount(SecStmtBalAmount);
+			BRECON_DESTINATION_ENTITY.setStmt_bal1_credit_debit_indicator(SecStmtBalCreditDebitIndicator);
+			BRECON_DESTINATION_ENTITY.setStmt_bal1_date(SecStmtBalDate);
+			BRECON_DESTINATION_ENTITY.setStmt_bal1_date_time(SecStmtBalDateTime);
+			BRECON_DESTINATION_ENTITY.setNtry_entry_reference(Transactionentries.get(k).getNtryEntryReference());
+			BRECON_DESTINATION_ENTITY.setNtry_amount_currency(Transactionentries.get(k).getNtryAmountCurrency());
+			BRECON_DESTINATION_ENTITY
+					.setNtry_credit_debit_indicator(Transactionentries.get(k).getNtryCreditDebitIndicator());
+			BRECON_DESTINATION_ENTITY.setNtry_code(Transactionentries.get(k).getSts().getNtryCode());
+			BRECON_DESTINATION_ENTITY.setNtry_booking_date(Transactionentries.get(k).getBookgDt().getNtryBookingDate());
+			BRECON_DESTINATION_ENTITY
+					.setNtry_booking_date_time(Transactionentries.get(k).getBookgDt().getNtryBookingDateTime());
+			BRECON_DESTINATION_ENTITY.setNtry_value_date(Transactionentries.get(k).getValDt().getNtryValueDate());
+			BRECON_DESTINATION_ENTITY
+					.setNtry_value_date_time(Transactionentries.get(k).getValDt().getNtryValueDateTime());
+			BRECON_DESTINATION_ENTITY
+					.setNtry_account_servicer_reference(Transactionentries.get(k).getNtry_account_servicer_reference());
+			BRECON_DESTINATION_ENTITY.setNtry_proprietary_code(
+					Transactionentries.get(k).getBkTxCd().getPrtry().getNtryProprietaryCode());
+			BRECON_DESTINATION_ENTITY.setNtry_instructed_amount(
+					Transactionentries.get(k).getAmtDtls().getInstdAmt().getNtryInstructedAmount());
+			BRECON_DESTINATION_ENTITY.setNtry_transaction_amount(Transactionentries.get(k).getAmtDtls().getTxAmt()
+					.getCurrency_values().getNtry_transaction_amount());
+			BRECON_DESTINATION_ENTITY.setNtry_refs_message_identifier(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsMessageIdentifier());
+			BRECON_DESTINATION_ENTITY.setNtry_refs_account_servicer_reference(Transactionentries.get(k).getNtryDtls()
+					.getTxDtls().getRefs().getNtryRefsAccountServicerReference());
+			BRECON_DESTINATION_ENTITY.setNtry_refs_pmtinfid(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtry_refs_pmtinfid());
+			BRECON_DESTINATION_ENTITY.setNtry_refs_end_to_end_identification(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsEndToEndIdentification());
+			BRECON_DESTINATION_ENTITY.setNtry_refs_uetr(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtry_refs_uetr());
+			BRECON_DESTINATION_ENTITY.setNtry_refs_transaction_id(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsTransactionId());
+			BRECON_DESTINATION_ENTITY.setNtry_refs_clearing_system_reference(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsClearingSystemReference());
+			BRECON_DESTINATION_ENTITY.setNtry_txdtls_amount_currency(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getNtryTxDtlsAmountCurrency());
+			BRECON_DESTINATION_ENTITY.setNtry_txdtls_credit_debit_indicator(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getNtryTxDtlsCreditDebitIndicator());
+			BRECON_DESTINATION_ENTITY.setNtry_fininstnid_bicfi(Transactionentries.get(k).getNtryDtls().getTxDtls()
+					.getMsgRcpt().getInstgAgt().getFinInstnId().getNtry_fininstnid_bicfi());
+			BRECON_DESTINATION_ENTITY.setNtry_dbtragt_bicfi_debit(Transactionentries.get(k).getNtryDtls().getTxDtls()
+					.getMsgRcpt().getDbtrAgt().getFinInstnId().getNtry_dbtragt_bicfi_debit());
+			BRECON_DESTINATION_ENTITY.setNtry_cdtragt_bicfi_credit(Transactionentries.get(k).getNtryDtls().getTxDtls()
+					.getMsgRcpt().getCdtrAgt().getFinInstnId().getNtry_cdtragt_bicfi_credit());
+			BRECON_DESTINATION_ENTITY.setTransaction_currency(
+					Transactionentries.get(k).getAmtDtls().getTxAmt().getCurrency_values().getTransaction_currency());
+			BRECON_DESTINATION_ENTITY.setEntity_flg("Y");
+			BRECON_DESTINATION_ENTITY.setDel_flg("N");
+			BRECON_DESTINATION_ENTITY.setReport_date(new Date());
+			BRECON_DESTINATION_ENTITY.setRecon_flag("N");
+			BRECON_DESTINATION_ENTITY.setSrlno(bRECON_DESTINATION_REPO.srlno());
+			BRECON_DESTINATION_ENTITY.setCreate_time(new Date());
+			BRECON_DESTINATION_ENTITY.setReport_name(reportName);
+			BRECON_DESTINATION_ENTITY_LIST.add(BRECON_DESTINATION_ENTITY);
+
 		}
-		
+
+		bRECON_DESTINATION_REPO.saveAll(BRECON_DESTINATION_ENTITY_LIST);
+		logger.info("Save Completed file : " + reportName);
+
 	}
-	
-	
-	public void batchInsertTTUM(FYItransactions.Document docValue, List<FYItransactions.Entry> entries, String reportName,String stmtIdentifier) {
-		
-		
-		String GrpHdrMessageIdentifier = docValue.getBkToCstmrStmt().getGrpHdr().getGrpHdrMessageIdentifier();
-		
-		Date GrpHdrCreationDateTime = docValue.getBkToCstmrStmt().getGrpHdr().getGrpHdrCreationDateTime();
-		
-		String GrpHdrName = docValue.getBkToCstmrStmt().getGrpHdr().getMsgRcpt().getGrpHdrName();
-		
-		String GrpHdrBankIdentifierCode = docValue.getBkToCstmrStmt().getGrpHdr().getMsgRcpt().getId().getOrgId()
-				.getGrpHdrBankIdentifierCode();
-		
-		BigDecimal GrpHdrPageNumber = docValue.getBkToCstmrStmt().getGrpHdr().getMsgPgntn().getGrpHdrPageNumber();
-		
-		String GrpHdrLastPageIndicator = docValue.getBkToCstmrStmt().getGrpHdr().getMsgPgntn()
-				.getGrpHdrLastPageIndicator();
-		
-		String StmtStatementIdentifier = docValue.getBkToCstmrStmt().getStmt().getStmtStatementIdentifier();
-		
-		BigDecimal StmtElectronicSequenceNumber = docValue.getBkToCstmrStmt().getStmt().getStmtElectronicSequenceNumber();
-		
-		Date StmtCreationDateTime = docValue.getBkToCstmrStmt().getStmt().getStmtCreationDateTime();
-		
-		Date StmtFromDateTime = docValue.getBkToCstmrStmt().getStmt().getFrToDt().getStmtFromDateTime();
-		
-		Date StmtToDateTime = docValue.getBkToCstmrStmt().getStmt().getFrToDt().getStmtToDateTime();
-		
-		String StmtRelatedAccountIdentifier = docValue.getBkToCstmrStmt().getStmt().getRltdAcct().getId().getOthr()
-				.getStmtRelatedAccountIdentifier();
-		
-		BigDecimal TxsSummryNumberOfEntries = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlNtries()
-				.getTxsSummryNumberOfEntries();
-		
-		BigDecimal getTxsSummrySum = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlNtries()
-				.getTxsSummrySum();
-		
-		BigDecimal getTxsSummryAmount = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlNtries()
-				.getTtlNetNtry().getTxsSummryAmount();
-		
-		String getTxsSummryCreditDebitIndicator = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlNtries()
-				.getTtlNetNtry().getTxsSummryCreditDebitIndicator();
-		
-		BigDecimal getTxsSummryCreditNumberOfEntries = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlCdtNtries()
-				.getTxsSummryCreditNumberOfEntries();
-		
-		BigDecimal getTxsSummryCreditSum = docValue.getBkToCstmrStmt().getStmt().getTxsSummry()
-				.getTtlCdtNtries().getTxsSummryCreditSum();
-		
-		BigDecimal getTxsSummryDebitNumberOfEntries = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlDbtNtries()
-				.getTxsSummryDebitNumberOfEntries();
-		
-		BigDecimal getTxsSummryDebitSum = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlDbtNtries()
-				.getTxsSummryDebitSum();
-		
-		String getCanonicalizationMethod = docValue.getSignature().getSignedInfo().getCanonicalizationMethod()
-				.getAlgorithm();
-		
-		String getSignatureMethod = docValue.getSignature().getSignedInfo().getSignatureMethod().getAlgorithm();
-		
-		String getTransform = docValue.getSignature().getSignedInfo().getReference().getTransforms()
-				.getTransform().getAlgorithm();
-		
-		String getDigestMethod = docValue.getSignature().getSignedInfo().getReference().getDigestMethod()
-				.getAlgorithm();
-		
-		String getSignature_signedinfo_digest_value = docValue.getSignature().getSignedInfo().getReference()
-				.getSignature_signedinfo_digest_value();
-		
-		String getSignature_signedinfo_signature_value = docValue.getSignature().getSignature_signedinfo_signature_value();
-		
-		String getSignature_keyinfo_x509_subject_name = docValue.getSignature().getKeyInfo().getX509Data()
-				.getSignature_keyinfo_x509_subject_name();
-		
-		String getSignature_keyinfo_x509_certificate = docValue.getSignature().getKeyInfo().getX509Data()
-				.getSignature_keyinfo_x509_certificate();
-		
+
+	public void batchInsertTTUM(FYItransactions.Document docValue, List<FYItransactions.Entry> entries,
+			String reportName, String stmtIdentifier) {
+
+		List<BRECON_TTUM_TRANSACTION_ENTITY> BRECON_TTUM_TRANSACTION_ENTITY_LIST = new ArrayList<BRECON_TTUM_TRANSACTION_ENTITY>();
+
 		List<Balance> balances = docValue.getBkToCstmrStmt().getStmt().getBal();
-		
-		String StmtBalCodeOrProprietary ="";
-		
-		BigDecimal StmtBalAmount = null ;
-		
+
+		String StmtBalCodeOrProprietary = "";
+
+		BigDecimal StmtBalAmount = null;
+
 		String StmtBalCreditDebitIndicator = "";
-		
+
 		Date StmtBalDate = null;
-		
+
 		Date StmtBalDateTime = null;
-		
-		String SecStmtBalCodeOrProprietary ="";
-		
-		BigDecimal SecStmtBalAmount = null ;
-		
+
+		String SecStmtBalCodeOrProprietary = "";
+
+		BigDecimal SecStmtBalAmount = null;
+
 		String SecStmtBalCreditDebitIndicator = "";
-		
+
 		Date SecStmtBalDate = null;
-		
+
 		Date SecStmtBalDateTime = null;
-		
+
 		for (int j = 0; j < balances.size(); j++) {
 
-		    if (j == 0) {
+			if (j == 0) {
 
-		        StmtBalCodeOrProprietary = balances.get(j).getTp().getCdOrPrtry().getStmtBalCodeOrProprietary();
+				StmtBalCodeOrProprietary = balances.get(j).getTp().getCdOrPrtry().getStmtBalCodeOrProprietary();
 
-		        StmtBalAmount = balances.get(j).getStmtBalAmount();
+				StmtBalAmount = balances.get(j).getStmtBalAmount();
 
-		        logger.info(StmtBalAmount + " First Bal amount");
+				logger.info(StmtBalAmount + " First Bal amount");
 
-		        StmtBalCreditDebitIndicator = balances.get(j).getStmtBalCreditDebitIndicator();
+				StmtBalCreditDebitIndicator = balances.get(j).getStmtBalCreditDebitIndicator();
 
-		        StmtBalDate = balances.get(j).getDt().getStmtBalDate();
+				StmtBalDate = balances.get(j).getDt().getStmtBalDate();
 
-		        StmtBalDateTime = balances.get(j).getDt().getStmtBalDateTime();
+				StmtBalDateTime = balances.get(j).getDt().getStmtBalDateTime();
 
-		    } else if (j == 1) {
+			} else if (j == 1) {
 
-		        SecStmtBalCodeOrProprietary = balances.get(j).getTp().getCdOrPrtry().getStmtBalCodeOrProprietary();
+				SecStmtBalCodeOrProprietary = balances.get(j).getTp().getCdOrPrtry().getStmtBalCodeOrProprietary();
 
-		        SecStmtBalAmount = balances.get(j).getStmtBalAmount();
+				SecStmtBalAmount = balances.get(j).getStmtBalAmount();
 
-		        logger.info(SecStmtBalAmount + " Sec Bal amount");
+				logger.info(SecStmtBalAmount + " Sec Bal amount");
 
-		        SecStmtBalCreditDebitIndicator = balances.get(j).getStmtBalCreditDebitIndicator();
+				SecStmtBalCreditDebitIndicator = balances.get(j).getStmtBalCreditDebitIndicator();
 
-		        SecStmtBalDate = balances.get(j).getDt().getStmtBalDate();
+				SecStmtBalDate = balances.get(j).getDt().getStmtBalDate();
 
-		        SecStmtBalDateTime = balances.get(j).getDt().getStmtBalDateTime();
+				SecStmtBalDateTime = balances.get(j).getDt().getStmtBalDateTime();
 
-		    }
+			}
 
 		}
-		
-		
-		
+
 		List<Entry> Transactionentries = docValue.getBkToCstmrStmt().getStmt().getNtry();
-		
-		logger.info(String.valueOf(Transactionentries.size()));
-		
-		for (int k = 0; k < Transactionentries.size(); k++) {
-			
-			String getNtryEntryReference = Transactionentries.get(k).getNtryEntryReference();
-			
-			BigDecimal getNtryAmountCurrency = Transactionentries.get(k).getNtryAmountCurrency();
-			
-			String getNtryCreditDebitIndicator = Transactionentries.get(k).getNtryCreditDebitIndicator();
-			
-			String getNtryCode = Transactionentries.get(k).getSts().getNtryCode();
-			
-			Date getNtryBookingDate = Transactionentries.get(k).getBookgDt().getNtryBookingDate();
-			
-			Date getNtryBookingDateTime = Transactionentries.get(k).getBookgDt().getNtryBookingDateTime();
-			
-			Date getNtryValueDate = Transactionentries.get(k).getValDt().getNtryValueDate();
-			
-			String getNtryValueDateTime = Transactionentries.get(k).getValDt().getNtryValueDateTime();
-			
-			String getNtry_account_servicer_reference = Transactionentries.get(k).getNtry_account_servicer_reference();
-			
-			String getNtryProprietaryCode = Transactionentries.get(k).getBkTxCd().getPrtry().getNtryProprietaryCode();
-			
-			BigDecimal getNtryInstructedAmount = Transactionentries.get(k).getAmtDtls().getInstdAmt().getNtryInstructedAmount();
-			
-			BigDecimal getNtry_transaction_amount = Transactionentries.get(k).getAmtDtls().getTxAmt().getCurrency_values().getNtry_transaction_amount();
-			
-			String getNtryRefsMessageIdentifier = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsMessageIdentifier();
-			
-			String getNtryRefsAccountServicerReference = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsAccountServicerReference();
-			
-			String getNtry_refs_pmtinfid = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtry_refs_pmtinfid();
-			
-			String getNtryRefsEndToEndIdentification = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsEndToEndIdentification();
-			
-			String getNtry_refs_uetr = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtry_refs_uetr();
-			
-			String getNtryRefsTransactionId = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsTransactionId();
-			
-			String getNtryRefsClearingSystemReference = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsClearingSystemReference();
-			
-			BigDecimal getNtryTxDtlsAmountCurrency = Transactionentries.get(k).getNtryDtls().getTxDtls().getNtryTxDtlsAmountCurrency();
-			
-			String getNtryTxDtlsCreditDebitIndicator = Transactionentries.get(k).getNtryDtls().getTxDtls().getNtryTxDtlsCreditDebitIndicator();
-			
-			String getNtry_fininstnid_bicfi = Transactionentries.get(k).getNtryDtls().getTxDtls().getMsgRcpt().getInstgAgt().getFinInstnId().getNtry_fininstnid_bicfi();
-			
-			String getNtry_dbtragt_bicfi_debit = Transactionentries.get(k).getNtryDtls().getTxDtls().getMsgRcpt().getDbtrAgt().getFinInstnId().getNtry_dbtragt_bicfi_debit();
-			
-			String getNtry_cdtragt_bicfi_credit = Transactionentries.get(k).getNtryDtls().getTxDtls().getMsgRcpt().getCdtrAgt().getFinInstnId().getNtry_cdtragt_bicfi_credit();
-			
-			String Transaction_currency = Transactionentries.get(k).getAmtDtls().getTxAmt().getCurrency_values().getTransaction_currency();
-			
-			StoreTtumTransactiondetails(GrpHdrMessageIdentifier, GrpHdrCreationDateTime, GrpHdrName, GrpHdrBankIdentifierCode,
-					GrpHdrPageNumber, GrpHdrLastPageIndicator, StmtStatementIdentifier, StmtElectronicSequenceNumber, StmtCreationDateTime,
-					StmtFromDateTime, StmtToDateTime, stmtIdentifier, StmtRelatedAccountIdentifier, StmtBalCodeOrProprietary,
-					StmtBalAmount, StmtBalCreditDebitIndicator, StmtBalDate, StmtBalDateTime, TxsSummryNumberOfEntries, getTxsSummrySum,
-					getTxsSummryAmount, getTxsSummryCreditDebitIndicator, getTxsSummryCreditNumberOfEntries, getTxsSummryCreditSum,
-					getTxsSummryDebitNumberOfEntries, getTxsSummryDebitSum, getNtryEntryReference, getNtryAmountCurrency, getNtryCreditDebitIndicator, 
-					getNtryCode, getNtryBookingDate, getNtryBookingDateTime, getNtryValueDate, getNtryValueDateTime, getNtry_account_servicer_reference,
-					getNtryProprietaryCode, getNtryInstructedAmount, getNtry_transaction_amount, getNtryRefsMessageIdentifier, getNtryRefsAccountServicerReference,
-					getNtryRefsEndToEndIdentification, getNtryRefsTransactionId, getNtryRefsClearingSystemReference, 
-					getNtryTxDtlsAmountCurrency, getNtryTxDtlsCreditDebitIndicator, getNtry_fininstnid_bicfi, getNtry_dbtragt_bicfi_debit,
-					getNtry_cdtragt_bicfi_credit, getSignature_signedinfo_digest_value, getSignature_signedinfo_signature_value,
-					getSignature_keyinfo_x509_subject_name, getSignature_keyinfo_x509_certificate, getCanonicalizationMethod, getSignatureMethod,
-					getTransform, getDigestMethod, reportName,
-					getNtry_refs_pmtinfid, getNtry_refs_uetr, SecStmtBalCodeOrProprietary, SecStmtBalAmount,
-					StmtBalCreditDebitIndicator, StmtBalDate, StmtBalDateTime, Transaction_currency);
-			
-		}
-		
-	}	
 
-	
-	public void batchInsertDuplicates(FYItransactions.Document docValue, List<FYItransactions.Entry> entries, String reportName,String stmtIdentifier) {
-		
-		
-		String GrpHdrMessageIdentifier = docValue.getBkToCstmrStmt().getGrpHdr().getGrpHdrMessageIdentifier();
-		
-		Date GrpHdrCreationDateTime = docValue.getBkToCstmrStmt().getGrpHdr().getGrpHdrCreationDateTime();
-		
-		String GrpHdrName = docValue.getBkToCstmrStmt().getGrpHdr().getMsgRcpt().getGrpHdrName();
-		
-		String GrpHdrBankIdentifierCode = docValue.getBkToCstmrStmt().getGrpHdr().getMsgRcpt().getId().getOrgId()
-				.getGrpHdrBankIdentifierCode();
-		
-		BigDecimal GrpHdrPageNumber = docValue.getBkToCstmrStmt().getGrpHdr().getMsgPgntn().getGrpHdrPageNumber();
-		
-		String GrpHdrLastPageIndicator = docValue.getBkToCstmrStmt().getGrpHdr().getMsgPgntn()
-				.getGrpHdrLastPageIndicator();
-		
-		String StmtStatementIdentifier = docValue.getBkToCstmrStmt().getStmt().getStmtStatementIdentifier();
-		
-		BigDecimal StmtElectronicSequenceNumber = docValue.getBkToCstmrStmt().getStmt().getStmtElectronicSequenceNumber();
-		
-		Date StmtCreationDateTime = docValue.getBkToCstmrStmt().getStmt().getStmtCreationDateTime();
-		
-		Date StmtFromDateTime = docValue.getBkToCstmrStmt().getStmt().getFrToDt().getStmtFromDateTime();
-		
-		Date StmtToDateTime = docValue.getBkToCstmrStmt().getStmt().getFrToDt().getStmtToDateTime();
-		
-		String StmtRelatedAccountIdentifier = docValue.getBkToCstmrStmt().getStmt().getRltdAcct().getId().getOthr()
-				.getStmtRelatedAccountIdentifier();
-		
-		BigDecimal TxsSummryNumberOfEntries = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlNtries()
-				.getTxsSummryNumberOfEntries();
-		
-		BigDecimal getTxsSummrySum = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlNtries()
-				.getTxsSummrySum();
-		
-		BigDecimal getTxsSummryAmount = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlNtries()
-				.getTtlNetNtry().getTxsSummryAmount();
-		
-		String getTxsSummryCreditDebitIndicator = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlNtries()
-				.getTtlNetNtry().getTxsSummryCreditDebitIndicator();
-		
-		BigDecimal getTxsSummryCreditNumberOfEntries = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlCdtNtries()
-				.getTxsSummryCreditNumberOfEntries();
-		
-		BigDecimal getTxsSummryCreditSum = docValue.getBkToCstmrStmt().getStmt().getTxsSummry()
-				.getTtlCdtNtries().getTxsSummryCreditSum();
-		
-		BigDecimal getTxsSummryDebitNumberOfEntries = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlDbtNtries()
-				.getTxsSummryDebitNumberOfEntries();
-		
-		BigDecimal getTxsSummryDebitSum = docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlDbtNtries()
-				.getTxsSummryDebitSum();
-		
-		String getCanonicalizationMethod = docValue.getSignature().getSignedInfo().getCanonicalizationMethod()
-				.getAlgorithm();
-		
-		String getSignatureMethod = docValue.getSignature().getSignedInfo().getSignatureMethod().getAlgorithm();
-		
-		String getTransform = docValue.getSignature().getSignedInfo().getReference().getTransforms()
-				.getTransform().getAlgorithm();
-		
-		String getDigestMethod = docValue.getSignature().getSignedInfo().getReference().getDigestMethod()
-				.getAlgorithm();
-		
-		String getSignature_signedinfo_digest_value = docValue.getSignature().getSignedInfo().getReference()
-				.getSignature_signedinfo_digest_value();
-		
-		String getSignature_signedinfo_signature_value = docValue.getSignature().getSignature_signedinfo_signature_value();
-		
-		String getSignature_keyinfo_x509_subject_name = docValue.getSignature().getKeyInfo().getX509Data()
-				.getSignature_keyinfo_x509_subject_name();
-		
-		String getSignature_keyinfo_x509_certificate = docValue.getSignature().getKeyInfo().getX509Data()
-				.getSignature_keyinfo_x509_certificate();
-		
+		logger.info(String.valueOf(Transactionentries.size()));
+
+		for (int k = 0; k < Transactionentries.size(); k++) {
+			BRECON_TTUM_TRANSACTION_ENTITY BRECON_TTUM_TRANSACTION_ENTITY = new BRECON_TTUM_TRANSACTION_ENTITY();
+			logger.info("TTUM Entry refs data store : " + Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs()
+					.getNtryRefsClearingSystemReference());
+
+			BRECON_TTUM_TRANSACTION_ENTITY
+					.setGrphdr_message_identifier(docValue.getBkToCstmrStmt().getGrpHdr().getGrpHdrMessageIdentifier());
+
+			BRECON_TTUM_TRANSACTION_ENTITY
+					.setGrphdr_creation_date_time(docValue.getBkToCstmrStmt().getGrpHdr().getGrpHdrCreationDateTime());
+
+			BRECON_TTUM_TRANSACTION_ENTITY
+					.setGrphdr_name(docValue.getBkToCstmrStmt().getGrpHdr().getMsgRcpt().getGrpHdrName());
+
+			BRECON_TTUM_TRANSACTION_ENTITY.setGrphdr_bank_identifier_code(docValue.getBkToCstmrStmt().getGrpHdr()
+					.getMsgRcpt().getId().getOrgId().getGrpHdrBankIdentifierCode());
+
+			BRECON_TTUM_TRANSACTION_ENTITY
+					.setGrphdr_page_number(docValue.getBkToCstmrStmt().getGrpHdr().getMsgPgntn().getGrpHdrPageNumber());
+			BRECON_TTUM_TRANSACTION_ENTITY.setStmt_account_identifier(stmtIdentifier);
+			BRECON_TTUM_TRANSACTION_ENTITY.setGrphdr_last_page_indicator(
+					docValue.getBkToCstmrStmt().getGrpHdr().getMsgPgntn().getGrpHdrLastPageIndicator());
+			BRECON_TTUM_TRANSACTION_ENTITY
+					.setStmt_statement_identifier(docValue.getBkToCstmrStmt().getStmt().getStmtStatementIdentifier());
+			BRECON_TTUM_TRANSACTION_ENTITY.setStmt_electronic_sequence_number(
+					docValue.getBkToCstmrStmt().getStmt().getStmtElectronicSequenceNumber());
+			BRECON_TTUM_TRANSACTION_ENTITY
+					.setStmt_creation_date_time(docValue.getBkToCstmrStmt().getStmt().getStmtCreationDateTime());
+			BRECON_TTUM_TRANSACTION_ENTITY
+					.setStmt_from_date_time(docValue.getBkToCstmrStmt().getStmt().getFrToDt().getStmtFromDateTime());
+			BRECON_TTUM_TRANSACTION_ENTITY
+					.setStmt_to_date_time(docValue.getBkToCstmrStmt().getStmt().getFrToDt().getStmtToDateTime());
+			BRECON_TTUM_TRANSACTION_ENTITY.setStmt_related_account_identifier(docValue.getBkToCstmrStmt().getStmt()
+					.getRltdAcct().getId().getOthr().getStmtRelatedAccountIdentifier());
+			BRECON_TTUM_TRANSACTION_ENTITY.setTxssummry_number_of_entries(
+					docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlNtries().getTxsSummryNumberOfEntries());
+			BRECON_TTUM_TRANSACTION_ENTITY.setTxssummry_sum(
+					docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlNtries().getTxsSummrySum());
+			BRECON_TTUM_TRANSACTION_ENTITY.setTxssummry_amount(docValue.getBkToCstmrStmt().getStmt().getTxsSummry()
+					.getTtlNtries().getTtlNetNtry().getTxsSummryAmount());
+			BRECON_TTUM_TRANSACTION_ENTITY.setTxssummry_credit_debit_indicator(docValue.getBkToCstmrStmt().getStmt()
+					.getTxsSummry().getTtlNtries().getTtlNetNtry().getTxsSummryCreditDebitIndicator());
+			BRECON_TTUM_TRANSACTION_ENTITY.setTxssummry_credit_number_of_entries(docValue.getBkToCstmrStmt().getStmt()
+					.getTxsSummry().getTtlCdtNtries().getTxsSummryCreditNumberOfEntries());
+			BRECON_TTUM_TRANSACTION_ENTITY.setTxssummry_credit_sum(
+					docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlCdtNtries().getTxsSummryCreditSum());
+			BRECON_TTUM_TRANSACTION_ENTITY.setTxssummry_debit_number_of_entries(docValue.getBkToCstmrStmt().getStmt()
+					.getTxsSummry().getTtlDbtNtries().getTxsSummryDebitNumberOfEntries());
+			BRECON_TTUM_TRANSACTION_ENTITY.setTxssummry_debit_sum(
+					docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlDbtNtries().getTxsSummryDebitSum());
+			BRECON_TTUM_TRANSACTION_ENTITY.setCanonicalizationmethod_algorithm(
+					docValue.getSignature().getSignedInfo().getCanonicalizationMethod().getAlgorithm());
+			BRECON_TTUM_TRANSACTION_ENTITY.setSignaturemethod_algorithm(
+					docValue.getSignature().getSignedInfo().getSignatureMethod().getAlgorithm());
+			BRECON_TTUM_TRANSACTION_ENTITY.setTransform_algorithm(docValue.getSignature().getSignedInfo().getReference()
+					.getTransforms().getTransform().getAlgorithm());
+			BRECON_TTUM_TRANSACTION_ENTITY.setDigestmethod_algorithm(
+					docValue.getSignature().getSignedInfo().getReference().getDigestMethod().getAlgorithm());
+			BRECON_TTUM_TRANSACTION_ENTITY.setSignature_signedinfo_digest_value(
+					docValue.getSignature().getSignedInfo().getReference().getSignature_signedinfo_digest_value());
+			BRECON_TTUM_TRANSACTION_ENTITY.setSignature_signedinfo_signature_value(
+					docValue.getSignature().getSignature_signedinfo_signature_value());
+			BRECON_TTUM_TRANSACTION_ENTITY.setSignature_keyinfo_x509_subject_name(
+					docValue.getSignature().getKeyInfo().getX509Data().getSignature_keyinfo_x509_subject_name());
+			BRECON_TTUM_TRANSACTION_ENTITY.setSignature_keyinfo_x509_certificate(
+					docValue.getSignature().getKeyInfo().getX509Data().getSignature_keyinfo_x509_certificate());
+			BRECON_TTUM_TRANSACTION_ENTITY.setStmt_bal_code_or_proprietary(StmtBalCodeOrProprietary);
+			BRECON_TTUM_TRANSACTION_ENTITY.setStmt_bal_amount(StmtBalAmount);
+			BRECON_TTUM_TRANSACTION_ENTITY.setStmt_bal_credit_debit_indicator(StmtBalCreditDebitIndicator);
+			BRECON_TTUM_TRANSACTION_ENTITY.setStmt_bal_date(StmtBalDate);
+			BRECON_TTUM_TRANSACTION_ENTITY.setStmt_bal_date_time(StmtBalDateTime);
+			BRECON_TTUM_TRANSACTION_ENTITY.setStmt_bal1_code_or_proprietary(SecStmtBalCodeOrProprietary);
+			BRECON_TTUM_TRANSACTION_ENTITY.setStmt_bal1_amount(SecStmtBalAmount);
+			BRECON_TTUM_TRANSACTION_ENTITY.setStmt_bal1_credit_debit_indicator(SecStmtBalCreditDebitIndicator);
+			BRECON_TTUM_TRANSACTION_ENTITY.setStmt_bal1_date(SecStmtBalDate);
+			BRECON_TTUM_TRANSACTION_ENTITY.setStmt_bal1_date_time(SecStmtBalDateTime);
+			BRECON_TTUM_TRANSACTION_ENTITY.setNtry_entry_reference(Transactionentries.get(k).getNtryEntryReference());
+			BRECON_TTUM_TRANSACTION_ENTITY.setNtry_amount_currency(Transactionentries.get(k).getNtryAmountCurrency());
+			BRECON_TTUM_TRANSACTION_ENTITY
+					.setNtry_credit_debit_indicator(Transactionentries.get(k).getNtryCreditDebitIndicator());
+			BRECON_TTUM_TRANSACTION_ENTITY.setNtry_code(Transactionentries.get(k).getSts().getNtryCode());
+			BRECON_TTUM_TRANSACTION_ENTITY
+					.setNtry_booking_date(Transactionentries.get(k).getBookgDt().getNtryBookingDate());
+			BRECON_TTUM_TRANSACTION_ENTITY
+					.setNtry_booking_date_time(Transactionentries.get(k).getBookgDt().getNtryBookingDateTime());
+			BRECON_TTUM_TRANSACTION_ENTITY.setNtry_value_date(Transactionentries.get(k).getValDt().getNtryValueDate());
+			BRECON_TTUM_TRANSACTION_ENTITY
+					.setNtry_value_date_time(Transactionentries.get(k).getValDt().getNtryValueDateTime());
+			BRECON_TTUM_TRANSACTION_ENTITY
+					.setNtry_account_servicer_reference(Transactionentries.get(k).getNtry_account_servicer_reference());
+			BRECON_TTUM_TRANSACTION_ENTITY.setNtry_proprietary_code(
+					Transactionentries.get(k).getBkTxCd().getPrtry().getNtryProprietaryCode());
+			BRECON_TTUM_TRANSACTION_ENTITY.setNtry_instructed_amount(
+					Transactionentries.get(k).getAmtDtls().getInstdAmt().getNtryInstructedAmount());
+			BRECON_TTUM_TRANSACTION_ENTITY.setNtry_transaction_amount(Transactionentries.get(k).getAmtDtls().getTxAmt()
+					.getCurrency_values().getNtry_transaction_amount());
+			BRECON_TTUM_TRANSACTION_ENTITY.setNtry_refs_message_identifier(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsMessageIdentifier());
+			BRECON_TTUM_TRANSACTION_ENTITY.setNtry_refs_account_servicer_reference(Transactionentries.get(k)
+					.getNtryDtls().getTxDtls().getRefs().getNtryRefsAccountServicerReference());
+			BRECON_TTUM_TRANSACTION_ENTITY.setNtry_refs_pmtinfid(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtry_refs_pmtinfid());
+			BRECON_TTUM_TRANSACTION_ENTITY.setNtry_refs_end_to_end_identification(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsEndToEndIdentification());
+			BRECON_TTUM_TRANSACTION_ENTITY.setNtry_refs_uetr(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtry_refs_uetr());
+			BRECON_TTUM_TRANSACTION_ENTITY.setNtry_refs_transaction_id(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsTransactionId());
+			BRECON_TTUM_TRANSACTION_ENTITY.setNtry_refs_clearing_system_reference(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsClearingSystemReference());
+			BRECON_TTUM_TRANSACTION_ENTITY.setNtry_txdtls_amount_currency(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getNtryTxDtlsAmountCurrency());
+			BRECON_TTUM_TRANSACTION_ENTITY.setNtry_txdtls_credit_debit_indicator(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getNtryTxDtlsCreditDebitIndicator());
+			BRECON_TTUM_TRANSACTION_ENTITY.setNtry_fininstnid_bicfi(Transactionentries.get(k).getNtryDtls().getTxDtls()
+					.getMsgRcpt().getInstgAgt().getFinInstnId().getNtry_fininstnid_bicfi());
+			BRECON_TTUM_TRANSACTION_ENTITY.setNtry_dbtragt_bicfi_debit(Transactionentries.get(k).getNtryDtls()
+					.getTxDtls().getMsgRcpt().getDbtrAgt().getFinInstnId().getNtry_dbtragt_bicfi_debit());
+			BRECON_TTUM_TRANSACTION_ENTITY.setNtry_cdtragt_bicfi_credit(Transactionentries.get(k).getNtryDtls()
+					.getTxDtls().getMsgRcpt().getCdtrAgt().getFinInstnId().getNtry_cdtragt_bicfi_credit());
+			BRECON_TTUM_TRANSACTION_ENTITY.setTransaction_currency(
+					Transactionentries.get(k).getAmtDtls().getTxAmt().getCurrency_values().getTransaction_currency());
+			BRECON_TTUM_TRANSACTION_ENTITY.setEntity_flg("Y");
+			BRECON_TTUM_TRANSACTION_ENTITY.setDel_flg("N");
+			BRECON_TTUM_TRANSACTION_ENTITY.setReport_date(new Date());
+			BRECON_TTUM_TRANSACTION_ENTITY.setRecon_flag("N");
+			BRECON_TTUM_TRANSACTION_ENTITY.setSrlno(bRECON_DESTINATION_REPO.srlno());
+			BRECON_TTUM_TRANSACTION_ENTITY.setCreate_time(new Date());
+			BRECON_TTUM_TRANSACTION_ENTITY.setReport_name(reportName);
+			BRECON_TTUM_TRANSACTION_ENTITY_LIST.add(BRECON_TTUM_TRANSACTION_ENTITY);
+
+		}
+
+		brecon_ttum_transaction_rep.saveAll(BRECON_TTUM_TRANSACTION_ENTITY_LIST);
+		logger.info("Save Completed file : " + reportName);
+
+	}
+
+	public void batchInsertDuplicates(FYItransactions.Document docValue, List<FYItransactions.Entry> entries,
+			String reportName, String stmtIdentifier) {
+
+		List<Brecon_aani_payment_duplicate_entity> Brecon_aani_payment_duplicate_entity_list = new ArrayList<Brecon_aani_payment_duplicate_entity>();
+
 		List<Balance> balances = docValue.getBkToCstmrStmt().getStmt().getBal();
-		
-		String StmtBalCodeOrProprietary ="";
-		
-		BigDecimal StmtBalAmount = null ;
-		
+
+		String StmtBalCodeOrProprietary = "";
+
+		BigDecimal StmtBalAmount = null;
+
 		String StmtBalCreditDebitIndicator = "";
-		
+
 		Date StmtBalDate = null;
-		
+
 		Date StmtBalDateTime = null;
-		
-		String SecStmtBalCodeOrProprietary ="";
-		
-		BigDecimal SecStmtBalAmount = null ;
-		
+
+		String SecStmtBalCodeOrProprietary = "";
+
+		BigDecimal SecStmtBalAmount = null;
+
 		String SecStmtBalCreditDebitIndicator = "";
-		
+
 		Date SecStmtBalDate = null;
-		
+
 		Date SecStmtBalDateTime = null;
-		
+
 		for (int j = 0; j < balances.size(); j++) {
 
-		    if (j == 0) {
+			if (j == 0) {
 
-		        StmtBalCodeOrProprietary = balances.get(j).getTp().getCdOrPrtry().getStmtBalCodeOrProprietary();
+				StmtBalCodeOrProprietary = balances.get(j).getTp().getCdOrPrtry().getStmtBalCodeOrProprietary();
 
-		        StmtBalAmount = balances.get(j).getStmtBalAmount();
+				StmtBalAmount = balances.get(j).getStmtBalAmount();
 
-		        logger.info(StmtBalAmount + " First Bal amount");
+				logger.info(StmtBalAmount + " First Bal amount");
 
-		        StmtBalCreditDebitIndicator = balances.get(j).getStmtBalCreditDebitIndicator();
+				StmtBalCreditDebitIndicator = balances.get(j).getStmtBalCreditDebitIndicator();
 
-		        StmtBalDate = balances.get(j).getDt().getStmtBalDate();
+				StmtBalDate = balances.get(j).getDt().getStmtBalDate();
 
-		        StmtBalDateTime = balances.get(j).getDt().getStmtBalDateTime();
+				StmtBalDateTime = balances.get(j).getDt().getStmtBalDateTime();
 
-		    } else if (j == 1) {
+			} else if (j == 1) {
 
-		        SecStmtBalCodeOrProprietary = balances.get(j).getTp().getCdOrPrtry().getStmtBalCodeOrProprietary();
+				SecStmtBalCodeOrProprietary = balances.get(j).getTp().getCdOrPrtry().getStmtBalCodeOrProprietary();
 
-		        SecStmtBalAmount = balances.get(j).getStmtBalAmount();
+				SecStmtBalAmount = balances.get(j).getStmtBalAmount();
 
-		        logger.info(SecStmtBalAmount + " Sec Bal amount");
+				logger.info(SecStmtBalAmount + " Sec Bal amount");
 
-		        SecStmtBalCreditDebitIndicator = balances.get(j).getStmtBalCreditDebitIndicator();
+				SecStmtBalCreditDebitIndicator = balances.get(j).getStmtBalCreditDebitIndicator();
 
-		        SecStmtBalDate = balances.get(j).getDt().getStmtBalDate();
+				SecStmtBalDate = balances.get(j).getDt().getStmtBalDate();
 
-		        SecStmtBalDateTime = balances.get(j).getDt().getStmtBalDateTime();
+				SecStmtBalDateTime = balances.get(j).getDt().getStmtBalDateTime();
 
-		    }
+			}
 
 		}
-		
-		
-		
+
 		List<Entry> Transactionentries = docValue.getBkToCstmrStmt().getStmt().getNtry();
-		
+
 		logger.info(String.valueOf(Transactionentries.size()));
-		
+
 		for (int k = 0; k < Transactionentries.size(); k++) {
-			
-			String getNtryEntryReference = Transactionentries.get(k).getNtryEntryReference();
-			
-			BigDecimal getNtryAmountCurrency = Transactionentries.get(k).getNtryAmountCurrency();
-			
-			String getNtryCreditDebitIndicator = Transactionentries.get(k).getNtryCreditDebitIndicator();
-			
-			String getNtryCode = Transactionentries.get(k).getSts().getNtryCode();
-			
-			Date getNtryBookingDate = Transactionentries.get(k).getBookgDt().getNtryBookingDate();
-			
-			Date getNtryBookingDateTime = Transactionentries.get(k).getBookgDt().getNtryBookingDateTime();
-			
-			Date getNtryValueDate = Transactionentries.get(k).getValDt().getNtryValueDate();
-			
-			String getNtryValueDateTime = Transactionentries.get(k).getValDt().getNtryValueDateTime();
-			
-			String getNtry_account_servicer_reference = Transactionentries.get(k).getNtry_account_servicer_reference();
-			
-			String getNtryProprietaryCode = Transactionentries.get(k).getBkTxCd().getPrtry().getNtryProprietaryCode();
-			
-			BigDecimal getNtryInstructedAmount = Transactionentries.get(k).getAmtDtls().getInstdAmt().getNtryInstructedAmount();
-			
-			BigDecimal getNtry_transaction_amount = Transactionentries.get(k).getAmtDtls().getTxAmt().getCurrency_values().getNtry_transaction_amount();
-			
-			String getNtryRefsMessageIdentifier = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsMessageIdentifier();
-			
-			String getNtryRefsAccountServicerReference = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsAccountServicerReference();
-			
-			String getNtry_refs_pmtinfid = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtry_refs_pmtinfid();
-			
-			String getNtryRefsEndToEndIdentification = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsEndToEndIdentification();
-			
-			String getNtry_refs_uetr = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtry_refs_uetr();
-			
-			String getNtryRefsTransactionId = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsTransactionId();
-			
-			String getNtryRefsClearingSystemReference = Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsClearingSystemReference();
-			
-			BigDecimal getNtryTxDtlsAmountCurrency = Transactionentries.get(k).getNtryDtls().getTxDtls().getNtryTxDtlsAmountCurrency();
-			
-			String getNtryTxDtlsCreditDebitIndicator = Transactionentries.get(k).getNtryDtls().getTxDtls().getNtryTxDtlsCreditDebitIndicator();
-			
-			String getNtry_fininstnid_bicfi = Transactionentries.get(k).getNtryDtls().getTxDtls().getMsgRcpt().getInstgAgt().getFinInstnId().getNtry_fininstnid_bicfi();
-			
-			String getNtry_dbtragt_bicfi_debit = Transactionentries.get(k).getNtryDtls().getTxDtls().getMsgRcpt().getDbtrAgt().getFinInstnId().getNtry_dbtragt_bicfi_debit();
-			
-			String getNtry_cdtragt_bicfi_credit = Transactionentries.get(k).getNtryDtls().getTxDtls().getMsgRcpt().getCdtrAgt().getFinInstnId().getNtry_cdtragt_bicfi_credit();
-			
-			String Transaction_currency = Transactionentries.get(k).getAmtDtls().getTxAmt().getCurrency_values().getTransaction_currency();
-			
-			StoreAanipaymentduplicates(GrpHdrMessageIdentifier, GrpHdrCreationDateTime, GrpHdrName, GrpHdrBankIdentifierCode,
-					GrpHdrPageNumber, GrpHdrLastPageIndicator, StmtStatementIdentifier, StmtElectronicSequenceNumber, StmtCreationDateTime,
-					StmtFromDateTime, StmtToDateTime, stmtIdentifier, StmtRelatedAccountIdentifier, StmtBalCodeOrProprietary,
-					StmtBalAmount, StmtBalCreditDebitIndicator, StmtBalDate, StmtBalDateTime, TxsSummryNumberOfEntries, getTxsSummrySum,
-					getTxsSummryAmount, getTxsSummryCreditDebitIndicator, getTxsSummryCreditNumberOfEntries, getTxsSummryCreditSum,
-					getTxsSummryDebitNumberOfEntries, getTxsSummryDebitSum, getNtryEntryReference, getNtryAmountCurrency, getNtryCreditDebitIndicator, 
-					getNtryCode, getNtryBookingDate, getNtryBookingDateTime, getNtryValueDate, getNtryValueDateTime, getNtry_account_servicer_reference,
-					getNtryProprietaryCode, getNtryInstructedAmount, getNtry_transaction_amount, getNtryRefsMessageIdentifier, getNtryRefsAccountServicerReference,
-					getNtryRefsEndToEndIdentification, getNtryRefsTransactionId, getNtryRefsClearingSystemReference, 
-					getNtryTxDtlsAmountCurrency, getNtryTxDtlsCreditDebitIndicator, getNtry_fininstnid_bicfi, getNtry_dbtragt_bicfi_debit,
-					getNtry_cdtragt_bicfi_credit, getSignature_signedinfo_digest_value, getSignature_signedinfo_signature_value,
-					getSignature_keyinfo_x509_subject_name, getSignature_keyinfo_x509_certificate, getCanonicalizationMethod, getSignatureMethod,
-					getTransform, getDigestMethod, reportName,
-					getNtry_refs_pmtinfid, getNtry_refs_uetr, SecStmtBalCodeOrProprietary, SecStmtBalAmount,
-					StmtBalCreditDebitIndicator, StmtBalDate, StmtBalDateTime, Transaction_currency);
-			
+			Brecon_aani_payment_duplicate_entity Brecon_aani_payment_duplicate_entity = new Brecon_aani_payment_duplicate_entity();
+			logger.info("Duplicate Entry refs data store : " + Transactionentries.get(k).getNtryDtls().getTxDtls()
+					.getRefs().getNtryRefsClearingSystemReference());
+
+			Brecon_aani_payment_duplicate_entity
+					.setGrphdr_message_identifier(docValue.getBkToCstmrStmt().getGrpHdr().getGrpHdrMessageIdentifier());
+
+			Brecon_aani_payment_duplicate_entity
+					.setGrphdr_creation_date_time(docValue.getBkToCstmrStmt().getGrpHdr().getGrpHdrCreationDateTime());
+
+			Brecon_aani_payment_duplicate_entity
+					.setGrphdr_name(docValue.getBkToCstmrStmt().getGrpHdr().getMsgRcpt().getGrpHdrName());
+
+			Brecon_aani_payment_duplicate_entity.setGrphdr_bank_identifier_code(docValue.getBkToCstmrStmt().getGrpHdr()
+					.getMsgRcpt().getId().getOrgId().getGrpHdrBankIdentifierCode());
+
+			Brecon_aani_payment_duplicate_entity
+					.setGrphdr_page_number(docValue.getBkToCstmrStmt().getGrpHdr().getMsgPgntn().getGrpHdrPageNumber());
+
+			Brecon_aani_payment_duplicate_entity.setGrphdr_last_page_indicator(
+					docValue.getBkToCstmrStmt().getGrpHdr().getMsgPgntn().getGrpHdrLastPageIndicator());
+			Brecon_aani_payment_duplicate_entity
+					.setStmt_statement_identifier(docValue.getBkToCstmrStmt().getStmt().getStmtStatementIdentifier());
+			Brecon_aani_payment_duplicate_entity.setStmt_electronic_sequence_number(
+					docValue.getBkToCstmrStmt().getStmt().getStmtElectronicSequenceNumber());
+			Brecon_aani_payment_duplicate_entity
+					.setStmt_creation_date_time(docValue.getBkToCstmrStmt().getStmt().getStmtCreationDateTime());
+			Brecon_aani_payment_duplicate_entity
+					.setStmt_from_date_time(docValue.getBkToCstmrStmt().getStmt().getFrToDt().getStmtFromDateTime());
+			Brecon_aani_payment_duplicate_entity
+					.setStmt_to_date_time(docValue.getBkToCstmrStmt().getStmt().getFrToDt().getStmtToDateTime());
+			Brecon_aani_payment_duplicate_entity.setStmt_related_account_identifier(docValue.getBkToCstmrStmt()
+					.getStmt().getRltdAcct().getId().getOthr().getStmtRelatedAccountIdentifier());
+			Brecon_aani_payment_duplicate_entity.setTxssummry_number_of_entries(
+					docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlNtries().getTxsSummryNumberOfEntries());
+			Brecon_aani_payment_duplicate_entity.setTxssummry_sum(
+					docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlNtries().getTxsSummrySum());
+			Brecon_aani_payment_duplicate_entity.setTxssummry_amount(docValue.getBkToCstmrStmt().getStmt()
+					.getTxsSummry().getTtlNtries().getTtlNetNtry().getTxsSummryAmount());
+			Brecon_aani_payment_duplicate_entity.setTxssummry_credit_debit_indicator(docValue.getBkToCstmrStmt()
+					.getStmt().getTxsSummry().getTtlNtries().getTtlNetNtry().getTxsSummryCreditDebitIndicator());
+			Brecon_aani_payment_duplicate_entity.setTxssummry_credit_number_of_entries(docValue.getBkToCstmrStmt()
+					.getStmt().getTxsSummry().getTtlCdtNtries().getTxsSummryCreditNumberOfEntries());
+			Brecon_aani_payment_duplicate_entity.setTxssummry_credit_sum(
+					docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlCdtNtries().getTxsSummryCreditSum());
+			Brecon_aani_payment_duplicate_entity.setTxssummry_debit_number_of_entries(docValue.getBkToCstmrStmt()
+					.getStmt().getTxsSummry().getTtlDbtNtries().getTxsSummryDebitNumberOfEntries());
+			Brecon_aani_payment_duplicate_entity.setTxssummry_debit_sum(
+					docValue.getBkToCstmrStmt().getStmt().getTxsSummry().getTtlDbtNtries().getTxsSummryDebitSum());
+			Brecon_aani_payment_duplicate_entity.setCanonicalizationmethod_algorithm(
+					docValue.getSignature().getSignedInfo().getCanonicalizationMethod().getAlgorithm());
+			Brecon_aani_payment_duplicate_entity.setSignaturemethod_algorithm(
+					docValue.getSignature().getSignedInfo().getSignatureMethod().getAlgorithm());
+			Brecon_aani_payment_duplicate_entity.setTransform_algorithm(docValue.getSignature().getSignedInfo()
+					.getReference().getTransforms().getTransform().getAlgorithm());
+			Brecon_aani_payment_duplicate_entity.setDigestmethod_algorithm(
+					docValue.getSignature().getSignedInfo().getReference().getDigestMethod().getAlgorithm());
+			Brecon_aani_payment_duplicate_entity.setSignature_signedinfo_digest_value(
+					docValue.getSignature().getSignedInfo().getReference().getSignature_signedinfo_digest_value());
+			Brecon_aani_payment_duplicate_entity.setSignature_signedinfo_signature_value(
+					docValue.getSignature().getSignature_signedinfo_signature_value());
+			Brecon_aani_payment_duplicate_entity.setSignature_keyinfo_x509_subject_name(
+					docValue.getSignature().getKeyInfo().getX509Data().getSignature_keyinfo_x509_subject_name());
+			Brecon_aani_payment_duplicate_entity.setSignature_keyinfo_x509_certificate(
+					docValue.getSignature().getKeyInfo().getX509Data().getSignature_keyinfo_x509_certificate());
+			Brecon_aani_payment_duplicate_entity.setStmt_account_identifier(stmtIdentifier);
+			Brecon_aani_payment_duplicate_entity.setStmt_bal_code_or_proprietary(StmtBalCodeOrProprietary);
+			Brecon_aani_payment_duplicate_entity.setStmt_bal_amount(StmtBalAmount);
+			Brecon_aani_payment_duplicate_entity.setStmt_bal_credit_debit_indicator(StmtBalCreditDebitIndicator);
+			Brecon_aani_payment_duplicate_entity.setStmt_bal_date(StmtBalDate);
+			Brecon_aani_payment_duplicate_entity.setStmt_bal_date_time(StmtBalDateTime);
+			Brecon_aani_payment_duplicate_entity.setStmt_bal1_code_or_proprietary(SecStmtBalCodeOrProprietary);
+			Brecon_aani_payment_duplicate_entity.setStmt_bal1_amount(SecStmtBalAmount);
+			Brecon_aani_payment_duplicate_entity.setStmt_bal1_credit_debit_indicator(SecStmtBalCreditDebitIndicator);
+			Brecon_aani_payment_duplicate_entity.setStmt_bal1_date(SecStmtBalDate);
+			Brecon_aani_payment_duplicate_entity.setStmt_bal1_date_time(SecStmtBalDateTime);
+			Brecon_aani_payment_duplicate_entity
+					.setNtry_entry_reference(Transactionentries.get(k).getNtryEntryReference());
+			Brecon_aani_payment_duplicate_entity
+					.setNtry_amount_currency(Transactionentries.get(k).getNtryAmountCurrency());
+			Brecon_aani_payment_duplicate_entity
+					.setNtry_credit_debit_indicator(Transactionentries.get(k).getNtryCreditDebitIndicator());
+			Brecon_aani_payment_duplicate_entity.setNtry_code(Transactionentries.get(k).getSts().getNtryCode());
+			Brecon_aani_payment_duplicate_entity
+					.setNtry_booking_date(Transactionentries.get(k).getBookgDt().getNtryBookingDate());
+			Brecon_aani_payment_duplicate_entity
+					.setNtry_booking_date_time(Transactionentries.get(k).getBookgDt().getNtryBookingDateTime());
+			Brecon_aani_payment_duplicate_entity
+					.setNtry_value_date(Transactionentries.get(k).getValDt().getNtryValueDate());
+			Brecon_aani_payment_duplicate_entity
+					.setNtry_value_date_time(Transactionentries.get(k).getValDt().getNtryValueDateTime());
+			Brecon_aani_payment_duplicate_entity
+					.setNtry_account_servicer_reference(Transactionentries.get(k).getNtry_account_servicer_reference());
+			Brecon_aani_payment_duplicate_entity.setNtry_proprietary_code(
+					Transactionentries.get(k).getBkTxCd().getPrtry().getNtryProprietaryCode());
+			Brecon_aani_payment_duplicate_entity.setNtry_instructed_amount(
+					Transactionentries.get(k).getAmtDtls().getInstdAmt().getNtryInstructedAmount());
+			Brecon_aani_payment_duplicate_entity.setNtry_transaction_amount(Transactionentries.get(k).getAmtDtls()
+					.getTxAmt().getCurrency_values().getNtry_transaction_amount());
+			Brecon_aani_payment_duplicate_entity.setNtry_refs_message_identifier(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsMessageIdentifier());
+			Brecon_aani_payment_duplicate_entity.setNtry_refs_account_servicer_reference(Transactionentries.get(k)
+					.getNtryDtls().getTxDtls().getRefs().getNtryRefsAccountServicerReference());
+			Brecon_aani_payment_duplicate_entity.setNtry_refs_pmtinfid(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtry_refs_pmtinfid());
+			Brecon_aani_payment_duplicate_entity.setNtry_refs_end_to_end_identification(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsEndToEndIdentification());
+			Brecon_aani_payment_duplicate_entity.setNtry_refs_uetr(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtry_refs_uetr());
+			Brecon_aani_payment_duplicate_entity.setNtry_refs_transaction_id(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsTransactionId());
+			Brecon_aani_payment_duplicate_entity.setNtry_refs_clearing_system_reference(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getRefs().getNtryRefsClearingSystemReference());
+			Brecon_aani_payment_duplicate_entity.setNtry_txdtls_amount_currency(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getNtryTxDtlsAmountCurrency());
+			Brecon_aani_payment_duplicate_entity.setNtry_txdtls_credit_debit_indicator(
+					Transactionentries.get(k).getNtryDtls().getTxDtls().getNtryTxDtlsCreditDebitIndicator());
+			Brecon_aani_payment_duplicate_entity.setNtry_fininstnid_bicfi(Transactionentries.get(k).getNtryDtls()
+					.getTxDtls().getMsgRcpt().getInstgAgt().getFinInstnId().getNtry_fininstnid_bicfi());
+			Brecon_aani_payment_duplicate_entity.setNtry_dbtragt_bicfi_debit(Transactionentries.get(k).getNtryDtls()
+					.getTxDtls().getMsgRcpt().getDbtrAgt().getFinInstnId().getNtry_dbtragt_bicfi_debit());
+			Brecon_aani_payment_duplicate_entity.setNtry_cdtragt_bicfi_credit(Transactionentries.get(k).getNtryDtls()
+					.getTxDtls().getMsgRcpt().getCdtrAgt().getFinInstnId().getNtry_cdtragt_bicfi_credit());
+			Brecon_aani_payment_duplicate_entity.setTransaction_currency(
+					Transactionentries.get(k).getAmtDtls().getTxAmt().getCurrency_values().getTransaction_currency());
+			Brecon_aani_payment_duplicate_entity.setEntity_flg("Y");
+			Brecon_aani_payment_duplicate_entity.setDel_flg("N");
+			Brecon_aani_payment_duplicate_entity.setReport_date(new Date());
+			Brecon_aani_payment_duplicate_entity.setRecon_flag("N");
+			Brecon_aani_payment_duplicate_entity.setSrlno(bRECON_DESTINATION_REPO.srlno());
+			Brecon_aani_payment_duplicate_entity.setCreate_time(new Date());
+			Brecon_aani_payment_duplicate_entity.setReport_name(reportName);
+			Brecon_aani_payment_duplicate_entity_list.add(Brecon_aani_payment_duplicate_entity);
+
 		}
-		
-	}	
+		Brecon_Aani_payment_dup_rep.saveAll(Brecon_aani_payment_duplicate_entity_list);
 
+		logger.info("Save Completed file : " + reportName);
 
-	
+	}
 
 }

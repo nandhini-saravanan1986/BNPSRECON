@@ -33,7 +33,7 @@ public interface BRECON_DESTINATION_REPO extends JpaRepository<BRECON_DESTINATIO
 	Optional<BRECON_DESTINATION_ENTITY> checkntryref(String ntry_refs_clearing_system_reference);
 	
 
-	@Query(value = "select distinct REPORT_DATE,NTRY_VALUE_DATE,report_name,STMT_ACCOUNT_IDENTIFIER,count(report_name) as no_of_fields_inserted,TXSSUMMRY_NUMBER_OF_ENTRIES,TXSSUMMRY_CREDIT_NUMBER_OF_ENTRIES,TXSSUMMRY_DEBIT_NUMBER_OF_ENTRIES from BRECON_DESTINATION_TABLE group by report_name,REPORT_DATE,NTRY_VALUE_DATE,STMT_ACCOUNT_IDENTIFIER,TXSSUMMRY_NUMBER_OF_ENTRIES,TXSSUMMRY_CREDIT_NUMBER_OF_ENTRIES,TXSSUMMRY_DEBIT_NUMBER_OF_ENTRIES ORDER BY REPORT_DATE", nativeQuery = true)
+	@Query(value = "select distinct TO_DATE(REPORT_DATE,'DD-MM-YYYY') AS REPORT_DATE,NTRY_VALUE_DATE,report_name,STMT_ACCOUNT_IDENTIFIER,count(report_name) as no_of_fields_inserted from BRECON_DESTINATION_TABLE group by report_name,REPORT_DATE,NTRY_VALUE_DATE,STMT_ACCOUNT_IDENTIFIER ORDER BY REPORT_DATE", nativeQuery = true)
 	List<Object> getlist();
 
 	@Query(value = "select * from BRECON_DESTINATION_TABLE WHERE RECON_FLAG = 'N'", nativeQuery = true)
