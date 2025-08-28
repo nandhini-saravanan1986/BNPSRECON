@@ -257,7 +257,7 @@ public class XBRLWebSecurity extends WebSecurityConfigurerAdapter {
 
 				System.out.println(" Your Log in otp is :" + otp);
 
-				loginServices.sendclientotp(otp, user.getRole_id(), user);
+				//loginServices.sendclientotp(otp, user.getRole_id(), user);
 
 				// Store OTP in session or Redis (secure option)
 				request.getSession().setAttribute("otp", otp);
