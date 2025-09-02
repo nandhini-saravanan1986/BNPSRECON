@@ -20,21 +20,26 @@ public interface BRECON_DESTINATION_REPO extends JpaRepository<BRECON_DESTINATIO
 
 	@Query(value = "select distinct report_name from BRECON_DESTINATION_TABLE", nativeQuery = true)
 	List<String> getReportNames();
-	
+
 	@Query(value = "SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END FROM BRECON_DESTINATION_TABLE WHERE ntry_refs_clearing_system_reference = ?1", nativeQuery = true)
 	Integer checkduplicatentry(String ntry_refs_clearing_system_reference);
-	
+
 	@Query("SELECT r.ntry_refs_clearing_system_reference,r.ntry_transaction_amount,r.ntry_txdtls_credit_debit_indicator FROM\r\n"
 			+ "BRECON_DESTINATION_ENTITY  r WHERE r.ntry_refs_clearing_system_reference IN :refs")
 	List<Object[]> findExistingReferences(@Param("refs") Set<String> refs);
 
-	
 	@Query(value = "select * from BRECON_DESTINATION_TABLE where ntry_refs_clearing_system_reference=?1", nativeQuery = true)
 	Optional<BRECON_DESTINATION_ENTITY> checkntryref(String ntry_refs_clearing_system_reference);
+
+	@Query(value = "Select REPORT_DATE,NTRY_VALUE_DATE,report_name,STMT_ACCOUNT_IDENTIFIER,COUNT(report_name) AS NO_OF from(\r\n"
+			+ "			select TO_DATE(TO_CHAR(REPORT_DATE,'YYYY')||TO_CHAR(REPORT_DATE,'-MM-DD'),'YYYY-MM-DD')\r\n"
+			+ "			AS REPORT_DATE,TO_DATE(TO_CHAR(NTRY_VALUE_DATE,'YYYY')||TO_CHAR(NTRY_VALUE_DATE,'-MM-DD'),'YYYY-MM-DD') AS NTRY_VALUE_DATE,\r\n"
+			+ "			report_name,STMT_ACCOUNT_IDENTIFIER from BRECON_DESTINATION_TABLE) group by\r\n"
+			+ "			report_name,REPORT_DATE,NTRY_VALUE_DATE,STMT_ACCOUNT_IDENTIFIER ORDER BY REPORT_DATE", nativeQuery = true)
+	List<Object> getlist();
+	
 	
 
-	@Query(value = "select distinct TO_DATE(REPORT_DATE,'DD-MM-YYYY') AS REPORT_DATE,NTRY_VALUE_DATE,report_name,STMT_ACCOUNT_IDENTIFIER,count(report_name) as no_of_fields_inserted from BRECON_DESTINATION_TABLE group by report_name,REPORT_DATE,NTRY_VALUE_DATE,STMT_ACCOUNT_IDENTIFIER ORDER BY REPORT_DATE", nativeQuery = true)
-	List<Object> getlist();
 
 	@Query(value = "select * from BRECON_DESTINATION_TABLE WHERE RECON_FLAG = 'N'", nativeQuery = true)
 	List<BRECON_DESTINATION_ENTITY> getDestination();
