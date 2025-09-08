@@ -530,7 +530,7 @@ public class XBRLNavigationController {
 	@ResponseBody
 	public String deleteuser(@RequestParam("formmode") String userid, Model md, HttpServletRequest rq) {
 
-		String msg = loginServices.deleteuser(userid);
+		String msg = loginServices.deleteUser(userid);
 
 		return msg;
 

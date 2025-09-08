@@ -406,6 +406,7 @@ public class XBRLRestController {
 					chargeBack.setReport_to_date(report_to_date);
 					y++;
 					chargeBack.setSrlno(bRECON_DESTINATION_REPO.srlno());
+					System.out.println("The vales are saved in the table");
 					bRECON_DESTINATION_REPO.save(chargeBack);
 				}
 				return "Saved Successfully";
@@ -527,6 +528,32 @@ public class XBRLRestController {
 		String duplicateReport = duplicates.isEmpty() ? "Duplicates:\nNo Duplicate records"
 				: "Duplicate Record Files:\n" + String.join("\n", duplicates)
 						+ "\nPlease check 'Duplicate Records' menu.";
+		try {
+			String auditID = sequence.generateRequestUUId();
+			String user1 = (String) request.getSession().getAttribute("USERID");
+			String username = (String) request.getSession().getAttribute("USERNAME");
+
+			BRECON_Audit_Entity audit = new BRECON_Audit_Entity();
+			audit.setAudit_date(new Date());
+			audit.setEntry_time(new Date());
+			audit.setEntry_user(user1);
+			audit.setFunc_code("UPLOADXML");
+			audit.setAudit_table("BRECONDESTINATIONTABLE");
+			audit.setAudit_screen("UPLOAD");
+			audit.setEvent_id(user1);
+			audit.setEvent_name(username);
+			audit.setModi_details("UPLOAD Successfully");
+
+			UserProfile values1 = userProfileRep.getRole(user1);
+			audit.setAuth_user(values1.getAuth_user());
+			audit.setAuth_time(values1.getAuth_time());
+			audit.setAudit_ref_no(auditID);
+
+			bRECON_Audit_Rep.save(audit);
+			logger.info("Audit log saved with ID: {}", auditID);
+		} catch (Exception ex) {
+			logger.error("Failed to save audit log: {}", ex.getMessage(), ex);
+		}
 
 		return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN)
 				.body(matchedFilesString + "\n\n" + unmatchedFilesString + "\n\n" + duplicateReport);
@@ -816,7 +843,7 @@ public class XBRLRestController {
 				audit.setAudit_date(new Date());
 				audit.setEntry_time(new Date());
 				audit.setEntry_user(user1);
-				audit.setFunc_code("DOWNLOAD");
+				audit.setFunc_code("DOWNLOADAASCI");
 				audit.setAudit_table("BRECONDESTINATIONTABLE");
 				audit.setAudit_screen("DOWNLOAD");
 				audit.setEvent_id(user1);
@@ -866,7 +893,8 @@ public class XBRLRestController {
 
 	@RequestMapping(value = "/exportxmlvalues", method = { RequestMethod.GET, RequestMethod.POST })
 	public ResponseEntity<?> exportxmlvalues(
-			@RequestParam("report_date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date report_date) {
+			@RequestParam("report_date") @DateTimeFormat(pattern = "dd-MM-yyyy") Date report_date,
+			HttpServletRequest request) {
 
 		List<BRECON_TTUM_TRANSACTION_ENTITY> reportNames = brecon_ttum_transaction_rep
 				.getReportNamesvalues(report_date);
@@ -1146,6 +1174,27 @@ public class XBRLRestController {
 					headers1.add(HttpHeaders.CONTENT_DISPOSITION,
 							"attachment; filename=LAC_TTUM_" + formattedYesterdayDate.replace(".", "-") + ".xlsx");
 					ByteArrayResource resource = new ByteArrayResource(outputStream.toByteArray());
+					String auditID = sequence.generateRequestUUId();
+					String user1 = (String) request.getSession().getAttribute("USERID");
+					String username = (String) request.getSession().getAttribute("USERNAME");
+
+					BRECON_Audit_Entity audit = new BRECON_Audit_Entity();
+					audit.setAudit_date(new Date());
+					audit.setEntry_time(new Date());
+					audit.setEntry_user(user1);
+					audit.setFunc_code("DOWNLOADEXCEL");
+					audit.setAudit_table("BRECONDESTINATIONTABLE");
+					audit.setAudit_screen("DOWNLOAD");
+					audit.setEvent_id(user1);
+					audit.setEvent_name(username);
+					audit.setModi_details("Downloaded Successfully");
+
+					UserProfile values1 = userProfileRep.getRole(user1);
+					audit.setAuth_user(values1.getAuth_user());
+					audit.setAuth_time(values1.getAuth_time());
+					audit.setAudit_ref_no(auditID);
+
+					bRECON_Audit_Rep.save(audit);
 
 					return ResponseEntity.ok().headers(headers1).contentLength(outputStream.size())
 							.contentType(MediaType.parseMediaType(

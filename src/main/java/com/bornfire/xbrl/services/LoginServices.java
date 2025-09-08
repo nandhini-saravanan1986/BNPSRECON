@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import javax.validation.constraints.NotNull;
 
@@ -52,6 +53,8 @@ import com.bornfire.xbrl.entities.UserProfile;
 import com.bornfire.xbrl.entities.UserProfileRep;
 import com.bornfire.xbrl.entities.XBRLSession;
 import com.bornfire.xbrl.entities.BNPSRECON.AuditServicesRep;
+import com.bornfire.xbrl.entities.BNPSRECON.BRECON_Audit_Entity;
+import com.bornfire.xbrl.entities.BNPSRECON.BRECON_Audit_Rep;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -76,6 +79,12 @@ public class LoginServices {
 
 	@Autowired
 	UserProfileRep userProfileRep;
+
+	@Autowired
+	private HttpServletRequest req;
+
+	@Autowired
+	BRECON_Audit_Rep bRECON_Audit_Rep;
 
 	@Autowired
 	FinUserProfileRep finUserProfileRep;
@@ -124,25 +133,54 @@ public class LoginServices {
 	 * 
 	 * 
 	 */
-
-	public String deleteuser(String userid) {
-		String msg = "";
-
+	private void saveAudit(String funcCode, String tableName, String screen, String eventId, String eventName,
+			String modiDetails) {
 		try {
-			Optional<UserProfile> user = userProfileRep.findById(userid);
-			if (user.isPresent()) {
-				userProfileRep.deleteById(userid);
-				msg = "User Id Rejected";
+			Date currentDate = new Date();
 
-			} else {
-				msg = "Invalid Data";
-			}
+			String currentUserId = (String) req.getSession().getAttribute("USERID");
+			String branchCode = (String) req.getSession().getAttribute("BRANCHCODE");
+
+			BRECON_Audit_Entity audit = new BRECON_Audit_Entity();
+			audit.setAudit_ref_no(java.util.UUID.randomUUID().toString()); // or sequence
+			audit.setAudit_date(currentDate);
+			audit.setEntry_time(currentDate);
+			audit.setEntry_user(currentUserId);
+			audit.setFunc_code(funcCode);
+			audit.setAudit_table(tableName);
+			audit.setAudit_screen(screen);
+			audit.setEvent_id(eventId);
+			audit.setEvent_name(eventName);
+			audit.setModi_details(modiDetails);
+			audit.setAuth_user(currentUserId);
+			audit.setAuth_time(currentDate);
+			audit.setRemarks("Branch: " + branchCode);
+
+			bRECON_Audit_Rep.save(audit);
 
 		} catch (Exception e) {
-			msg = "Please contact Administrator";
-			// TODO: handle exception
+			logger.error("Audit logging failed: {}", e.getMessage(), e);
 		}
-		return msg;
+	}
+
+	public String deleteUser(String userId) {
+		try {
+			Optional<UserProfile> userOpt = userProfileRep.findById(userId);
+			if (userOpt.isPresent()) {
+				UserProfile user = userOpt.get();
+				userProfileRep.deleteById(userId);
+
+				saveAudit("DELETE", "USER_PROFILE_TABLE", "USER_MANAGEMENT", userId, user.getUsername(),
+						"User deleted successfully");
+
+				return "User Deleted Successfully";
+			} else {
+				return "User Not Found";
+			}
+		} catch (Exception e) {
+			logger.error("Error in deleteUser: {}", e.getMessage(), e);
+			return "Error occurred. Please contact Administrator";
+		}
 	}
 
 	public String addUser(UserProfile userProfile, String formmode, String inputUser, String username, String mob,
@@ -203,6 +241,9 @@ public class LoginServices {
 					 * 
 					 * AuditServicesRep.save(as);
 					 */
+					saveAudit("ADD", "USER_PROFILE_TABLE", "USER_MANAGEMENT", userProfile.getUserid(),
+							userProfile.getUsername(), "User created successfully");
+
 					msg = "User Created Successfully";
 
 				} catch (Exception e) {
@@ -248,6 +289,9 @@ public class LoginServices {
 					userProfile.setModify_time(new Date());
 
 					userProfileRep.save(userProfile);
+					saveAudit("EDIT", "USER_PROFILE_TABLE", "USER_MANAGEMENT", userProfile.getUserid(),
+							userProfile.getUsername(), "User updated successfully");
+
 					msg = "User Edited Successfully";
 				} else {
 					msg = "User Not found to edit";
@@ -512,6 +556,9 @@ public class LoginServices {
 				userProfile.setAuth_time(new Date());
 
 				userProfileRep.save(userProfile);
+				saveAudit("VERIFY", "USER_PROFILE_TABLE", "USER_MANAGEMENT", userProfile.getUserid(),
+						userProfile.getUsername(), "User verified successfully");
+
 				msg = "User Verified Successfully";
 			} else {
 				msg = "User not found";
@@ -542,6 +589,9 @@ public class LoginServices {
 				user.setLogin_flg("N");
 				user.setUser_locked_flg("N");
 				userProfileRep.save(user);
+				saveAudit("RESET", "USER_PROFILE_TABLE", "USER_MANAGEMENT", user.getUserid(), user.getUsername(),
+						"Password reset successfully");
+
 			}
 
 			msg = "Password Resetted Successfully";
@@ -760,13 +810,13 @@ public class LoginServices {
 		Smsserviceotp.setWrapperApiKey("LA6m0");
 		Smsserviceotp.setSmssenderid("BOBAlert");
 		Smsserviceotp.setSmsmobilenumber(UserProfile.getMob_number());
-		Smsserviceotp.setSmstext(
-				"BNPSRECON Login OTP: " + otp + " . Please do not share this with anyone. Valid for one-time use only.");
+		Smsserviceotp.setSmstext("BNPSRECON Login OTP: " + otp
+				+ " . Please do not share this with anyone. Valid for one-time use only.");
 		Smsserviceotp.setToemail(UserProfile.getEmail_id());
 		Smsserviceotp.setEmailsubject("ECDD OTP");
 		Smsserviceotp.setEmailtemplateid("BOBAlert");
-		Smsserviceotp.setEmailtext(
-				"BNPSRECON Login OTP: " + otp + " . Please do not share this with anyone. Valid for one-time use only.");
+		Smsserviceotp.setEmailtext("BNPSRECON Login OTP: " + otp
+				+ " . Please do not share this with anyone. Valid for one-time use only.");
 		HttpEntity<Smsserviceotp> entity = new HttpEntity<>(Smsserviceotp, httpHeaders);
 
 		// logger.info(entity.toString());

@@ -30,6 +30,6 @@ public interface BRECON_Audit_Rep extends JpaRepository<BRECON_Audit_Entity, Str
 	@Query(value = "select * from BRECON_AUDIT_TABLE where AUDIT_TABLE = 'XBRLUSERPROFILETABLE' AND TRUNC(AUDIT_DATE) = ?1", nativeQuery = true)
 	List<BRECON_Audit_Entity> getauditListLocalvaluesbusiness(Date fromDateToUse);
 	
-	@Query(value = "SELECT * FROM BRECON_AUDIT_TABLE WHERE AUDIT_TABLE IN ('BRECONDESTINATIONTABLE', 'BRECONSOURCETABLE') AND TRUNC(AUDIT_DATE) = TRUNC(?1)", nativeQuery = true)
+	@Query(value = "SELECT * FROM BRECON_AUDIT_TABLE WHERE AUDIT_TABLE IN ('BRECONDESTINATIONTABLE', 'BRECONSOURCETABLE','USER_PROFILE_TABLE') AND TRUNC(AUDIT_DATE) = TRUNC(?1)", nativeQuery = true)
 	List<BRECON_Audit_Entity> getauditListLocalvaluesbusiness1(Date fromDateToUse);
 }
