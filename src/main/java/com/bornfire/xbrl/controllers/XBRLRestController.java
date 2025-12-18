@@ -756,7 +756,7 @@ public class XBRLRestController {
 			if (!returnrecord.isEmpty()) {
 				// Assuming report_date is of type java.util.Date
 				LocalDate reportDate = report_date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-				DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+				DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 				String formattedReportDate = reportDate.format(formatter1);
 
 				// Create a StringBuilder to store the output
@@ -780,6 +780,9 @@ public class XBRLRestController {
 				int maxReferenceWidth = 0;
 				int maxCurrencyWidth = 0;
 				int maxAmountWidth = 0;
+				
+				
+				
 
 				for (BRECON_TTUM_TRANSACTION_ENTITY record : returnrecord) {
 					maxAccountNoWidth = Math.max(maxAccountNoWidth, record.getAccount_no().trim().length());
@@ -788,33 +791,102 @@ public class XBRLRestController {
 					maxAmountWidth = Math.max(maxAmountWidth,
 							String.format("%.2f", record.getNtry_transaction_amount().doubleValue()).length());
 				}
+				
+				
 
 				// Print both debit and credit transactions without headers
 				for (int i = 0; i < Math.max(debitRecords.size(), creditRecords.size()); i++) {
-					// Append debit record if available
-					if (i < debitRecords.size()) {
-						BRECON_TTUM_TRANSACTION_ENTITY debitRecord = debitRecords.get(i);
-						sb.append(String.format("%s  ", formattedReportDate))
-								.append(String.format("%-" + maxAccountNoWidth + "s  ",
-										debitRecord.getAccount_no().trim()))
-								.append(String.format("%-" + maxReferenceWidth + "s  ",
-										debitRecord.getNtry_entry_reference().trim()))
-								.append(String.format("%-" + maxCurrencyWidth + "s  ",
-										debitRecord.getTransaction_currency().trim()))
-								.append(String.format("%s  ", "D")).append(String.format("%" + maxAmountWidth + ".2f  ",
-										debitRecord.getNtry_transaction_amount().doubleValue()));
-					}
+							// Append debit record if available
+							if (i < debitRecords.size()) {
+								BRECON_TTUM_TRANSACTION_ENTITY debitRecord = debitRecords.get(i);
+								
+								
+								int TOTAL_AMOUNT_WIDTH = 17;
+								String amountStr = String.format("%.2f", debitRecord.getNtry_transaction_amount().doubleValue());
+								int zeros = TOTAL_AMOUNT_WIDTH - amountStr.length();
+						
+						
 
+						
+								sb.append(String.format("%-" + maxAccountNoWidth + "s  ",
+										debitRecord.getAccount_no().trim()));
+								sb.append(String.format("%-" + maxCurrencyWidth + "s    ",
+								        debitRecord.getTransaction_currency().trim()
+								        + debitRecord.getAccount_no().substring(0, 4)))		
+								.append("D");
+								
+								
+								
+								for (int i1 = 0; i1 < zeros; i1++) {
+								    sb.append('0');
+								}
+
+								sb.append(String.format("%.2f", debitRecord.getNtry_transaction_amount().doubleValue()));
+								
+								String reference = debitRecord.getNtry_entry_reference().trim();
+								int referenceWidth = 20;
+								int extraSpaces = 73; 
+
+								sb.append(String.format("%-" + (referenceWidth + extraSpaces) + "s", reference));
+	
+								
+								
+								for (int i1 = 0; i1 < zeros; i1++) {
+								    sb.append('0');
+								}
+								sb.append(String.format("%.2f", debitRecord.getNtry_transaction_amount().doubleValue()))
+							    .append(String.format("%s                    ",debitRecord.getTransaction_currency().trim()))
+								.append(String.format("%s", formattedReportDate));
+								
+								
+								
+								
+					}
+					
+					sb.append("\n");
+					
 					// Append credit record if available
 					if (i < creditRecords.size()) {
-						BRECON_TTUM_TRANSACTION_ENTITY creditRecord = creditRecords.get(i);
-						sb.append(String.format("%-" + maxAccountNoWidth + "s  ", creditRecord.getAccount_no().trim()))
-								.append(String.format("%-" + maxReferenceWidth + "s  ",
-										creditRecord.getNtry_entry_reference().trim()))
-								.append(String.format("%-" + maxCurrencyWidth + "s  ",
-										creditRecord.getTransaction_currency().trim()))
-								.append(String.format("%s  ", "C")).append(String.format("%" + maxAmountWidth + ".2f",
-										creditRecord.getNtry_transaction_amount().doubleValue()))
+						
+						
+								BRECON_TTUM_TRANSACTION_ENTITY creditRecord = creditRecords.get(i);
+								
+								int TOTAL_AMOUNT_WIDTH = 17;
+								String amountStr = String.format("%.2f", creditRecord.getNtry_transaction_amount().doubleValue());
+								int zeros = TOTAL_AMOUNT_WIDTH - amountStr.length();
+								
+								
+								
+								sb.append(String.format("%-" + maxAccountNoWidth + "s  ", creditRecord.getAccount_no().trim()));
+								
+								sb.append(String.format("%-" + maxCurrencyWidth + "s    ",
+										creditRecord.getTransaction_currency().trim()
+								        + creditRecord.getAccount_no().substring(0, 4)))
+								
+								.append("C");
+								
+								for (int i1 = 0; i1 < zeros; i1++) {
+								    sb.append('0');
+								}
+
+								sb.append(String.format("%.2f", creditRecord.getNtry_transaction_amount().doubleValue()));
+						
+								
+								
+								String reference = creditRecord.getNtry_entry_reference().trim();
+								int referenceWidth = 20;
+								int extraSpaces = 73; 
+
+								sb.append(String.format("%-" + (referenceWidth + extraSpaces) + "s", reference));
+	
+								
+								
+								for (int i1 = 0; i1 < zeros; i1++) {
+								    sb.append('0');
+								}
+								sb.append(String.format("%.2f", creditRecord.getNtry_transaction_amount().doubleValue()))
+							    .append(String.format("%s                    ",creditRecord.getTransaction_currency().trim()))
+								.append(String.format("%s", formattedReportDate))
 								.append("\n");
 					} else {
 						// If no credit record, just add a new line
