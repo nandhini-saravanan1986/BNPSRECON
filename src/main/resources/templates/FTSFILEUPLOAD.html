@@ -1,0 +1,518 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+		th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/font-awesome/5.9.0/css/all.min.css"
+		th:href="@{/webjars/font-awesome/5.9.0/css/all.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"
+		th:href="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.css}">
+	<link rel="stylesheet" type="text/css" href="/webjars/datatables/1.10.19/css/jquery.dataTables.min.css"
+		th:href="@{/webjars/datatables/1.10.19/css/jquery.dataTables.min.css}">
+	<link rel="stylesheet" href="/webjars/datatables/1.10.19/css/dataTables.bootstrap4.min.css"
+		th:href="@{/webjars/datatables/1.10.19/css/dataTables.bootstrap4.min.css}">
+	<link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+	<link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon">
+		<!-- Scripts -->
+	<script src="/webjars/jquery/3.4.1/jquery.min.js" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+	<script src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"
+		th:src="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.js}"></script>
+	<script src="/webjars/popper.js/1.14.7/umd/popper.min.js"
+		th:src="@{/webjars/popper.js/1.14.7/umd/popper.min.js}"></script>
+	<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"
+		th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+	<script src="/webjars/jquery-form/4.2.2/jquery.form.min.js"
+		th:src="@{/webjars/jquery-form/4.2.2/jquery.form.min.js}"></script>
+	<script src="/webjars/jquery-validation/1.19.0/jquery.validate.min.js"
+		th:src="@{/webjars/jquery-validation/1.19.0/jquery.validate.min.js}"></script>
+	<script src="/webjars/datatables/1.10.19/js/jquery.dataTables.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/jquery.dataTables.min.js}"></script>
+	<script src="/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js"
+		th:src="@{/webjars/datatables/1.10.19/js/dataTables.bootstrap4.min.js}"></script>
+
+	<style>
+		/* Styles from Reconciliation Dashboard example */
+		body {
+			background-color: #f8f9fa;
+			margin-left: 250px;
+			/* Assuming a fixed sidebar from XBRLHeaderMenu */
+			margin-top: 75px;
+			/* Assuming a fixed header from XBRLHeaderMenu */
+			width: calc(100% - 250px);
+			/* Adjust if sidebar width is different, allows for responsiveness */
+			padding: 15px;
+			/* Added padding for content spacing */
+			box-sizing: border-box;
+		}
+
+		.card-header-custom {
+			background-color: #7593b3;
+			color: black;
+		}
+
+		.recon-button,
+		.btn-recon {
+			/* Combined for shared properties */
+			border: none;
+			border-radius: 0.5rem;
+			padding: 0.5rem 1.2rem;
+			font-family: Verdana, Geneva, Tahoma, sans-serif;
+			letter-spacing: .1em;
+			background-color: #36454F;
+			color: white;
+			transition: background-color .3s ease-in-out;
+			text-decoration: none;
+			/* Ensure button links don't have underlines */
+			display: inline-flex;
+			/* For icon alignment */
+			align-items: center;
+			/* For icon alignment */
+			justify-content: center;
+			/* For icon alignment */
+			line-height: 1.5;
+			/* Standard line height */
+			margin-left: 5px;
+			/* Add a little space between buttons */
+			margin-right: 5px;
+		}
+
+		.recon-button:hover,
+		.btn-recon:hover {
+			background-color: #FFD580;
+			color: #36454F;
+			/* Change text color on hover for better contrast */
+			text-decoration: none;
+		}
+
+		.card-header-custom h5 {
+			font-family: verdana;
+			letter-spacing: .1em;
+			margin-bottom: 0;
+			/* Remove default margin from h5 if it's inside d-flex */
+		}
+
+		/* Table header styling from example 1 */
+		th {
+			white-space: nowrap;
+		}
+
+		/* End of Styles from Reconciliation Dashboard example */
+
+
+		/* Existing TTUM Page Styles (preserved) */
+		.required-field::before {
+			content: "*";
+			color: red;
+			/* float: right; -- Removed float to use with col-form-label better */
+			margin-left: 2px;
+			font-size: 1.2em;
+		}
+
+		.col-form-label .required-field::before {
+			float: none;
+			/* Ensure it doesn't float if inside a col-form-label */
+		}
+
+
+		.spaceline {
+			margin-bottom: 10px;
+		}
+
+		label {
+			font-size: 16px;
+			/* overflow: hidden; -- Might not be needed with Bootstrap grid for labels */
+			/* text-overflow: ellipsis; */
+			/* display: inline-block; */
+		}
+
+		.scroll {
+			max-height: 200vh;
+			overflow-y: scroll;
+			overflow-x: scroll;
+		}
+
+		.inner {
+			overflow-y: visible;
+		}
+
+		/* Sticky header for tables within .table-responsive */
+		.table-responsive>.table .thead-dark th {
+			position: sticky;
+			top: 0;
+			background-color: #343a40;
+			/* Bootstrap's dark color */
+			color: white;
+			/* Text color for actual th content */
+			z-index: 10;
+			vertical-align: middle;
+			/* Align filter text vertically */
+		}
+
+		.table td {
+			font-family: calibri;
+		}
+
+		.table th {
+			/* General th styling, not overriding thead-dark specifically for sticky */
+			font-family: calibri;
+			vertical-align: middle;
+		}
+
+
+		/* --- Add these rules for placeholder alignment --- */
+		.filters .filter-align-left input.form-control::placeholder,
+		.filters .filter-align-left input.form-control {
+			text-align: left;
+		}
+
+		.filters .filter-align-left input.form-control::-webkit-input-placeholder {
+			text-align: left;
+		}
+
+		.filters .filter-align-left input.form-control::-moz-placeholder {
+			text-align: left;
+			opacity: 1;
+		}
+
+		.filters .filter-align-left input.form-control:-ms-input-placeholder {
+			text-align: left;
+		}
+
+		.filters .filter-align-right input.form-control::placeholder,
+		.filters .filter-align-right input.form-control {
+			text-align: right;
+		}
+
+		.filters .filter-align-right input.form-control::-webkit-input-placeholder {
+			text-align: right;
+		}
+
+		.filters .filter-align-right input.form-control::-moz-placeholder {
+			text-align: right;
+			opacity: 1;
+		}
+
+		.filters .filter-align-right input.form-control:-ms-input-placeholder {
+			text-align: right;
+		}
+
+		/* --- End of placeholder alignment rules --- */
+
+		/* Your existing CSS for placeholder visibility and styling */
+		.filterable .filters input[disabled] {
+			background-color: transparent;
+			border: none;
+			cursor: auto;
+			box-shadow: none;
+			padding: 0.375rem 0.75rem;
+			height: auto;
+			width: 100%;
+			line-height: 1.5;
+			font-size: 1rem;
+		}
+
+		.filterable .filters input[disabled].font-weight-bold::-webkit-input-placeholder {
+			font-weight: normal;
+			color: #D3D3D3;
+		}
+
+		/* ... rest of your placeholder visibility CSS ... */
+		.filterable .filters input[disabled].font-weight-bold::-moz-placeholder {
+			/* ... */
+		}
+
+		.filterable .filters input[disabled].font-weight-bold:-ms-input-placeholder {
+			/* ... */
+		}
+
+		.filterable .filters input[disabled].font-weight-bold::placeholder {
+			/* ... */
+		}
+
+		.filterable .filters input[disabled]::-webkit-input-placeholder {
+			/* ... */
+		}
+
+		.filterable .filters input[disabled]::-moz-placeholder {
+			/* ... */
+		}
+
+		.filterable .filters input[disabled]:-ms-input-placeholder {
+			/* ... */
+		}
+
+		.filterable .filters input[disabled]::placeholder {
+			/* ... */
+		}
+
+		/* == END OF FIX == */
+
+
+		.icon {
+			cursor: pointer;
+			margin-left: 10px;
+			color: red;
+			font-size: 20px;
+		}
+
+		.close-icon {
+			cursor: pointer;
+			margin-left: 10px;
+			color: blue;
+			font-size: 20px;
+		}
+
+		.row1 {
+			margin-bottom: 1rem;
+			display: flex;
+			/* Align items in the row nicely */
+			align-items: center;
+			/* Vertically align items in the row */
+		}
+
+		.row1 .col-form-label {
+			padding-top: calc(0.375rem + 1px);
+			/* Align with Bootstrap input vertical padding */
+			padding-bottom: calc(0.375rem + 1px);
+			margin-bottom: 0;
+			line-height: 1.5;
+		}
+
+
+		.card-footer .btn {
+			margin: 0 0.25rem;
+		}
+
+		.card-header-custom .btn-toolbar .btn-group .recon-button {
+			margin-left: 2px;
+			/* Fine tune spacing for buttons in toolbar */
+			margin-right: 2px;
+		}
+
+		.form-control-file {
+			/* Style file input a bit better */
+			border: 1px solid #ced4da;
+			padding: .375rem .75rem;
+			border-radius: .25rem;
+		}
+
+		/* Modal header styling */
+		.modal-header.menu-title-header {
+			background-color: #7593b3;
+			color: black;
+			border-bottom: 1px solid #5a7694;
+			/* Darker border for contrast */
+			display: block;
+			/* To allow text-center on h4 */
+			padding: 1rem;
+		}
+
+		.modal-header.menu-title-header .modal-title {
+			font-family: verdana;
+			text-align: center;
+			width: 100%;
+		}
+
+		.modal-body {
+			background-color: #f8f9fa;
+			/* Lighter background for modal body */
+			text-align: center;
+		}
+
+		.modal-body p {
+			font-size: 16px;
+			color: #333;
+			/* Darker text for readability */
+			margin-bottom: 0;
+			/* Remove default p margin if only one message */
+		}
+
+		.modal-footer {
+			background-color: #e9ecef;
+			/* Standard Bootstrap footer/header bg */
+			border-top: 1px solid #dee2e6;
+			justify-content: center !important;
+			/* Ensure button is centered */
+		}
+
+		.main-content-area {
+			/* Add this class to the div wrapping all formmode blocks */
+			width: 100%;
+		}
+	</style>
+	<title></title>
+	<SCRIPT>
+	// 4. Submission Logic
+	function uploadFile() {
+		    const file = document.getElementById("fileUpload").files[0];
+
+		    // Example upload logic
+		    const formData = new FormData();
+		    formData.append("file", file);
+
+		    
+		    $.ajax({
+		        url: "./uploadfilestatus",
+		        type: "POST",
+		        data: formData,
+		        processData: false,
+		        contentType: false,
+		        success: function (response) {
+		        	alert(response)
+		        },
+		        error: function (xhr) {
+		        	alert(response)
+		        }
+		    });
+		}
+	
+	
+	</SCRIPT>
+</head>
+
+<body>
+	<div th:insert="XBRLHeaderMenu :: header"></div>
+
+	<div class="main-content-area">
+
+		
+
+		<div th:if="${formmode}=='upload'">
+			<form action="#" th:object="${reportform}" method="post" enctype="multipart/form-data" id="reportform">
+				<div class="card shadow-sm" style="font-size: large;">
+					<div
+						class="card-header card-header-custom d-flex justify-content-between align-items-center flex-wrap">
+						<h5 class="mb-0">FTS File - Upload</h5>
+					</div>
+					<div class="card-body">
+						<div class="form-group">
+							
+							
+							<div class="row row1">
+								<label for="fileInput" class="col-sm-3 col-form-label control-label">FTS upload <span
+										class="required-field"></span>
+								</label>
+								<div class="col-sm-9">
+									<input type="file" name="file" id="fileUpload" accept=".xls,.xlsx"class="form-control-file" required />
+								</div>
+							</div>
+							
+						</div>
+					</div>
+					<div class="card-footer text-center bg-light mt-3">
+						<button type="button" class="btn btn-sm btn-primary" onclick="home();">
+							<i class="fas fa-home mr-1"></i> Home
+						</button>
+						<button type="button" class="recon-button" onclick="uploadFile();" id="btnUpload">
+							<!-- Changed to type="button" -->
+							<i class="fas fa-paper-plane mr-1"></i> Submit
+						</button>
+						<button type="button" class="btn btn-sm btn-secondary" onclick="back();">
+							<i class="fas fa-arrow-left mr-1"></i> Back
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		
+		
+
+		
+	</div> <!-- End of main-content-area -->
+
+	<!-- Modals -->
+	<div class="modal fade" id="alert" tabindex="-1" role="dialog" aria-labelledby="alertLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header menu-title-header">
+					<h4 class="modal-title" id="alertLabel">BANK OF BARODA</h4>
+				</div>
+				<div class="modal-body">
+					<p id="alertmsg"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="back1();">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="alert2" tabindex="-1" role="dialog" aria-labelledby="alert2Label" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header menu-title-header">
+					<h4 class="modal-title" id="alert2Label">BANK OF BARODA</h4>
+				</div>
+				<div class="modal-body">
+					<p id="alertmsg2"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="downls();">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="alert3" tabindex="-1" role="dialog" aria-labelledby="alert3Label" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header menu-title-header">
+					<h4 class="modal-title" id="alert3Label">BANK OF BARODA</h4>
+				</div>
+				<div class="modal-body">
+					<p id="alertmsgvaldata"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="backval();">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="alert33" tabindex="-1" role="dialog" aria-labelledby="alert33Label" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header menu-title-header">
+					<h4 class="modal-title" id="alert33Label">BANK OF BARODA</h4>
+				</div>
+				<div class="modal-body">
+					<p id="alertmsgvaldataes"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="backval();">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="alert4" tabindex="-1" role="dialog" aria-labelledby="alert4Label" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header menu-title-header">
+					<h4 class="modal-title" id="alert4Label">BANK OF BARODA</h4>
+				</div>
+				<div class="modal-body">
+					<p id="alertmsgvalues"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal"
+						onclick="backvalues();">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	
+</body>
+
+</html>

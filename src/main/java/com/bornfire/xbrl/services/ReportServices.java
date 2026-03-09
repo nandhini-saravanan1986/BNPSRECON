@@ -3,6 +3,7 @@ package com.bornfire.xbrl.services;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -10,11 +11,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 import javax.validation.constraints.NotNull;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
@@ -25,7 +35,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.bornfire.xbrl.entities.FTS_FILE;
+import com.bornfire.xbrl.entities.FTS_REP;
 import com.bornfire.xbrl.entities.UserAuditRepo;
 import com.bornfire.xbrl.entities.XBRLAudit;
 import com.bornfire.xbrl.entities.XBRLReportsMaster;
@@ -33,6 +46,7 @@ import com.bornfire.xbrl.entities.XBRLReportsMasterRep;
 import com.bornfire.xbrl.entities.BNPSRECON.AuditServicesEntity;
 import com.bornfire.xbrl.entities.BNPSRECON.AuditServicesRep;
 import com.bornfire.xbrl.entities.BNPSRECON.UserAuditLevel_Entity;
+import com.itextpdf.text.log.SysoCounter;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -63,6 +77,10 @@ public class ReportServices {
 
 	@Autowired
 	AuditServicesRep AuditServicesRep;
+	
+	
+	@Autowired
+	FTS_REP fts_rep;
 
 	@Autowired
 	XBRLReportsMasterRep xbrlReportsMasterRep;
@@ -488,6 +506,177 @@ public class ReportServices {
 		List<UserAuditLevel_Entity> result = userAuditRepo.getUserAuditList();
 		System.out.println("Size: " + result.size());
 		return result;
+	}
+	
+	
+	public String FTPFILEUPLOADSUBMIT(MultipartFile file){
+		String msg=null;
+		List<FTS_FILE> Uploadftsdata = new ArrayList<FTS_FILE>();
+	    try {
+
+	        if (file == null || file.isEmpty()) {
+	            return "File is empty";
+	        }
+
+	        String fileName = file.getOriginalFilename();
+	        Workbook workbook;
+
+	        // Choose workbook type based on extension
+	        if (fileName.endsWith(".xlsx")) {
+	            workbook = new XSSFWorkbook(file.getInputStream());
+	        } else if (fileName.endsWith(".xls")) {
+	            workbook = new HSSFWorkbook(file.getInputStream());
+	        } else {
+	            return "Only Excel files (.xls, .xlsx) are allowed";
+	        }
+
+	        if (fileName == null ||
+	            (!fileName.endsWith(".xls") && !fileName.endsWith(".xlsx"))) {
+	        	msg= "Only Excel files are allowed";
+	        }
+	        
+	        Sheet sheet = workbook.getSheetAt(0);
+	        Map<String, String> rowData = new LinkedHashMap<>();
+	        int totalcolumn=33;
+	        int rownumber=1;
+	        
+	        for (Row row : sheet) {
+	        	
+	        	 Cell firstcolcell  =row.getCell(0);
+	        	 
+	     
+	        	 if (firstcolcell == null) {
+	        	        continue;  
+	        	    }
+
+	        	 String firstcol = getCellValueAsString(firstcolcell).trim();
+
+	    	    if (firstcol.isEmpty()) {
+	    	        continue; 
+	    	    }
+	    	    
+	    	    if (firstcol.matches("-?\\d+(\\.\\d+)?")) {
+	    	    	
+	    	    	FTS_FILE fts_filetem= new FTS_FILE();
+	    	    	
+	    	    	Cell SlNocolcell=row.getCell(Integer.parseInt(rowData.get("Sl.No.")));
+	    	    	String SlNovalue=getCellValueAsString(SlNocolcell).trim();
+	    	    	Cell ReferenceIDcell=row.getCell(Integer.parseInt(rowData.get("ReferenceID")));
+	    	    	String ReferenceIDvalue=getCellValueAsString(ReferenceIDcell).trim();
+	    	    	Cell SeqNocell=row.getCell(Integer.parseInt(rowData.get("Seq No")));
+	    	    	String SeqNovalue=getCellValueAsString(SeqNocell).trim();
+	    	    	Cell SendingInstRefcell=row.getCell(Integer.parseInt(rowData.get("Sending Inst Ref")));
+	    	    	String SendingInstRefvalue=getCellValueAsString(SendingInstRefcell).trim();
+	    	    	Cell FTSFileIdcell=row.getCell(Integer.parseInt(rowData.get("FTS FileId")));
+	    	    	String FTSFileIdcellvalue=getCellValueAsString(FTSFileIdcell).trim();
+	    	    	Cell Prioritycell=row.getCell(Integer.parseInt(rowData.get("Priority")));
+	    	    	String Prioritycellvalue=getCellValueAsString(Prioritycell).trim();
+	    	    	Cell TransTypecell=row.getCell(Integer.parseInt(rowData.get("Trans Type")));
+	    	    	String TransTypevalue=getCellValueAsString(TransTypecell).trim();
+	    	    	Cell ValueDatecell=row.getCell(Integer.parseInt(rowData.get("Value Date")));
+	    	    	String ValueDatevalue=getCellValueAsString(ValueDatecell).trim();
+	    	    	Cell BeneficiaryInstcell=row.getCell(Integer.parseInt(rowData.get("Beneficiary Inst")));
+	    	    	String BeneficiaryInstvalue=getCellValueAsString(BeneficiaryInstcell).trim();
+	    	    	Cell Statuscell=row.getCell(Integer.parseInt(rowData.get("Status")));
+	    	    	String Statuscellvalue=getCellValueAsString(Statuscell).trim();
+	    	    	Cell DCStatuscell=row.getCell(Integer.parseInt(rowData.get("DC Status")));
+	    	    	String DCStatuscellvalue=getCellValueAsString(DCStatuscell).trim();
+	    	    	Cell BranchIdcell=row.getCell(Integer.parseInt(rowData.get("BranchId")));
+	    	    	String BranchIdcellvalue=getCellValueAsString(BranchIdcell).trim();
+	    	    	Cell BranchEmirateCodecell=row.getCell(Integer.parseInt(rowData.get("BranchEmirateCode")));
+	    	    	String BranchEmirateCodevalue=getCellValueAsString(BranchEmirateCodecell).trim();
+	    	    	Cell Currencycell=row.getCell(Integer.parseInt(rowData.get("Currency")));
+	    	    	String Currencyvalue=getCellValueAsString(Currencycell).trim();
+	    	    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	    	    	Cell Amountcell=row.getCell(Integer.parseInt(rowData.get("Amount")));
+	    	    	String Amountvalue=getCellValueAsString(Amountcell).trim().replaceAll("[^0-9.]", "");
+	    	    	System.out.println(SlNovalue);
+
+	    	    	fts_filetem.setSrlNo(String.valueOf(rownumber+1));
+	    	    	fts_filetem.setSlNo(new BigDecimal(SlNovalue));
+	    	    	fts_filetem.setReferenceId(ReferenceIDvalue);
+	    	    	fts_filetem.setSeqNo(new BigDecimal(SeqNovalue));
+	    	    	fts_filetem.setSendingInstRef(SendingInstRefvalue);
+	    	    	fts_filetem.setFtsFileId(FTSFileIdcellvalue);
+	    	    	fts_filetem.setPriority(Prioritycellvalue);
+	    	    	fts_filetem.setTransType(TransTypevalue);
+	    	    	fts_filetem.setValueDate(sdf.parse(ValueDatevalue));
+	    	    	fts_filetem.setBeneficiaryInst(BeneficiaryInstvalue);
+	    	    	fts_filetem.setStatus(Statuscellvalue);
+	    	    	fts_filetem.setDcStatus(DCStatuscellvalue);
+	    	    	fts_filetem.setBranchId(BranchIdcellvalue);
+	    	    	fts_filetem.setBranchEmirateCode(BranchEmirateCodevalue);
+	    	    	fts_filetem.setCurrency(Currencyvalue);
+	    	    	fts_filetem.setAmount(new BigDecimal(Amountvalue));
+	    	    	
+	    	    	Uploadftsdata.add(fts_filetem);
+	    	    	
+	    	    	
+	
+	    	   } 
+	    	    else {
+	    	    	
+	    	    
+	    	    	 for(int i = -1; i < totalcolumn; totalcolumn--) {
+		    			  
+		    			   Cell dynamiccolcell  =row.getCell(totalcolumn);
+		    			   if (dynamiccolcell == null) {
+			        	        continue;  
+			        	    }
+		    			   
+		    			   String dynamiccolvalue = getCellValueAsString(dynamiccolcell).trim();
+		    			   
+		    			   if (dynamiccolvalue.isEmpty()) {
+		   	    	        continue; 
+		   	    	    	}
+		    			   rowData.put(dynamiccolvalue,String.valueOf(totalcolumn));
+		    			    
+		    		   }
+	    	    	 totalcolumn=33;
+	    	    	 continue; 
+	    	    }	    	    
+	    	    rownumber++;
+	        	
+	        }
+	        System.out.println(Uploadftsdata.size() + "Size of the Content");
+	        fts_rep.saveAll(Uploadftsdata);
+	        
+	    }catch (Exception e) {
+	        e.printStackTrace();
+	        msg= "Error while uploading file: " + e.getMessage();
+	    }
+	        
+	        
+		
+		return msg;
+	}
+	
+	public String getCellValueAsString(Cell cell) {
+	    if (cell == null) return "";
+
+	    int cellType = cell.getCellType();
+
+	    switch (cellType) {
+	        case 1: // STRING
+	            return cell.getStringCellValue().trim();
+
+	        case 0: // NUMERIC
+	            if (DateUtil.isCellDateFormatted(cell)) {
+	                return new SimpleDateFormat("dd-MMM-yyyy").format(cell.getDateCellValue());
+	            } else {
+	                return BigDecimal.valueOf(cell.getNumericCellValue())
+	                        .stripTrailingZeros()
+	                        .toPlainString();
+	            }
+
+	        case 4: // BOOLEAN
+	            return Boolean.toString(cell.getBooleanCellValue());
+
+	        case 3: // BLANK
+	        case 5: // ERROR
+	        default:
+	            return "";
+	    }
 	}
 
 }

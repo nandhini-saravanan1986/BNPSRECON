@@ -1708,4 +1708,15 @@ public class XBRLNavigationController {
 		System.out.println(msg);
 		return msg;
 	}
+	
+	
+	@RequestMapping(value = "FTSFILEUPLOAD", method = RequestMethod.GET)
+	public String FTSFILEUPLOAD(@RequestParam(required = false) String formmode,
+			@RequestParam(required = false) String srlno, String keyword, Model md, HttpServletRequest req) {
+		if (formmode == null || formmode.equals("list")) {
+			md.addAttribute("formmode", "upload");
+		} 
+
+		return "FTSFILEUPLOAD";
+	}
 }

@@ -1664,5 +1664,11 @@ public class XBRLRestController {
 
 		return "Updated Successfully";
 	}
+	
+	@PostMapping("/uploadfilestatus")
+	public String uploadfilestatus(HttpServletRequest rq,@RequestParam("file") MultipartFile file) {
+				String msg=reportServices.FTPFILEUPLOADSUBMIT(file);
+				return msg;
+	}
 
 }
